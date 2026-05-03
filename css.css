@@ -130,6 +130,43 @@ header {
     100% { opacity: 0.6; }
 }
 
+@keyframes glitch {
+    0%, 85%, 100% {
+        text-shadow: 0 0 15px rgba(0, 255, 65, 0.7);
+        transform: none;
+    }
+    87% {
+        text-shadow: -3px 0 #ff0044, 3px 0 #00ccff, 0 0 15px rgba(0, 255, 65, 0.7);
+        transform: skewX(-2deg) translateX(-2px);
+    }
+    89% {
+        text-shadow: 3px 0 #ff0044, -3px 0 #00ccff, 0 0 15px rgba(0, 255, 65, 0.7);
+        transform: skewX(2deg) translateX(2px);
+    }
+    91% {
+        text-shadow: -2px 0 #ff0044, 2px 0 #00ccff, 0 0 15px rgba(0, 255, 65, 0.7);
+        transform: translateX(0);
+    }
+    93% {
+        text-shadow: 0 0 15px rgba(0, 255, 65, 0.7);
+        transform: none;
+    }
+}
+
+.site-title {
+    animation: glitch 7s infinite;
+}
+
+.typewriter-cursor {
+    border-right: 2px solid var(--primary);
+    animation: blink-cursor 0.7s step-end infinite;
+}
+
+@keyframes blink-cursor {
+    0%, 100% { border-color: var(--primary); }
+    50%       { border-color: transparent; }
+}
+
 /* ===== 主体内容 ===== */
 .main-content {
     display: flex;
