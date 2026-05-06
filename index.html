@@ -15,6 +15,7 @@
         <div class="divider"></div>
         <nav class="nav-links">
             <a href="index.html" class="active">HOME主页</a>
+            <a href="team.html">TEAM分组</a>
             <a href="knowledge.html">DEPARTMENTS部门</a>
             <a href="downloads.html">DOWNLOADS下载中心</a>
             <a href="about.html">ABOUT关于我们</a>
@@ -23,9 +24,14 @@
     </header>
 
     <div class="main-content">
-        <div class="main-title">
-            <h1>欢迎来到 AI-LINK Group</h1>
-            <p>技术爱好者的小窝-探索技术的无限可能</p>
+        <div class="main-title hero-wrapper">
+            <div class="d20-container">
+                <canvas id="d20canvas" class="d20"></canvas>
+            </div>
+            <div class="hero-text">
+                <h1>欢迎来到 AI-LINK Group</h1>
+                <p>技术爱好者的小窝-探索技术的无限可能</p>
+            </div>
         </div>
 
     <div class="divider"></div>
@@ -81,5 +87,106 @@
         <span class="site-url">grayocean0133.github.io</span>
     </footer>
     <script src="effects.js"></script>
+    <script>
+    (function () {
+        const canvas = document.getElementById('d20canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        const SIZE = 150;
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width  = SIZE * dpr;
+        canvas.height = SIZE * dpr;
+        ctx.scale(dpr, dpr);
+
+        // 正二十面体 12 个顶点（黄金比例构造，归一化到单位球）
+        const phi  = (1 + Math.sqrt(5)) / 2;
+        const norm = Math.sqrt(1 + phi * phi);
+        const VERTS = [
+            [-1, phi, 0], [ 1, phi, 0], [-1,-phi, 0], [ 1,-phi, 0],
+            [ 0,-1, phi], [ 0, 1, phi], [ 0,-1,-phi], [ 0, 1,-phi],
+            [phi, 0,-1],  [phi, 0, 1], [-phi, 0,-1], [-phi, 0, 1],
+        ].map(([x, y, z]) => [x / norm, y / norm, z / norm]);
+
+        // 20 个三角面
+        const FACES = [
+            [0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],
+            [1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],
+            [3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],
+            [4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1],
+        ];
+
+        const R   = SIZE * 0.42;   // 缩放半径
+        const FOV = SIZE * 1.8;    // 透视焦距（相机在 +Z 方向）
+        const TILT = 0.42;         // 固定 X 轴倾斜角（rad）
+        const cT = Math.cos(TILT), sT = Math.sin(TILT);
+        // 光源方向（来自右上前方）
+        const LX = 0.3, LY = 0.8, LZ = 0.5;
+        const LL = Math.sqrt(LX*LX + LY*LY + LZ*LZ);
+
+        let ry = 0;
+
+        function frame() {
+            ctx.clearRect(0, 0, SIZE, SIZE);
+            const cy = Math.cos(ry), sy = Math.sin(ry);
+
+            // 变换顶点：Y 轴旋转（动画）+ X 轴倾斜（固定）→ 透视投影
+            const pts = VERTS.map(([x, y, z]) => {
+                const x1 = cy*x + sy*z,  z1 = -sy*x + cy*z;
+                const y2 = cT*y - sT*z1, z2 =  sT*y + cT*z1;
+                const wx = x1*R, wy = y2*R, wz = z2*R;
+                const d  = FOV - wz;
+                return {
+                    px: wx * FOV / d + SIZE / 2,
+                    py: -wy * FOV / d + SIZE / 2,
+                    wz,
+                    w: [wx, wy, wz],
+                };
+            });
+
+            // 计算各面的法向量、深度、可见性
+            const faceList = FACES.map(([ai, bi, ci]) => {
+                const a = pts[ai], b = pts[bi], c = pts[ci];
+                const ex = b.w[0]-a.w[0], ey = b.w[1]-a.w[1], ez = b.w[2]-a.w[2];
+                const fx = c.w[0]-a.w[0], fy = c.w[1]-a.w[1], fz = c.w[2]-a.w[2];
+                const nx = ey*fz - ez*fy;
+                const ny = ez*fx - ex*fz;
+                const nz = ex*fy - ey*fx;
+                const nl = Math.sqrt(nx*nx + ny*ny + nz*nz) || 1;
+                return { a, b, c, avgZ: (a.wz+b.wz+c.wz)/3, nx, ny, nz, nl };
+            });
+
+            // 画家算法：由远到近渲染
+            faceList.sort((a, b) => a.avgZ - b.avgZ);
+
+            faceList.forEach(({ a, b, c, nx, ny, nz, nl }) => {
+                if (nz <= 0) return; // 背面剔除
+
+                const dot   = Math.max(0, (nx*LX + ny*LY + nz*LZ) / (nl * LL));
+                const alpha = (0.05 + dot * 0.30).toFixed(3);
+
+                ctx.beginPath();
+                ctx.moveTo(a.px, a.py);
+                ctx.lineTo(b.px, b.py);
+                ctx.lineTo(c.px, c.py);
+                ctx.closePath();
+
+                ctx.fillStyle   = `rgba(0,255,65,${alpha})`;
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(0,255,65,0.85)';
+                ctx.lineWidth   = 1.2;
+                ctx.shadowColor = '#00ff41';
+                ctx.shadowBlur  = 6;
+                ctx.stroke();
+                ctx.shadowBlur  = 0;
+            });
+
+            ry += 0.008;
+            requestAnimationFrame(frame);
+        }
+
+        frame();
+    })();
+    </script>
 </body>
 </html>

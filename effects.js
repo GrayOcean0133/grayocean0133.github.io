@@ -10,10 +10,10 @@
     let columns, drops;
 
     function resize() {
-        canvas.width = window.innerWidth;
+        canvas.width  = window.innerWidth;
         canvas.height = window.innerHeight;
         columns = Math.floor(canvas.width / fontSize);
-        drops = Array(columns).fill(0);
+        drops   = Array(columns).fill(0);
     }
     resize();
     window.addEventListener('resize', resize);
@@ -22,11 +22,10 @@
         ctx.fillStyle = 'rgba(10,10,10,0.05)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.font = fontSize + 'px monospace';
-
         drops.forEach(function (y, i) {
-            const char = chars[Math.floor(Math.random() * chars.length)];
+            const char   = chars[Math.floor(Math.random() * chars.length)];
             const bright = Math.random() > 0.96;
-            ctx.fillStyle = bright ? '#ccffcc' : '#00ff41';
+            ctx.fillStyle  = bright ? '#ccffcc' : '#00ff41';
             ctx.globalAlpha = bright ? 0.9 : 0.25 + Math.random() * 0.2;
             ctx.fillText(char, i * fontSize, y * fontSize);
             ctx.globalAlpha = 1;
@@ -34,11 +33,10 @@
             else drops[i]++;
         });
     }
-
     setInterval(draw, 50);
 })();
 
-/* ===== Typewriter ===== */
+/* ===== Typewriter (subtitle) ===== */
 (function () {
     const el = document.querySelector('.site-subtitle');
     if (!el) return;
@@ -52,39 +50,78 @@
             el.textContent += text[i++];
             setTimeout(type, 90);
         } else {
-            setTimeout(function () {
-                el.classList.remove('typewriter-cursor');
-            }, 1200);
+            setTimeout(function () { el.classList.remove('typewriter-cursor'); }, 1200);
         }
     }
     setTimeout(type, 600);
 })();
 
-/* ===== Fade-in on load (staggered) ===== */
+/* ===== Typewriter (hero title + subtitle) ===== */
 (function () {
-    const selectors = [
-        '.project',
-        '.news-section',
-        '.dept-card',
-        '.member-card',
-        '.member-section'
-    ];
+    const h1 = document.querySelector('.hero-text h1');
+    const p  = document.querySelector('.hero-text p');
+    if (!h1) return;
 
-    selectors.forEach(function (sel) {
-        document.querySelectorAll(sel).forEach(function (el, i) {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(24px)';
-            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            el.style.transitionDelay = (i * 0.07) + 's';
+    const h1Text = h1.textContent.trim();
+    const pText  = p ? p.textContent.trim() : '';
+    h1.textContent = '';
+    if (p) p.textContent = '';
+
+    function typeEl(el, text, speed, cb) {
+        el.style.display   = 'inline-block';
+        el.style.borderRight = '2px solid #00ff41';
+        el.style.animation = 'blink-cursor 0.7s step-end infinite';
+        let i = 0;
+        function tick() {
+            if (i < text.length) {
+                el.textContent += text[i++];
+                setTimeout(tick, speed);
+            } else {
+                el.style.borderRight = 'none';
+                el.style.animation   = 'none';
+                el.style.display     = '';
+                if (cb) setTimeout(cb, 200);
+            }
+        }
+        tick();
+    }
+
+    setTimeout(function () {
+        typeEl(h1, h1Text, 60, function () {
+            if (p && pText) typeEl(p, pText, 35, null);
         });
+    }, 800);
+})();
+
+/* ===== Scroll slide-in (IntersectionObserver — 全局) ===== */
+(function () {
+    const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            el.style.opacity   = '1';
+            el.style.transform = 'translateY(0)';
+            observer.unobserve(el);
+        });
+    }, { threshold: 0.10 });
+
+    function register(el, delay) {
+        el.style.opacity    = '0';
+        el.style.transform  = 'translateY(28px)';
+        el.style.transition = 'opacity 0.55s ease ' + delay + 's, '
+                            + 'transform 0.55s ease ' + delay + 's';
+        observer.observe(el);
+    }
+
+    // 所有页面：main-content 的直接子元素全部触发
+    document.querySelectorAll('.main-content > *').forEach(function (el, i) {
+        register(el, (i * 0.07).toFixed(2));
     });
 
-    window.addEventListener('load', function () {
-        selectors.forEach(function (sel) {
-            document.querySelectorAll(sel).forEach(function (el) {
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
-            });
+    // 卡片类：网格内的子卡片单独逐个出现（覆盖上面的 delay）
+    ['.dept-card', '.member-card', '.project'].forEach(function (sel) {
+        document.querySelectorAll(sel).forEach(function (el, i) {
+            register(el, (i * 0.08).toFixed(2));
         });
     });
 })();
