@@ -121,9 +121,7 @@ header {
     width: 100%;
     height: 2px;
     background: var(--primary);
-    box-shadow: 0 0 8px rgba(0, 255, 65, 0.55);
-    /* 原本带 animation: pulse 1.5s infinite，撤掉了 —— 在 header 透明的
-       前提下，下划线持续呼吸读起来也像频闪。改成静态绿条 + 微光 */
+    animation: pulse 1.5s infinite;
 }
 
 @keyframes pulse {
@@ -1303,15 +1301,37 @@ header.scrolled {
     backdrop-filter: blur(12px);
 }
 
+/* 平滑折叠 subtitle 与两条分割线：用 max-height + opacity 动画
+   替代原来的 display:none 突变，配合 header 自身 transition
+   让"hero ↔ scrolled"切换是一段连续动画，而不是断帧。 */
+header .site-subtitle,
+header > .divider {
+    overflow: hidden;
+    max-height: 60px;
+    opacity: 1;
+    transition: max-height 0.35s ease, opacity 0.25s ease, margin 0.35s ease;
+}
+
 header.scrolled .site-subtitle,
 header.scrolled > .divider {
-    display: none;
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    pointer-events: none;
+}
+
+header .site-title {
+    transition: font-size 0.35s ease, margin-bottom 0.35s ease;
 }
 
 header.scrolled .site-title {
     font-size: 1.4rem;
     margin-bottom: 0.25rem;
-    transition: font-size 0.35s ease;
+}
+
+header .nav-links {
+    transition: margin-top 0.35s ease;
 }
 
 header.scrolled .nav-links {

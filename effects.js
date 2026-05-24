@@ -1,50 +1,39 @@
-/* ===== Matrix Rain =====
-   关键调整：原版每 50ms 全屏所有列重抽随机字符 + 4% 高亮概率，
-   30+ 个亮白字符同时闪烁形成强烈频闪。现在做三件事：
-   1) 降低画布整体 opacity 到 0.35，减弱整体存在感
-   2) 高亮概率从 4% 降到 0.5%，几乎看不到闪点
-   3) 单元格字符在屏幕停留时间更长（每 5 帧才换字），减少视觉噪声 */
+/* ===== Matrix Rain ===== */
 (function () {
     const canvas = document.createElement('canvas');
-    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:0.35;';
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:0.8;';
     document.body.prepend(canvas);
 
     const ctx = canvas.getContext('2d');
     const chars = '01アイウエオカキクケコABCDEFGHIJKLMNOPQRSTUVWXYZ#@!$%&<>';
     const fontSize = 13;
-    let columns, drops, charCache, frame = 0;
+    let columns, drops;
 
     function resize() {
         canvas.width  = window.innerWidth;
         canvas.height = window.innerHeight;
         columns = Math.floor(canvas.width / fontSize);
         drops   = Array(columns).fill(0);
-        charCache = Array(columns).fill(null).map(function () { return chars[Math.floor(Math.random() * chars.length)]; });
     }
     resize();
     window.addEventListener('resize', resize);
 
     function draw() {
-        ctx.fillStyle = 'rgba(10,10,10,0.08)';
+        ctx.fillStyle = 'rgba(10,10,10,0.05)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.font = fontSize + 'px monospace';
-        frame++;
         drops.forEach(function (y, i) {
-            // 5 帧才换一次字符，去掉每帧随机翻转的强烈闪烁
-            if (frame % 5 === 0 && Math.random() > 0.6) {
-                charCache[i] = chars[Math.floor(Math.random() * chars.length)];
-            }
-            const char   = charCache[i];
-            const bright = Math.random() > 0.995;
+            const char   = chars[Math.floor(Math.random() * chars.length)];
+            const bright = Math.random() > 0.96;
             ctx.fillStyle  = bright ? '#ccffcc' : '#00ff41';
-            ctx.globalAlpha = bright ? 0.85 : 0.22 + Math.random() * 0.12;
+            ctx.globalAlpha = bright ? 0.9 : 0.25 + Math.random() * 0.2;
             ctx.fillText(char, i * fontSize, y * fontSize);
             ctx.globalAlpha = 1;
             if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
             else drops[i]++;
         });
     }
-    setInterval(draw, 60);
+    setInterval(draw, 50);
 })();
 
 /* ===== Typewriter (subtitle) ===== */
@@ -213,27 +202,34 @@
     targets.forEach(function (el) { observer.observe(el); });
 })();
 
-/* ===== Sticky header 滚动折叠 ===== */
+/* ===== Sticky header 折叠 =====
+   之前用 window.scrollY > 80 阈值会出"反馈环"频闪：
+   toggle .scrolled → header 高度变化 → sticky 之后内容相对位置变化 →
+   反向触发 scroll 事件 → scrollY 在阈值附近来回 → 再 toggle，
+   snap-scroll 在 hero 顶部还会做微调，加剧来回横跳。
+
+   换成 IntersectionObserver 观察一个固定在 document 80px 位置的哨兵：
+   哨兵位置相对 body 绝对定位，不随 header 高度变化，跨越视口边界
+   只触发一次，跟 .scrolled 切换互不影响，杜绝反馈环。 */
 (function () {
     const header = document.querySelector('header');
     if (!header) return;
 
-    let ticking = false;
-    function update() {
-        if (window.scrollY > 80) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-        ticking = false;
-    }
+    const sentinel = document.createElement('div');
+    sentinel.setAttribute('aria-hidden', 'true');
+    sentinel.style.cssText = 'position:absolute;top:80px;left:0;width:1px;height:1px;pointer-events:none;';
+    document.body.insertBefore(sentinel, document.body.firstChild);
 
-    window.addEventListener('scroll', function () {
-        if (!ticking) {
-            requestAnimationFrame(update);
-            ticking = true;
-        }
-    }, { passive: true });
+    const obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+            if (e.isIntersecting) {
+                header.classList.remove('scrolled');
+            } else {
+                header.classList.add('scrolled');
+            }
+        });
+    }, { threshold: 0 });
+    obs.observe(sentinel);
 })();
 
 /* ===== i18n：中英语言切换 ===== */
