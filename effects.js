@@ -215,6 +215,53 @@
     }, { passive: true });
 })();
 
+/* ===== i18n：中英语言切换 ===== */
+(function () {
+    const HTML = document.documentElement;
+
+    function apply(lang) {
+        if (lang !== 'en') lang = 'zh';
+        HTML.dataset.lang = lang;
+        HTML.lang = lang === 'en' ? 'en' : 'zh-CN';
+        try { localStorage.setItem('aiLinkLang', lang); } catch (e) {}
+
+        // 同步更新 page-dots 的 data-label 与 aria-label
+        document.querySelectorAll('.page-dot').forEach(function (d) {
+            const zh = d.dataset.labelZh;
+            const en = d.dataset.labelEn;
+            const text = lang === 'en' ? (en || zh) : (zh || en);
+            if (text) d.setAttribute('data-label', text);
+            if (en && zh) {
+                d.setAttribute('aria-label', (lang === 'en' ? 'Jump to ' : '跳转到') + text);
+            }
+        });
+
+        // 通知监听者重渲（例如 Path Finder 结果区）
+        document.dispatchEvent(new CustomEvent('langchange', { detail: { lang: lang } }));
+    }
+
+    // 初始：localStorage > 浏览器 > zh
+    let initial = null;
+    try { initial = localStorage.getItem('aiLinkLang'); } catch (e) {}
+    if (!initial) {
+        const b = (navigator.language || 'zh').toLowerCase();
+        initial = b.startsWith('en') ? 'en' : 'zh';
+    }
+    apply(initial);
+
+    // toggle 按钮：整体可点击（fallback flip），但点到具体 .lang-opt 时直接设那个
+    document.querySelectorAll('.lang-toggle').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            const target = e.target.closest('.lang-opt');
+            if (target && target.dataset.langSet) {
+                apply(target.dataset.langSet);
+            } else {
+                apply(HTML.dataset.lang === 'en' ? 'zh' : 'en');
+            }
+        });
+    });
+})();
+
 /* ===== Scroll-spy：根据可见区段高亮 page-dot 与导航链接 ===== */
 (function () {
     const sections = document.querySelectorAll('main .snap-section[id]');
