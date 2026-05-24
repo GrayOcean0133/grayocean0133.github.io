@@ -1273,6 +1273,193 @@ footer {
     100% { transform: translateX(125%); }
 }
 
+/* =============================================
+   翻页式 Snap-scroll 系统
+   ============================================= */
+
+html {
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
+    scroll-padding-top: 140px;
+}
+
+/* 全站 sticky 毛玻璃头 */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10, 10, 10, 0.78);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    transition: padding 0.35s ease, background 0.35s ease;
+}
+
+header.scrolled {
+    padding: 0.55rem 5%;
+    background: rgba(10, 10, 10, 0.92);
+}
+
+header.scrolled .site-subtitle,
+header.scrolled > .divider {
+    display: none;
+}
+
+header.scrolled .site-title {
+    font-size: 1.4rem;
+    margin-bottom: 0.25rem;
+    transition: font-size 0.35s ease;
+}
+
+header.scrolled .nav-links {
+    margin-top: 0;
+}
+
+/* Snap 区段 */
+.snap-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+    min-height: 100vh;
+    min-height: 100svh;
+    box-sizing: border-box;
+    padding: 6rem 5% 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.snap-inner {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* Hero 第一屏特殊处理 */
+.snap-hero {
+    padding-top: 8rem;
+}
+
+.snap-hero .hero-wrapper {
+    margin-bottom: 0;
+}
+
+/* 滚动提示 */
+.scroll-hint {
+    position: absolute;
+    bottom: 1.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    opacity: 0.75;
+    transition: opacity 0.3s ease;
+}
+
+.scroll-hint:hover {
+    opacity: 1;
+}
+
+.scroll-hint .scroll-arrow {
+    font-size: 1.2rem;
+    animation: hint-bounce 1.8s ease-in-out infinite;
+    line-height: 1;
+}
+
+@keyframes hint-bounce {
+    0%, 100% { transform: translateY(0); opacity: 0.5; }
+    50%      { transform: translateY(6px); opacity: 1; }
+}
+
+/* Final CTA 大块 */
+.final-cta {
+    background: linear-gradient(135deg, rgba(0, 255, 65, 0.06), rgba(0, 255, 65, 0.02));
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    border-radius: 14px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.final-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 0%, rgba(0, 255, 65, 0.12), transparent 60%);
+    pointer-events: none;
+}
+
+.final-cta-eyebrow {
+    color: var(--primary);
+    font-size: 0.85rem;
+    letter-spacing: 4px;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+.final-cta-title {
+    color: var(--text-light);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+    position: relative;
+}
+
+.final-cta-sub {
+    color: var(--text-gray);
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    line-height: 1.7;
+    position: relative;
+}
+
+.final-cta-actions {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+@media (max-width: 700px) {
+    html { scroll-padding-top: 110px; }
+    .snap-section { padding: 5rem 5% 2.5rem; }
+    .snap-hero { padding-top: 6rem; }
+    .final-cta { padding: 2rem 1.4rem; }
+    .final-cta-title { font-size: 1.4rem; }
+}
+
+/* Hero 文字在 snap 模式下放大 */
+.snap-hero .hero-text h1 {
+    font-size: 2.6rem;
+}
+
+@media (max-width: 700px) {
+    .snap-hero .hero-text h1 { font-size: 1.8rem; }
+}
+
+/* 区段引导小字 */
+.section-intro {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    margin: -0.6rem 0 1.4rem;
+    letter-spacing: 0.5px;
+}
+
 /* ===== 部门 fit-guide ===== */
 .fit-guide {
     width: 100%;

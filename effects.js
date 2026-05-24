@@ -118,6 +118,11 @@
         register(el, (i * 0.07).toFixed(2));
     });
 
+    // Snap-scroll 首页：每个 .snap-inner 的直接子元素逐个出现
+    document.querySelectorAll('.snap-inner > *').forEach(function (el, i) {
+        register(el, (i * 0.05).toFixed(2));
+    });
+
     // 卡片类：网格内的子卡片单独逐个出现（覆盖上面的 delay）
     ['.dept-card', '.member-card', '.project', '.feature-card', '.join-card', '.fit-row'].forEach(function (sel) {
         document.querySelectorAll(sel).forEach(function (el, i) {
@@ -185,4 +190,27 @@
     }, { threshold: 0.35 });
 
     targets.forEach(function (el) { observer.observe(el); });
+})();
+
+/* ===== Sticky header 滚动折叠 ===== */
+(function () {
+    const header = document.querySelector('header');
+    if (!header) return;
+
+    let ticking = false;
+    function update() {
+        if (window.scrollY > 80) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+        if (!ticking) {
+            requestAnimationFrame(update);
+            ticking = true;
+        }
+    }, { passive: true });
 })();
