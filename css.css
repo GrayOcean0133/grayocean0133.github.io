@@ -132,23 +132,23 @@ header {
 
 @keyframes glitch {
     0%, 85%, 100% {
-        text-shadow: 0 0 15px rgba(0, 255, 65, 0.7);
+        text-shadow: 0 0 10px rgba(0, 255, 65, 0.55);
         transform: none;
     }
     87% {
-        text-shadow: -3px 0 #ff0044, 3px 0 #00ccff, 0 0 15px rgba(0, 255, 65, 0.7);
+        text-shadow: -3px 0 #ff0044, 3px 0 #00ccff, 0 0 10px rgba(0, 255, 65, 0.55);
         transform: skewX(-2deg) translateX(-2px);
     }
     89% {
-        text-shadow: 3px 0 #ff0044, -3px 0 #00ccff, 0 0 15px rgba(0, 255, 65, 0.7);
+        text-shadow: 3px 0 #ff0044, -3px 0 #00ccff, 0 0 10px rgba(0, 255, 65, 0.55);
         transform: skewX(2deg) translateX(2px);
     }
     91% {
-        text-shadow: -2px 0 #ff0044, 2px 0 #00ccff, 0 0 15px rgba(0, 255, 65, 0.7);
+        text-shadow: -2px 0 #ff0044, 2px 0 #00ccff, 0 0 10px rgba(0, 255, 65, 0.55);
         transform: translateX(0);
     }
     93% {
-        text-shadow: 0 0 15px rgba(0, 255, 65, 0.7);
+        text-shadow: 0 0 10px rgba(0, 255, 65, 0.55);
         transform: none;
     }
 }
@@ -1305,6 +1305,15 @@ header .site-title {
     font-size: 1.5rem;
     margin-bottom: 0.25rem;
     text-shadow: 0 0 10px rgba(0, 255, 65, 0.55);
+    /* 品牌 glitch：每 7s 在 87~93% 区间做一次 0.4s 的色差错位
+       现在 header 不再有 .scrolled 反馈环、底层有半透明遮罩压住 matrix rain，
+       这个动效只是品牌点缀，不再会被读作"标题坏了" */
+    animation: glitch 7s infinite 5s;
+}
+
+/* 减少动效偏好时关掉 glitch */
+@media (prefers-reduced-motion: reduce) {
+    header .site-title { animation: none; }
 }
 
 /* ===== 一次性全屏入场：terminal 风格 splash =====
