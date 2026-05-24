@@ -14,10 +14,10 @@
         <div class="site-subtitle">Think-Build-Connect</div>
         <div class="divider"></div>
         <nav class="nav-links">
-            <a href="#hero" class="active">HOME 首页</a>
-            <a href="#recruit" class="nav-join">JOIN 招新</a>
-            <a href="#departments">DEPARTMENTS 部门</a>
-            <a href="#advisors">ABOUT 关于我们</a>
+            <a href="#hero" class="active"><span class="nav-en">HOME</span> <span class="nav-zh">首页</span></a>
+            <a href="#recruit" class="nav-join"><span class="nav-en">JOIN</span> <span class="nav-zh">招新</span></a>
+            <a href="#departments"><span class="nav-en">DEPARTMENTS</span> <span class="nav-zh">部门</span></a>
+            <a href="#advisors"><span class="nav-en">ABOUT</span> <span class="nav-zh">关于</span></a>
         </nav>
         <div class="divider"></div>
     </header>
@@ -667,8 +667,11 @@
         resize();
         window.addEventListener('resize', resize);
 
-        const COUNT   = 42;
-        const CONNECT = 130;
+        const isMobile = window.matchMedia('(max-width: 700px)').matches
+                      || ('ontouchstart' in window && window.innerWidth < 900);
+        const COUNT     = isMobile ? 22 : 42;
+        const CONNECT   = isMobile ? 95 : 130;
+        const USE_SHADOW = !isMobile;  // shadowBlur 在移动 GPU 上极贵
 
         const particles = [];
         for (let i = 0; i < COUNT; i++) {
@@ -695,8 +698,10 @@
             ctx.clearRect(0, 0, W, H);
 
             // 节点
-            ctx.shadowColor = '#00ff41';
-            ctx.shadowBlur  = 5;
+            if (USE_SHADOW) {
+                ctx.shadowColor = '#00ff41';
+                ctx.shadowBlur  = 5;
+            }
             particles.forEach(function (p) {
                 p.x += p.vx * dt;
                 p.y += p.vy * dt;
@@ -711,7 +716,7 @@
                 ctx.fillStyle = 'rgba(0, 255, 65, ' + a.toFixed(3) + ')';
                 ctx.fill();
             });
-            ctx.shadowBlur = 0;
+            if (USE_SHADOW) ctx.shadowBlur = 0;
 
             // 邻近连线（星座效果）
             ctx.lineWidth = 0.5;

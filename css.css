@@ -1561,6 +1561,173 @@ header.scrolled .nav-links {
     border-top: 1px dashed var(--divider);
 }
 
+/* =============================================
+   移动端集中适配（≤700px / ≤480px）
+   ============================================= */
+
+/* 默认隐藏导航的中文跨度（桌面端 EN + 中文都显示） */
+.nav-zh { margin-left: 0.15em; }
+
+@media (max-width: 700px) {
+    /* 头部直接进入 compact 状态，不等滚动 */
+    header {
+        padding: 0.6rem 5% 0.5rem;
+    }
+    header .site-subtitle,
+    header > .divider {
+        display: none;
+    }
+    header .site-title {
+        font-size: 1.3rem;
+        margin-bottom: 0.4rem;
+        letter-spacing: 2px;
+    }
+    header .nav-links {
+        margin-top: 0;
+        gap: 1.2rem;
+        font-size: 0.92rem;
+    }
+    /* 导航英文隐藏，只显中文 */
+    .nav-en { display: none; }
+    .nav-zh { margin-left: 0; }
+    .nav-links a.nav-join {
+        padding: 0.25rem 0.7rem;
+    }
+
+    /* scroll-padding-top 配合新 compact 头高度 */
+    html { scroll-padding-top: 70px; }
+
+    /* snap-section padding 收紧 */
+    .snap-section {
+        padding: 4.5rem 5% 2rem;
+    }
+    .snap-hero { padding-top: 5.5rem; }
+
+    /* Hero CTA 竖排满宽，触摸目标够大 */
+    .hero-cta {
+        flex-direction: column;
+        gap: 0.7rem;
+        width: 100%;
+    }
+    .hero-cta .btn {
+        width: 100%;
+        padding: 0.85rem 1.2rem;
+        font-size: 0.95rem;
+    }
+    .hero-tags {
+        font-size: 0.78rem !important;
+        letter-spacing: 0.5px;
+        line-height: 1.75;
+    }
+    .snap-hero .hero-text h1 {
+        font-size: 1.6rem;
+        line-height: 1.35;
+    }
+
+    /* fit-guide 在窄屏每行变独立卡片 */
+    .fit-row {
+        background: rgba(0, 255, 65, 0.04);
+        border: 1px solid rgba(0, 255, 65, 0.12);
+        border-radius: 8px;
+        padding: 0.75rem 0.9rem;
+        gap: 0.45rem;
+        grid-template-columns: 1fr;
+    }
+    .fit-row .fit-want {
+        color: var(--text-light);
+        font-size: 0.92rem;
+        line-height: 1.55;
+    }
+    .fit-row .fit-arrow { display: none; }
+    .fit-row .fit-dept {
+        font-size: 0.95rem;
+        padding-top: 0.45rem;
+        border-top: 1px dashed rgba(0, 255, 65, 0.2);
+        color: var(--primary);
+    }
+    .fit-guide {
+        padding: 1.4rem 1.2rem;
+    }
+    .fit-guide-title {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    /* AK 标题缩一档 */
+    .ak-label-en {
+        font-size: 1.05rem;
+        letter-spacing: 2px;
+    }
+    .ak-label-zh {
+        font-size: 0.78rem;
+        letter-spacing: 2px;
+    }
+    .ak-section-label {
+        margin: 0.3rem 0 1.1rem;
+    }
+
+    /* 终端字号缩小 */
+    .terminal-body {
+        padding: 0.9rem 1rem;
+        font-size: 0.78rem;
+        line-height: 1.85;
+        min-height: 180px;
+    }
+    .terminal-header {
+        padding: 0.45rem 0.7rem;
+    }
+
+    /* Path Finder 内边距收紧 */
+    .pf-section {
+        padding: 1.4rem 1.2rem;
+    }
+    .pf-title { font-size: 1.3rem; }
+    .pf-chip { font-size: 0.85rem; padding: 0.4rem 0.85rem; }
+
+    /* 指标卡数字 */
+    .metric { padding: 0.7rem 0.4rem; }
+    .metric-num { font-size: 1.25rem; }
+    .metric-label { font-size: 0.7rem; }
+    .stack-chip { font-size: 0.7rem; padding: 0.15rem 0.55rem; }
+
+    /* feature/dept/join 卡片内边距收紧 */
+    .feature-card,
+    .dept-card,
+    .join-card {
+        padding: 1.4rem 1.2rem 1.4rem 1.6rem;
+    }
+    .feature-card h3 { font-size: 1.05rem; }
+    .feature-card p,
+    .dept-desc { font-size: 0.88rem; line-height: 1.65; }
+    .dept-name-zh { font-size: 1.35rem; }
+    .dept-tag { font-size: 2.2rem; }
+
+    /* 导师卡内边距 */
+    .advisor-detail { padding: 1.3rem 1.3rem; }
+    .advisor-note { font-size: 0.8rem; }
+    .advisor-chip { font-size: 0.72rem; padding: 0.15rem 0.5rem; }
+
+    /* page-dots 已经隐藏（≤900px），无需再设 */
+}
+
+/* 更小屏（≤480px）— 团队成员保持双列避免叠 16 行 */
+@media (max-width: 480px) {
+    .member-grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .member-card {
+        padding: 0.85rem 0.95rem;
+    }
+    .member-name { font-size: 1rem; }
+    .member-role,
+    .member-dept { font-size: 0.74rem; letter-spacing: 0.5px; }
+    .role-owner { font-size: 0.78rem; }
+
+    .pf-chip { font-size: 0.8rem; padding: 0.38rem 0.75rem; }
+    .pf-actions { flex-direction: column; }
+    .pf-actions .btn { width: 100%; }
+}
+
 /* ===== 部门 fit-guide ===== */
 .fit-guide {
     width: 100%;
