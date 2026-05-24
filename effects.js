@@ -89,7 +89,7 @@
         tick();
     }
 
-    setTimeout(function () {
+    function start() {
         const h1Target = visibleTarget(h1);
         const pTarget  = visibleTarget(p);
         const h1Text   = h1Target.textContent.trim();
@@ -100,7 +100,16 @@
         typeEl(h1Target, h1Text, 60, function () {
             if (pTarget && pText) typeEl(pTarget, pText, 35, null);
         });
-    }, 800);
+    }
+
+    // 等入场遮罩结束再打字 —— 否则在 overlay 后面空跑、用户看不到
+    if (document.getElementById('introOverlay')) {
+        document.addEventListener('intro-done', function () {
+            setTimeout(start, 250);
+        }, { once: true });
+    } else {
+        setTimeout(start, 800);
+    }
 })();
 
 /* ===== Scroll slide-in (IntersectionObserver — 全局) ===== */

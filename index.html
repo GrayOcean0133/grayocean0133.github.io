@@ -20,6 +20,14 @@
     </script>
 </head>
 <body>
+    <!-- 一次性入场 splash：terminal 风格，打字机两行后整块淡出 -->
+    <div class="intro-overlay" id="introOverlay" aria-hidden="true">
+        <div class="intro-terminal">
+            <pre class="intro-line intro-line-main"><span class="intro-prompt">&gt;</span><span class="intro-text"></span><span class="intro-caret">█</span></pre>
+            <pre class="intro-line intro-line-sub" hidden><span class="intro-prompt">&gt;</span><span class="intro-text"></span><span class="intro-caret">█</span></pre>
+        </div>
+    </div>
+
     <div class="matrix-grid"></div>
 
     <header>
@@ -955,6 +963,65 @@
         document.addEventListener('langchange', function () {
             if (!result.hidden) generate();
         });
+    })();
+    </script>
+
+    <!-- 一次性入场 splash -->
+    <script>
+    (function () {
+        const overlay = document.getElementById('introOverlay');
+        if (!overlay) return;
+
+        // 偏好减少动效：直接跳过整段开场
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            try { overlay.remove(); } catch (e) {}
+            document.dispatchEvent(new Event('intro-done'));
+            return;
+        }
+
+        document.body.classList.add('intro-active');
+
+        const lines = overlay.querySelectorAll('.intro-line');
+        const config = [
+            { text: 'AI-LINK',             speed: 115 },
+            { text: 'THINK BUILD CONNECT', speed: 58  }
+        ];
+
+        function typeLine(idx, done) {
+            if (idx >= lines.length) { done(); return; }
+            const line   = lines[idx];
+            const textEl = line.querySelector('.intro-text');
+            const text   = config[idx].text;
+            const speed  = config[idx].speed;
+            line.hidden = false;
+            let i = 0;
+            (function tick() {
+                if (i <= text.length) {
+                    textEl.textContent = text.slice(0, i);
+                    i++;
+                    setTimeout(tick, speed);
+                } else {
+                    line.classList.add('line-done');
+                    setTimeout(function () { typeLine(idx + 1, done); }, 380);
+                }
+            })();
+        }
+
+        function finish() {
+            overlay.classList.add('done');
+            document.body.classList.remove('intro-active');
+            // 通知 hero typewriter 等等待开场结束的脚本
+            document.dispatchEvent(new Event('intro-done'));
+            setTimeout(function () {
+                try { overlay.remove(); } catch (e) {}
+            }, 900);
+        }
+
+        setTimeout(function () {
+            typeLine(0, function () {
+                setTimeout(finish, 750);
+            });
+        }, 280);
     })();
     </script>
 
