@@ -62,10 +62,13 @@
     const p  = document.querySelector('.hero-text p');
     if (!h1) return;
 
-    const h1Text = h1.textContent.trim();
-    const pText  = p ? p.textContent.trim() : '';
-    h1.textContent = '';
-    if (p) p.textContent = '';
+    // 选当前语言对应的可见目标 —— 双语模式下只对可见的那个 span 打字，
+    // 不去碰隐藏 span 的原文，这样切语言时另一边的文字始终在
+    function visibleTarget(el) {
+        if (!el) return null;
+        const lang = document.documentElement.getAttribute('data-lang') || 'zh';
+        return el.querySelector('.i18n-' + lang) || el;
+    }
 
     function typeEl(el, text, speed, cb) {
         el.style.display   = 'inline-block';
@@ -87,8 +90,15 @@
     }
 
     setTimeout(function () {
-        typeEl(h1, h1Text, 60, function () {
-            if (p && pText) typeEl(p, pText, 35, null);
+        const h1Target = visibleTarget(h1);
+        const pTarget  = visibleTarget(p);
+        const h1Text   = h1Target.textContent.trim();
+        const pText    = pTarget ? pTarget.textContent.trim() : '';
+        h1Target.textContent = '';
+        if (pTarget) pTarget.textContent = '';
+
+        typeEl(h1Target, h1Text, 60, function () {
+            if (pTarget && pText) typeEl(pTarget, pText, 35, null);
         });
     }, 800);
 })();

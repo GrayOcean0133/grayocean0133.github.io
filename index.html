@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI-LINK Group · 2026 招新</title>
     <link rel="stylesheet" href="css.css">
+    <script>
+    // 在 CSS / body 渲染之前确定语言，避免首次加载闪一下 zh+en 同显
+    (function () {
+        var lang = null;
+        try { lang = localStorage.getItem('aiLinkLang'); } catch (e) {}
+        if (!lang) {
+            var b = (navigator.language || 'zh').toLowerCase();
+            lang = b.indexOf('en') === 0 ? 'en' : 'zh';
+        }
+        document.documentElement.setAttribute('data-lang', lang);
+        document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'zh-CN');
+    })();
+    </script>
 </head>
 <body>
     <div class="matrix-grid"></div>
@@ -739,22 +752,29 @@
     (function () {
         const body = document.getElementById('terminalBody');
         if (!body) return;
-        const lines = Array.from(body.querySelectorAll('.t-line'));
-        lines.forEach(l => { l.dataset.text = l.textContent; l.textContent = ''; });
 
         let started = false;
         function startBoot() {
             if (started) return;
             started = true;
+
+            // 触发时按当前语言取可见 span，未含 i18n 的行就用行本身
+            const lang = document.documentElement.getAttribute('data-lang') || 'zh';
+            const items = Array.from(body.querySelectorAll('.t-line')).map(function (l) {
+                const target = l.querySelector('.i18n-' + lang) || l;
+                const text = target.textContent;
+                target.textContent = '';
+                return { target: target, text: text };
+            });
+
             let li = 0;
             function typeLine() {
-                if (li >= lines.length) return;
-                const el = lines[li];
-                const text = el.dataset.text;
+                if (li >= items.length) return;
+                const item = items[li];
                 let ci = 0;
                 (function tick() {
-                    if (ci <= text.length) {
-                        el.textContent = text.slice(0, ci++);
+                    if (ci <= item.text.length) {
+                        item.target.textContent = item.text.slice(0, ci++);
                         setTimeout(tick, 14);
                     } else {
                         li++;
