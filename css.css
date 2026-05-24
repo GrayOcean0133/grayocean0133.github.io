@@ -1489,6 +1489,20 @@ header .nav-links {
     50%      { transform: translateY(6px); opacity: 1; }
 }
 
+/* 移动端：hero 内容竖向堆叠后已经顶到 section 底部，absolute 定位的
+   scroll-hint 会跟 CTA 按钮重叠。改成 inline 流式排版，跟在内容之后，
+   自动留出间距。 */
+@media (max-width: 700px) {
+    .scroll-hint {
+        position: static;
+        bottom: auto;
+        left: auto;
+        transform: none;
+        margin: 1.4rem auto 0;
+        align-self: center;
+    }
+}
+
 /* Final CTA 大块 */
 .final-cta {
     background: linear-gradient(135deg, rgba(0, 255, 65, 0.06), rgba(0, 255, 65, 0.02));
