@@ -203,31 +203,53 @@
 })();
 
 /* ===== Sticky header 折叠 =====
-   之前用 window.scrollY > 80 阈值会出"反馈环"频闪：
-   toggle .scrolled → header 高度变化 → sticky 之后内容相对位置变化 →
-   反向触发 scroll 事件 → scrollY 在阈值附近来回 → 再 toggle，
-   snap-scroll 在 hero 顶部还会做微调，加剧来回横跳。
-
-   换成 IntersectionObserver 观察一个固定在 document 80px 位置的哨兵：
-   哨兵位置相对 body 绝对定位，不随 header 高度变化，跨越视口边界
-   只触发一次，跟 .scrolled 切换互不影响，杜绝反馈环。 */
+   完整的反馈环：
+     scrollY > 阈值 → toggle .scrolled → header 高度变化 →
+     主内容在 document 里位移 → snap-scroll(proximity) 检测到
+     hero "几乎在顶部"，自动把 scrollY 拉回 0 → 哨兵又进入视口 →
+     toggle 反向 → 再触发 snap → 循环
+   两层防护：
+   1) 哨兵下移到 y=140，避开 snap 主要发力区
+   2) lockout 机制：一次 toggle 后锁 350ms（盖住 transition 动画），
+      期间忽略新事件；锁释放时再按最新观察到的状态校正一次，
+      所以即使 snap 来回扰动，人眼也只看到一次干净的折叠动画。 */
 (function () {
     const header = document.querySelector('header');
     if (!header) return;
 
+    const SENTINEL_TOP = 140;
+    const LOCKOUT_MS   = 350;
+
     const sentinel = document.createElement('div');
     sentinel.setAttribute('aria-hidden', 'true');
-    sentinel.style.cssText = 'position:absolute;top:80px;left:0;width:1px;height:1px;pointer-events:none;';
+    sentinel.style.cssText = 'position:absolute;top:' + SENTINEL_TOP + 'px;left:0;width:1px;height:1px;pointer-events:none;';
     document.body.insertBefore(sentinel, document.body.firstChild);
+
+    let pendingScrolled = null;   // 最新观察到的目标状态
+    let locked = false;
+
+    function commit() {
+        if (pendingScrolled === null) return;
+        const want = pendingScrolled;
+        pendingScrolled = null;
+
+        const isScrolled = header.classList.contains('scrolled');
+        if (want === isScrolled) return;
+
+        header.classList.toggle('scrolled', want);
+        locked = true;
+        setTimeout(function () {
+            locked = false;
+            // 锁住期间状态可能又变了一次，释放后用最新值再校一次
+            if (pendingScrolled !== null) commit();
+        }, LOCKOUT_MS);
+    }
 
     const obs = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
-            if (e.isIntersecting) {
-                header.classList.remove('scrolled');
-            } else {
-                header.classList.add('scrolled');
-            }
+            pendingScrolled = !e.isIntersecting;
         });
+        if (!locked) commit();
     }, { threshold: 0 });
     obs.observe(sentinel);
 })();
