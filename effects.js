@@ -214,3 +214,46 @@
         }
     }, { passive: true });
 })();
+
+/* ===== Scroll-spy：根据可见区段高亮 page-dot 与导航链接 ===== */
+(function () {
+    const sections = document.querySelectorAll('main .snap-section[id]');
+    const dots     = document.querySelectorAll('.page-dot');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    if (!sections.length) return;
+
+    function activate(id) {
+        const hash = '#' + id;
+        dots.forEach(function (d) {
+            d.classList.toggle('active', d.getAttribute('href') === hash);
+        });
+        navLinks.forEach(function (n) {
+            const href = n.getAttribute('href');
+            if (!href || !href.startsWith('#')) return;
+            n.classList.toggle('active', href === hash);
+        });
+    }
+
+    // 选当前在视口里"最显著"那个 section 作为 active
+    let visible = new Map();  // id -> ratio
+    const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                visible.set(entry.target.id, entry.intersectionRatio);
+            } else {
+                visible.delete(entry.target.id);
+            }
+        });
+        let bestId = null;
+        let bestRatio = 0;
+        visible.forEach(function (ratio, id) {
+            if (ratio > bestRatio) {
+                bestRatio = ratio;
+                bestId = id;
+            }
+        });
+        if (bestId) activate(bestId);
+    }, { threshold: [0.2, 0.4, 0.6, 0.8] });
+
+    sections.forEach(function (s) { observer.observe(s); });
+})();

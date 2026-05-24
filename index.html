@@ -14,16 +14,28 @@
         <div class="site-subtitle">Think-Build-Connect</div>
         <div class="divider"></div>
         <nav class="nav-links">
-            <a href="index.html" class="active">HOME 首页</a>
-            <a href="recruit.html" class="nav-join">JOIN 招新</a>
-            <a href="knowledge.html">DEPARTMENTS 部门</a>
-            <a href="about.html">ABOUT 关于我们</a>
+            <a href="#hero" class="active">HOME 首页</a>
+            <a href="#recruit" class="nav-join">JOIN 招新</a>
+            <a href="#departments">DEPARTMENTS 部门</a>
+            <a href="#advisors">ABOUT 关于我们</a>
         </nav>
         <div class="divider"></div>
     </header>
 
+    <aside class="page-dots" aria-label="page navigation">
+        <a href="#hero" class="page-dot active" data-label="首页" aria-label="跳转到首页"></a>
+        <a href="#why" class="page-dot" data-label="为什么" aria-label="跳转到为什么选择我们"></a>
+        <a href="#advisors" class="page-dot" data-label="指导老师" aria-label="跳转到指导老师"></a>
+        <a href="#projects" class="page-dot" data-label="开源项目" aria-label="跳转到开源项目"></a>
+        <a href="#departments" class="page-dot" data-label="部门" aria-label="跳转到部门"></a>
+        <a href="#recruit" class="page-dot" data-label="招新终端" aria-label="跳转到招新终端"></a>
+        <a href="#join" class="page-dot" data-label="加入步骤" aria-label="跳转到加入步骤"></a>
+        <a href="#team" class="page-dot" data-label="团队" aria-label="跳转到团队"></a>
+        <a href="#cta" class="page-dot" data-label="立即加入" aria-label="跳转到立即加入"></a>
+    </aside>
+
     <main>
-        <!-- Section 1 · Hero -->
+        <!-- 1 · Hero -->
         <section id="hero" class="snap-section snap-hero">
             <div class="snap-inner">
                 <div class="main-title hero-wrapper">
@@ -36,8 +48,8 @@
                         <p>温州商学院信息工程学院 · AI-Link 智能装备社团</p>
                         <p class="hero-tags">AI 算法 · 计算机视觉 · 智能硬件 · 学科竞赛 · 视觉设计 · 平台运营</p>
                         <div class="hero-cta">
-                            <a href="recruit.html" class="btn btn-primary">进入招新终端 →</a>
-                            <a href="knowledge.html" class="btn btn-secondary">查看部门方向</a>
+                            <a href="#recruit" class="btn btn-primary">进入招新终端 →</a>
+                            <a href="#departments" class="btn btn-secondary">查看部门方向</a>
                         </div>
                     </div>
                 </div>
@@ -48,7 +60,7 @@
             </a>
         </section>
 
-        <!-- Section 2 · Why AI-Link -->
+        <!-- 2 · Why AI-Link -->
         <section id="why" class="snap-section">
             <div class="snap-inner">
                 <div class="ak-section-label">
@@ -75,7 +87,7 @@
                         <span class="ak-bracket ak-bracket-br"></span>
                         <div class="feature-tag">03</div>
                         <h3>高性能 AI 算力</h3>
-                        <p>主力训练服务器 rs630：4 × NVIDIA RTX A6000，合计 192 GB 显存，CUDA 12.8。项目立项后可申请使用，支撑大规模模型训练与生成式 AI 微调。</p>
+                        <p>主力训练服务器 rs630：4 × NVIDIA RTX A6000，合计 192 GB 显存。项目立项后可申请使用，支撑大规模模型训练与生成式 AI 微调。</p>
                     </div>
                     <div class="feature-card">
                         <span class="ak-bracket ak-bracket-tl"></span>
@@ -88,7 +100,43 @@
             </div>
         </section>
 
-        <!-- Section 3 · Member Projects (proof) -->
+        <!-- 3 · Advisors -->
+        <section id="advisors" class="snap-section">
+            <div class="snap-inner">
+                <div class="ak-section-label">
+                    <span class="ak-label-en">Faculty Advisors</span>
+                    <span class="ak-label-zh">指导老师</span>
+                </div>
+                <div class="member-grid member-grid-2">
+                    <div class="member-card member-card-advisor advisor-detail">
+                        <div class="member-name">张汉成 博士 <span class="advisor-alias">(Errmaker)</span></div>
+                        <div class="member-role role-advisor">Faculty Advisor</div>
+                        <div class="advisor-meta">副教授 · 温州商学院信息工程学院人工智能系</div>
+                        <div class="advisor-meta">东南大学 工学博士 · 亚琛工业大学（RWTH）访学</div>
+                        <div class="advisor-fields">
+                            <span class="advisor-chip">计算机视觉</span>
+                            <span class="advisor-chip">生成式 AI</span>
+                            <span class="advisor-chip">智能交通系统</span>
+                        </div>
+                        <div class="advisor-note">中科院一区 TOP 期刊一作 5 篇（含 T-ITS、CACIE）；2024 CSC 公派、东南大学至善奖学金。</div>
+                    </div>
+                    <div class="member-card member-card-advisor advisor-detail">
+                        <div class="member-name">胡圆圆 博士 <span class="advisor-alias">(Yyuan)</span></div>
+                        <div class="member-role role-advisor">Faculty Advisor</div>
+                        <div class="advisor-meta">温州商学院信息工程学院</div>
+                        <div class="advisor-meta">亚琛工业大学（RWTH） 交通运输工程博士 · 德累斯顿工大本硕</div>
+                        <div class="advisor-fields">
+                            <span class="advisor-chip">深度学习道路病害检测</span>
+                            <span class="advisor-chip">轻量化部署</span>
+                            <span class="advisor-chip">智能监测机器人</span>
+                        </div>
+                        <div class="advisor-note">Nature Communications 一作（MobiLiteNet, 2025）；主持/参与 DFG、DAAD 等项目累计经费超 700 万元。</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4 · Member Projects -->
         <section id="projects" class="snap-section">
             <div class="snap-inner">
                 <div class="ak-section-label">
@@ -143,38 +191,228 @@
             </div>
         </section>
 
-        <!-- Section 4 · What's New -->
-        <section id="news" class="snap-section">
+        <!-- 5 · Departments -->
+        <section id="departments" class="snap-section">
             <div class="snap-inner">
                 <div class="ak-section-label">
-                    <span class="ak-label-en">What's New</span>
-                    <span class="ak-label-zh">最新动态</span>
+                    <span class="ak-label-en">Departments</span>
+                    <span class="ak-label-zh">六大部门</span>
                 </div>
-                <div class="news-section">
-                    <ul class="news-list">
-                        <li class="news-item">
-                            <div class="news-date">2026.05</div>
-                            <div class="news-content">AI-Link 2026 招新启动，新增「招新终端」与方向测试器</div>
-                        </li>
-                        <li class="news-item">
-                            <div class="news-date">2026.04.01</div>
-                            <div class="news-content">MatrixDynamic Group 升级为 AI-Link Group</div>
-                        </li>
-                        <li class="news-item">
-                            <div class="news-date">2025.06.24</div>
-                            <div class="news-content">第一个项目：CHN2LaTeX 上线</div>
-                        </li>
-                        <li class="news-item">
-                            <div class="news-date">2025.05.15</div>
-                            <div class="news-content">MatrixDynamic Group 成立</div>
-                        </li>
-                    </ul>
+
+                <section class="fit-guide">
+                    <div class="fit-guide-title">你适合加入哪个部门？</div>
+                    <div class="fit-guide-grid">
+                        <div class="fit-row"><div class="fit-want">想写代码、训练模型、做硬件、上手服务器</div><div class="fit-arrow">→</div><div class="fit-dept">技术部 <span class="fit-dept-en">Tech Dep.</span></div></div>
+                        <div class="fit-row"><div class="fit-want">想负责社团日常运转、文档与会议</div><div class="fit-arrow">→</div><div class="fit-dept">行政部 <span class="fit-dept-en">Adm Dep.</span></div></div>
+                        <div class="fit-row"><div class="fit-want">想做战略规划、项目策划与路线设计</div><div class="fit-arrow">→</div><div class="fit-dept">规划部 <span class="fit-dept-en">Plan Dep.</span></div></div>
+                        <div class="fit-row"><div class="fit-want">想做预算、经费管理、采购流程</div><div class="fit-arrow">→</div><div class="fit-dept">财务部 <span class="fit-dept-en">Fin Dep.</span></div></div>
+                        <div class="fit-row"><div class="fit-want">想做对外合作、品牌宣传、活动联络</div><div class="fit-arrow">→</div><div class="fit-dept">公关部 <span class="fit-dept-en">PR Dep.</span></div></div>
+                        <div class="fit-row"><div class="fit-want">想做视觉设计、海报、视频与品牌物料</div><div class="fit-arrow">→</div><div class="fit-dept">艺术支持 <span class="fit-dept-en">ART Support</span></div></div>
+                    </div>
+                </section>
+
+                <div class="dept-grid">
+                    <div class="dept-card">
+                        <span class="ak-bracket ak-bracket-tl"></span>
+                        <span class="ak-bracket ak-bracket-br"></span>
+                        <div class="dept-tag">01</div>
+                        <div class="dept-name-en">TECH Dep.</div>
+                        <div class="dept-name-zh">技术部</div>
+                        <div class="dept-divider"></div>
+                        <p class="dept-desc">项目研发、算法开发、硬件集成、系统部署。支撑「路愈者 RobotHealer」等工程项目落地。</p>
+                        <div class="dept-leader">部长：GrayOcean</div>
+                    </div>
+                    <div class="dept-card">
+                        <span class="ak-bracket ak-bracket-tl"></span>
+                        <span class="ak-bracket ak-bracket-br"></span>
+                        <div class="dept-tag">02</div>
+                        <div class="dept-name-en">ADM Dep.</div>
+                        <div class="dept-name-zh">行政部</div>
+                        <div class="dept-divider"></div>
+                        <p class="dept-desc">内部运营、文档管理、会议组织，维护社团日常运转秩序。</p>
+                        <div class="dept-leader">部长：Elwin</div>
+                    </div>
+                    <div class="dept-card">
+                        <span class="ak-bracket ak-bracket-tl"></span>
+                        <span class="ak-bracket ak-bracket-br"></span>
+                        <div class="dept-tag">03</div>
+                        <div class="dept-name-en">PLAN Dep.</div>
+                        <div class="dept-name-zh">规划部</div>
+                        <div class="dept-divider"></div>
+                        <p class="dept-desc">战略规划与项目策划，把方向与创意转化为可执行的路线图。</p>
+                        <div class="dept-leader">部长：Xu JiHong</div>
+                    </div>
+                    <div class="dept-card">
+                        <span class="ak-bracket ak-bracket-tl"></span>
+                        <span class="ak-bracket ak-bracket-br"></span>
+                        <div class="dept-tag">04</div>
+                        <div class="dept-name-en">FIN Dep.</div>
+                        <div class="dept-name-zh">财务部</div>
+                        <div class="dept-divider"></div>
+                        <p class="dept-desc">财务管理与预算执行，确保各项活动财务合规运转。</p>
+                        <div class="dept-leader">部长：Chen HongZhou</div>
+                    </div>
+                    <div class="dept-card">
+                        <span class="ak-bracket ak-bracket-tl"></span>
+                        <span class="ak-bracket ak-bracket-br"></span>
+                        <div class="dept-tag">05</div>
+                        <div class="dept-name-en">PR Dep.</div>
+                        <div class="dept-name-zh">公关部</div>
+                        <div class="dept-divider"></div>
+                        <p class="dept-desc">对外合作、品牌宣传与活动联络，拓展社团影响力与合作渠道。</p>
+                        <div class="dept-leader">部长：Peng PengWei</div>
+                    </div>
+                    <div class="dept-card">
+                        <span class="ak-bracket ak-bracket-tl"></span>
+                        <span class="ak-bracket ak-bracket-br"></span>
+                        <div class="dept-tag">06</div>
+                        <div class="dept-name-en">ART Support</div>
+                        <div class="dept-name-zh">艺术支持</div>
+                        <div class="dept-divider"></div>
+                        <p class="dept-desc">视觉设计与品牌物料制作，承担海报、视频、活动视觉等输出。</p>
+                        <div class="dept-leader">成员：Koi、Qrlirly</div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section 5 · Final CTA -->
-        <section id="join" class="snap-section snap-cta">
+        <!-- 6 · Recruit Terminal + Path Finder -->
+        <section id="recruit" class="snap-section">
+            <div class="snap-inner">
+                <div class="ak-section-label">
+                    <span class="ak-label-en">Recruit Terminal</span>
+                    <span class="ak-label-zh">招新终端</span>
+                </div>
+
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <span class="t-dot t-dot-r"></span>
+                        <span class="t-dot t-dot-y"></span>
+                        <span class="t-dot t-dot-g"></span>
+                        <span class="t-title">ai-link@recruit:~$</span>
+                    </div>
+                    <div class="terminal-body" id="terminalBody">
+                        <div class="t-line">&gt; Initializing AI-Link Recruit System...</div>
+                        <div class="t-line">&gt; Loading modules: AI / CV / Hardware / Robotics / Competition / Design</div>
+                        <div class="t-line">&gt; Linking advisors: 张汉成博士 · 胡圆圆博士 [ OK ]</div>
+                        <div class="t-line">&gt; Mounting compute: rs630 (4× RTX A6000, 192GB VRAM) [ OK ]</div>
+                        <div class="t-line">&gt; Mounting hardware: DJI Avata 360 / PCB Lab [ OK ]</div>
+                        <div class="t-line t-line-hi">&gt; Welcome, new builder.</div>
+                    </div>
+                </div>
+
+                <section class="pf-section">
+                    <h2 class="pf-title">AI-Link Path Finder</h2>
+                    <p class="pf-sub">选择你感兴趣的方向（可多选），我们会为你生成一条专属加入路线。</p>
+
+                    <div class="pf-chips" id="pfChips">
+                        <button type="button" class="pf-chip" data-tag="ai">AI 算法</button>
+                        <button type="button" class="pf-chip" data-tag="cv">计算机视觉</button>
+                        <button type="button" class="pf-chip" data-tag="hw">智能硬件</button>
+                        <button type="button" class="pf-chip" data-tag="robot">无人机 / 机器人</button>
+                        <button type="button" class="pf-chip" data-tag="comp">学科竞赛</button>
+                        <button type="button" class="pf-chip" data-tag="ops">公众号 / 运营</button>
+                        <button type="button" class="pf-chip" data-tag="design">视觉设计</button>
+                        <button type="button" class="pf-chip" data-tag="plan">活动策划</button>
+                        <button type="button" class="pf-chip" data-tag="adm">组织管理</button>
+                        <button type="button" class="pf-chip" data-tag="fin">财务 / 经费</button>
+                    </div>
+
+                    <div class="pf-actions">
+                        <button type="button" class="btn btn-primary" id="pfGenerate">生成我的 AI-Link 路线 →</button>
+                        <button type="button" class="btn btn-secondary" id="pfReset">重置</button>
+                    </div>
+
+                    <div class="pf-result" id="pfResult" hidden>
+                        <div class="pf-result-head">// 你的 AI-Link 路线</div>
+                        <div class="pf-result-body" id="pfResultBody"></div>
+                        <div class="pf-result-cta">
+                            <a href="#join" class="btn btn-primary">加入招新群 →</a>
+                            <a href="#advisors" class="btn btn-secondary">了解社团</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <!-- 7 · Join Steps -->
+        <section id="join" class="snap-section">
+            <div class="snap-inner">
+                <div class="ak-section-label">
+                    <span class="ak-label-en">Join Steps</span>
+                    <span class="ak-label-zh">三步加入</span>
+                </div>
+                <div class="join-grid">
+                    <div class="join-card">
+                        <span class="ak-bracket ak-bracket-tl"></span>
+                        <span class="ak-bracket ak-bracket-br"></span>
+                        <div class="join-card-label">Step 1</div>
+                        <div class="join-card-title">填写报名表</div>
+                        <p>提交基础信息与兴趣方向。报名表链接由招新负责人在群内同步。</p>
+                        <div class="join-card-note">链接：待招新群发布</div>
+                    </div>
+                    <div class="join-card">
+                        <span class="ak-bracket ak-bracket-tl"></span>
+                        <span class="ak-bracket ak-bracket-br"></span>
+                        <div class="join-card-label">Step 2</div>
+                        <div class="join-card-title">扫码进招新群</div>
+                        <p>群内会公告面试时间、项目介绍与试岗安排。</p>
+                        <div class="qr-placeholder">二维码占位 · 招新启动时替换</div>
+                    </div>
+                    <div class="join-card">
+                        <span class="ak-bracket ak-bracket-tl"></span>
+                        <span class="ak-bracket ak-bracket-br"></span>
+                        <div class="join-card-label">Step 3</div>
+                        <div class="join-card-title">部门面试 / 试岗</div>
+                        <p>根据你选择的方向，由对应部长进行轻量化面试或试岗任务。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8 · Team -->
+        <section id="team" class="snap-section">
+            <div class="snap-inner">
+                <div class="ak-section-label">
+                    <span class="ak-label-en">Team</span>
+                    <span class="ak-label-zh">现有团队</span>
+                </div>
+                <div class="member-grid member-grid-3">
+                    <a href="https://github.com/GrayOcean0133" target="_blank" rel="noopener" class="member-card member-card-link">
+                        <div class="member-name">GrayOcean</div>
+                        <div class="member-role role-owner">OWNER</div>
+                        <div class="member-dept">Tech Dep.</div>
+                        <div class="member-github">↗ GitHub</div>
+                    </a>
+                    <div class="member-card"><div class="member-name">Elwin</div><div class="member-role role-leader">Major</div><div class="member-dept">Adm Dep.</div></div>
+                    <div class="member-card"><div class="member-name">Lixxan</div><div class="member-role">Vice</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card"><div class="member-name">Jin Yi</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card"><div class="member-name">Chen XueTao</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card"><div class="member-name">LY</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card"><div class="member-name">AChen</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card"><div class="member-name">QCY</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card"><div class="member-name">Antony Ye</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card"><div class="member-name">Wang XinYang</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card"><div class="member-name">Toaster</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card"><div class="member-name">Xu JiHong</div><div class="member-role">Member</div><div class="member-dept">Plan Dep.</div></div>
+                    <div class="member-card"><div class="member-name">Chen HongZhou</div><div class="member-role">Member</div><div class="member-dept">Fin Dep.</div></div>
+                    <div class="member-card"><div class="member-name">Peng PengWei</div><div class="member-role">Member</div><div class="member-dept">PR Dep.</div></div>
+                    <div class="member-card"><div class="member-name">Qrlirly</div><div class="member-role">Member</div><div class="member-dept">ART Support</div></div>
+                    <div class="member-card"><div class="member-name">Koi</div><div class="member-role">Member</div><div class="member-dept">ART Support</div></div>
+                </div>
+
+                <div class="member-section special-thanks-row">
+                    <div class="member-section-label">特别感谢 · Special Thanks</div>
+                    <div class="member-grid member-grid-2">
+                        <div class="member-card member-card-thanks"><div class="member-name">@一碗夹生</div><div class="member-role">Special Thanks</div></div>
+                        <div class="member-card member-card-thanks"><div class="member-name">@牧夕、</div><div class="member-role">Special Thanks</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9 · Final CTA -->
+        <section id="cta" class="snap-section snap-cta">
             <div class="snap-inner">
                 <div class="ak-section-label">
                     <span class="ak-label-en">Join Us</span>
@@ -185,8 +423,8 @@
                     <div class="final-cta-title">准备好成为 AI-Link 的一员了吗？</div>
                     <div class="final-cta-sub">用招新终端 30 秒生成你的专属方向路线，<br>或先去看看六个部门分别在做什么。</div>
                     <div class="final-cta-actions">
-                        <a href="recruit.html" class="btn btn-primary">进入招新终端 →</a>
-                        <a href="knowledge.html" class="btn btn-secondary">查看部门方向</a>
+                        <a href="#recruit" class="btn btn-primary">进入招新终端 →</a>
+                        <a href="#departments" class="btn btn-secondary">查看部门方向</a>
                     </div>
                 </div>
             </div>
@@ -197,7 +435,10 @@
         <div>2026 AI-LINK GROUP © ALL RIGHTS RESERVED</div>
         <span class="site-url">grayocean0133.github.io</span>
     </footer>
+
     <script src="effects.js"></script>
+
+    <!-- D20 -->
     <script>
     (function () {
         const canvas = document.getElementById('d20canvas');
@@ -291,6 +532,132 @@
         }
 
         frame();
+    })();
+    </script>
+
+    <!-- Terminal 启动序列 -->
+    <script>
+    (function () {
+        const body = document.getElementById('terminalBody');
+        if (!body) return;
+        const lines = Array.from(body.querySelectorAll('.t-line'));
+        lines.forEach(l => { l.dataset.text = l.textContent; l.textContent = ''; });
+
+        let started = false;
+        function startBoot() {
+            if (started) return;
+            started = true;
+            let li = 0;
+            function typeLine() {
+                if (li >= lines.length) return;
+                const el = lines[li];
+                const text = el.dataset.text;
+                let ci = 0;
+                (function tick() {
+                    if (ci <= text.length) {
+                        el.textContent = text.slice(0, ci++);
+                        setTimeout(tick, 14);
+                    } else {
+                        li++;
+                        setTimeout(typeLine, 160);
+                    }
+                })();
+            }
+            typeLine();
+        }
+
+        // Lazy start: 只有滚到 recruit 区段才触发，避免一打开就跑完
+        const recruitSection = document.getElementById('recruit');
+        if (!recruitSection) { setTimeout(startBoot, 400); return; }
+        const obs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    startBoot();
+                    obs.disconnect();
+                }
+            });
+        }, { threshold: 0.2 });
+        obs.observe(recruitSection);
+    })();
+    </script>
+
+    <!-- Path Finder -->
+    <script>
+    (function () {
+        const chips    = document.querySelectorAll('.pf-chip');
+        const genBtn   = document.getElementById('pfGenerate');
+        const resetBtn = document.getElementById('pfReset');
+        const result   = document.getElementById('pfResult');
+        const resultB  = document.getElementById('pfResultBody');
+        if (!chips.length) return;
+
+        chips.forEach(c => c.addEventListener('click', () => c.classList.toggle('active')));
+
+        const MAP = {
+            ai:     { dept: ['技术部'],            track: 'AI 算法',         path: ['Python + PyTorch 入门', '本地完成一个小模型 Demo', '通过项目立项后申请 rs630 算力支持'],
+                     res: ['rs630 算力服务器（立项审核后申请）', 'RTX 3080 第二工作站', '导师算法指导'] },
+            cv:     { dept: ['技术部'],            track: '计算机视觉',      path: ['OpenCV + PyTorch 基础', '复现一个检测/分割模型', '通过项目立项后参与路面病害检测算法迭代'],
+                     res: ['rs630 算力服务器（立项审核后申请）', '路愈者项目数据集', '导师视觉算法指导'] },
+            hw:     { dept: ['技术部'],            track: '智能硬件',        path: ['焊接 + 嵌入式入门', '完成一个小模块练手项目', '通过项目立项后申请 PCB Lab 设备使用'],
+                     res: ['PCB Lab（立项审核后申请）', '示波器 / 焊接台等硬件实验设备', '导师硬件指导'] },
+            robot:  { dept: ['技术部'],            track: '机器人 / 无人机', path: ['航拍 / 飞控基础学习', '完成飞行操作培训', '通过项目立项后参与 DJI Avata 360 巡检任务'],
+                     res: ['DJI Avata 360 无人机（立项审核后申请）', '飞行操作培训', '路愈者实际巡检场景'] },
+            comp:   { dept: ['技术部', '规划部'],  track: '学科竞赛',        path: ['挑选目标赛事（挑战杯 / 互联网+ / 计算机设计）', '组队 + 选题立项', '导师指导冲奖'],
+                     res: ['挑战杯等赛事报名通道', '导师选题与冲奖指导', '历届参赛项目复盘资料'] },
+            ops:    { dept: ['公关部'],            track: '内容运营',        path: ['公众号选题与排版练手', '负责一次活动报道', '建立外部合作联络'],
+                     res: ['公众号编辑权限（试岗后开放）', '外部合作联络名单', '活动报道素材库'] },
+            design: { dept: ['艺术支持'],          track: '视觉设计',        path: ['完成一张招新海报', '主题视觉规范输出', '承接项目品牌物料'],
+                     res: ['品牌视觉规范与素材库', '海报 / 视频模板', '项目品牌物料需求池'] },
+            plan:   { dept: ['规划部'],            track: '活动策划',        path: ['策划一场轻量分享会', '主导一次跨部门活动', '参与社团年度规划'],
+                     res: ['活动策划模板', '场地与设备申报通道', '社团年度规划资料'] },
+            adm:    { dept: ['行政部'],            track: '组织管理',        path: ['会议纪要与文档体系', '成员事务协调', '推进季度复盘机制'],
+                     res: ['例会 / 会议室协调权限', '社团文档与制度库', '内部协同工具'] },
+            fin:    { dept: ['财务部'],            track: '财务经费',        path: ['账目登记与预算入门', '一次活动经费全流程', '协助科研项目经费管理'],
+                     res: ['财务流程模板', '预算管理工具', '科研项目经费指引'] },
+        };
+
+        function generate() {
+            const picked = Array.from(chips).filter(c => c.classList.contains('active')).map(c => c.dataset.tag);
+            if (!picked.length) {
+                resultB.innerHTML = '<div class="pf-empty">请先至少选一个方向。</div>';
+                result.hidden = false;
+                return;
+            }
+
+            const deptScore = {};
+            const tracks    = [];
+            const pathSteps = [];
+            const resources = [];
+
+            picked.forEach(tag => {
+                const m = MAP[tag];
+                if (!m) return;
+                m.dept.forEach(d => { deptScore[d] = (deptScore[d] || 0) + 1; });
+                tracks.push(m.track);
+                m.path.forEach(s => { if (!pathSteps.includes(s)) pathSteps.push(s); });
+                (m.res || []).forEach(r => { if (!resources.includes(r)) resources.push(r); });
+            });
+
+            const topDepts = Object.entries(deptScore).sort((a, b) => b[1] - a[1]).map(e => e[0]);
+
+            let html = '';
+            html += '<div class="pf-line"><span class="pf-key">推荐部门</span><span class="pf-val">' + topDepts.join(' / ') + '</span></div>';
+            html += '<div class="pf-line"><span class="pf-key">适合方向</span><span class="pf-val">' + Array.from(new Set(tracks)).join(' · ') + '</span></div>';
+            html += '<div class="pf-line"><span class="pf-key">成长路线</span><span class="pf-val"><ol class="pf-path">' + pathSteps.slice(0, 5).map(s => '<li>' + s + '</li>').join('') + '</ol></span></div>';
+            html += '<div class="pf-line"><span class="pf-key">对应资源</span><span class="pf-val"><ul class="pf-res">' + resources.map(r => '<li>' + r + '</li>').join('') + '</ul></span></div>';
+
+            resultB.innerHTML = html;
+            result.hidden = false;
+            result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function reset() {
+            chips.forEach(c => c.classList.remove('active'));
+            result.hidden = true;
+        }
+
+        genBtn.addEventListener('click', generate);
+        resetBtn.addEventListener('click', reset);
     })();
     </script>
 </body>

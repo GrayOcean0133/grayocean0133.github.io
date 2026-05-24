@@ -1280,7 +1280,7 @@ footer {
 html {
     scroll-snap-type: y proximity;
     scroll-behavior: smooth;
-    scroll-padding-top: 140px;
+    scroll-padding-top: 80px;
 }
 
 /* 全站 sticky 毛玻璃头 */
@@ -1458,6 +1458,89 @@ header.scrolled .nav-links {
     font-size: 0.95rem;
     margin: -0.6rem 0 1.4rem;
     letter-spacing: 0.5px;
+}
+
+/* =============================================
+   单页式：右侧 page-dots 导航
+   ============================================= */
+.page-dots {
+    position: fixed;
+    right: 1.6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 0.6rem 0.5rem;
+    background: rgba(10, 10, 10, 0.45);
+    border: 1px solid rgba(0, 255, 65, 0.15);
+    border-radius: 999px;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+.page-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 255, 65, 0.5);
+    background: transparent;
+    position: relative;
+    transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.page-dot:hover {
+    background: rgba(0, 255, 65, 0.5);
+    transform: scale(1.3);
+}
+
+.page-dot.active {
+    background: var(--primary);
+    box-shadow: 0 0 12px rgba(0, 255, 65, 0.75);
+    transform: scale(1.4);
+}
+
+/* hover 时浮出 chip-style 标签 */
+.page-dot::after {
+    content: attr(data-label);
+    position: absolute;
+    right: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%) translateX(8px);
+    background: rgba(10, 10, 10, 0.92);
+    border: 1px solid rgba(0, 255, 65, 0.35);
+    color: var(--primary);
+    padding: 0.22rem 0.7rem;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    font-family: 'Microsoft YaHei', sans-serif;
+}
+
+.page-dot:hover::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+@media (max-width: 900px) {
+    .page-dots { display: none; }
+}
+
+/* Snap-CTA 段强调一下背景 */
+.snap-cta {
+    background: radial-gradient(circle at 50% 35%, rgba(0, 255, 65, 0.05), transparent 60%);
+}
+
+/* Special Thanks 行 */
+.special-thanks-row {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--divider);
 }
 
 /* ===== 部门 fit-guide ===== */
