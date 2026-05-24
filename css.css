@@ -1305,6 +1305,53 @@ header .site-title {
     font-size: 1.5rem;
     margin-bottom: 0.25rem;
     text-shadow: 0 0 10px rgba(0, 255, 65, 0.55);
+    animation: title-intro 2.8s cubic-bezier(0.7, 0, 0.25, 1) both;
+    transform-origin: center center;
+    will-change: transform, opacity, text-shadow;
+}
+
+/* 标题入场：先在 hero 中央放大呈现，停一拍，再缩回 header 固定位
+   纯 CSS、纯一次性，结束后 header 永久静止，从根本上不存在 toggle，
+   也就不存在 .scrolled 反馈环的复发可能。 */
+@keyframes title-intro {
+    0% {
+        transform: translateY(42vh) scale(3.2);
+        opacity: 0;
+        text-shadow: 0 0 60px rgba(0, 255, 65, 0.95);
+    }
+    18% {
+        transform: translateY(42vh) scale(3.2);
+        opacity: 1;
+        text-shadow: 0 0 60px rgba(0, 255, 65, 0.95);
+    }
+    62% {
+        transform: translateY(42vh) scale(3.2);
+        opacity: 1;
+        text-shadow: 0 0 55px rgba(0, 255, 65, 0.9);
+    }
+    100% {
+        transform: none;
+        opacity: 1;
+        text-shadow: 0 0 10px rgba(0, 255, 65, 0.55);
+    }
+}
+
+/* nav 链接在标题落位之后轻柔跟进，整段开场连贯 */
+header .nav-links {
+    animation: nav-fade-in 0.7s ease-out 2.4s both;
+}
+
+@keyframes nav-fade-in {
+    0%   { opacity: 0; transform: translateY(-8px); }
+    100% { opacity: 1; transform: none; }
+}
+
+/* 用户偏好减少动效时一律跳过入场，直接落定 */
+@media (prefers-reduced-motion: reduce) {
+    header .site-title,
+    header .nav-links {
+        animation: none;
+    }
 }
 
 header .site-subtitle {
