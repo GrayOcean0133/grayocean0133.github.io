@@ -2156,6 +2156,18 @@ html[data-lang="en"] .fit-dept-en {
     margin-top: 0.4rem;
 }
 
+/* 错误行（Path Finder 没选方向时） */
+.t-line-err {
+    color: #ff6b6b;
+    text-shadow: 0 0 8px rgba(255, 107, 107, 0.45);
+}
+
+/* Path Finder 追加到 terminal 的结果行：跟启动行视觉一致，
+   加一点点上分距让 boot 段和 result 段视觉分离 */
+.t-line.t-result:first-of-type[class*="t-result"] {
+    margin-top: 0.6rem;
+}
+
 /* Path Finder */
 .pf-section {
     width: 100%;

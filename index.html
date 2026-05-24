@@ -579,8 +579,7 @@
                     </div>
 
                     <div class="pf-result" id="pfResult" hidden>
-                        <div class="pf-result-head"><span class="i18n-zh">// 你的 AI-Link 路线</span><span class="i18n-en">// Your AI-Link Path</span></div>
-                        <div class="pf-result-body" id="pfResultBody"></div>
+                        <!-- 结果走到 terminal 里以打字机方式输出，这里只留生成完之后浮出的 CTA -->
                         <div class="pf-result-cta">
                             <a href="#join" class="btn btn-primary"><span class="i18n-zh">加入招新群 →</span><span class="i18n-en">Join Recruit Group →</span></a>
                             <a href="#advisors" class="btn btn-secondary"><span class="i18n-zh">了解社团</span><span class="i18n-en">About the Club</span></a>
@@ -815,7 +814,6 @@
         const genBtn   = document.getElementById('pfGenerate');
         const resetBtn = document.getElementById('pfReset');
         const result   = document.getElementById('pfResult');
-        const resultB  = document.getElementById('pfResultBody');
         if (!chips.length) return;
 
         chips.forEach(c => c.addEventListener('click', () => c.classList.toggle('active')));
@@ -903,27 +901,69 @@
             },
         };
 
-        const LABELS = {
-            zh: { dept: '推荐部门', track: '适合方向', path: '成长路线', res: '对应资源', empty: '请先至少选一个方向。' },
-            en: { dept: 'Dept.',    track: 'Tracks',   path: 'Path',     res: 'Resources', empty: 'Please pick at least one direction.' },
-        };
-
         function lang() {
             return document.documentElement.dataset.lang === 'en' ? 'en' : 'zh';
         }
 
-        function generate() {
-            const L = lang();
-            const labels = LABELS[L];
-            const picked = Array.from(chips).filter(c => c.classList.contains('active')).map(c => c.dataset.tag);
-            if (!picked.length) {
-                resultB.innerHTML = '<div class="pf-empty">' + labels.empty + '</div>';
-                result.hidden = false;
+        // ===== 把结果作为新行追加到 terminal =====
+        function clearResultLines() {
+            const tBody = document.getElementById('terminalBody');
+            if (!tBody) return;
+            tBody.querySelectorAll('.t-result').forEach(el => el.remove());
+        }
+
+        function typeLines(lines, done, instant) {
+            const tBody = document.getElementById('terminalBody');
+            if (!tBody) { if (done) done(); return; }
+
+            const items = lines.map(text => {
+                const div = document.createElement('div');
+                let cls = 't-line t-result';
+                if (text.startsWith('> [ READY ]'))      cls += ' t-line-hi';
+                else if (text.startsWith('> [ ERROR ]')) cls += ' t-line-err';
+                div.className = cls;
+                tBody.appendChild(div);
+                return { el: div, text: text };
+            });
+
+            if (instant) {
+                items.forEach(it => { it.el.textContent = it.text; });
+                if (done) done();
                 return;
             }
 
+            let idx = 0;
+            (function typeNext() {
+                if (idx >= items.length) { if (done) done(); return; }
+                const item = items[idx];
+                let i = 0;
+                (function tick() {
+                    if (i <= item.text.length) {
+                        item.el.textContent = item.text.slice(0, i);
+                        i++;
+                        setTimeout(tick, 14);
+                    } else {
+                        idx++;
+                        setTimeout(typeNext, 110);
+                    }
+                })();
+            })();
+        }
+
+        // ===== 构造结果行（按当前语言） =====
+        function buildLines(L) {
+            const picked = Array.from(chips).filter(c => c.classList.contains('active')).map(c => c.dataset.tag);
+            if (!picked.length) {
+                return [
+                    '',
+                    L === 'en'
+                        ? '> [ ERROR ] Please pick at least one direction.'
+                        : '> [ ERROR ] 请先至少选一个方向。'
+                ];
+            }
+
             const deptScore = {};
-            const tracks    = [];
+            const tracksArr = [];
             const pathSteps = [];
             const resources = [];
 
@@ -931,37 +971,78 @@
                 const m = MAP[tag];
                 if (!m) return;
                 m.dept[L].forEach(d => { deptScore[d] = (deptScore[d] || 0) + 1; });
-                tracks.push(m.track[L]);
+                tracksArr.push(m.track[L]);
                 m.path[L].forEach(s => { if (!pathSteps.includes(s)) pathSteps.push(s); });
                 (m.res[L] || []).forEach(r => { if (!resources.includes(r)) resources.push(r); });
             });
 
             const topDepts = Object.entries(deptScore).sort((a, b) => b[1] - a[1]).map(e => e[0]);
+            const uniqueTracks = Array.from(new Set(tracksArr));
 
-            let html = '';
-            html += '<div class="pf-line"><span class="pf-key">' + labels.dept  + '</span><span class="pf-val">' + topDepts.join(' / ') + '</span></div>';
-            html += '<div class="pf-line"><span class="pf-key">' + labels.track + '</span><span class="pf-val">' + Array.from(new Set(tracks)).join(' · ') + '</span></div>';
-            html += '<div class="pf-line"><span class="pf-key">' + labels.path  + '</span><span class="pf-val"><ol class="pf-path">' + pathSteps.slice(0, 5).map(s => '<li>' + s + '</li>').join('') + '</ol></span></div>';
-            html += '<div class="pf-line"><span class="pf-key">' + labels.res   + '</span><span class="pf-val"><ul class="pf-res">' + resources.map(r => '<li>' + r + '</li>').join('') + '</ul></span></div>';
+            const lines = [
+                '',
+                L === 'en' ? '> // analyzing input...' : '> // 分析方向输入...',
+                '> recommended_dept = ' + topDepts.join(' / '),
+                '> track             = ' + uniqueTracks.join(' · '),
+                L === 'en' ? '> growth_path:' : '> 成长路线:'
+            ];
+            pathSteps.slice(0, 5).forEach((s, i) => {
+                lines.push('>   ' + String(i + 1).padStart(2, '0') + '. ' + s);
+            });
+            if (resources.length) {
+                lines.push(L === 'en' ? '> resources:' : '> 对应资源:');
+                resources.forEach(r => { lines.push('>   - ' + r); });
+            }
+            lines.push(L === 'en'
+                ? '> [ READY ] Ready to join?'
+                : '> [ READY ] 准备好加入了吗？');
 
-            resultB.innerHTML = html;
-            result.hidden = false;
+            return lines;
+        }
+
+        function generate(opts) {
+            opts = opts || {};
+            const L = lang();
+            clearResultLines();
+            result.hidden = true;
+
+            const lines  = buildLines(L);
+            const picked = Array.from(chips).filter(c => c.classList.contains('active'));
+
+            if (!opts.instant) {
+                // 滚到 terminal 让用户看到打字
+                const terminal = document.querySelector('.terminal');
+                if (terminal) terminal.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            typeLines(lines, function () {
+                // 只有真正生成成功（有选项）才浮出 CTA
+                if (picked.length) {
+                    result.hidden = false;
+                    if (!opts.instant) {
+                        setTimeout(function () {
+                            result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 280);
+                    }
+                }
+            }, opts.instant);
         }
 
         function reset() {
             chips.forEach(c => c.classList.remove('active'));
             result.hidden = true;
+            clearResultLines();
         }
 
-        genBtn.addEventListener('click', function () {
-            generate();
-            result.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
+        genBtn.addEventListener('click', function () { generate(); });
         resetBtn.addEventListener('click', reset);
 
-        // 语言切换时若结果已显示，按新语言重渲
+        // 语言切换时若 terminal 里已有结果行，按新语言瞬时重渲（不再走打字动画，避免反复触发体感卡顿）
         document.addEventListener('langchange', function () {
-            if (!result.hidden) generate();
+            const tBody = document.getElementById('terminalBody');
+            if (tBody && tBody.querySelector('.t-result')) {
+                generate({ instant: true });
+            }
         });
     })();
     </script>
