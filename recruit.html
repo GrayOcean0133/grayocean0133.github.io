@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-LINK Recruit Terminal · 2026</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body class="recruit-body">
+    <div class="matrix-grid"></div>
+
+    <header>
+        <div class="site-title">AI-LINK GROUP</div>
+        <div class="site-subtitle">Recruit Terminal · 2026</div>
+        <div class="divider"></div>
+        <nav class="nav-links">
+            <a href="index.html">HOME 首页</a>
+            <a href="recruit.html" class="active nav-join">JOIN 招新</a>
+            <a href="knowledge.html">DEPARTMENTS 部门</a>
+            <a href="about.html">ABOUT 关于我们</a>
+        </nav>
+        <div class="divider"></div>
+    </header>
+
+    <div class="main-content recruit-main">
+
+        <!-- 终端模拟 -->
+        <section class="terminal">
+            <div class="terminal-header">
+                <span class="t-dot t-dot-r"></span>
+                <span class="t-dot t-dot-y"></span>
+                <span class="t-dot t-dot-g"></span>
+                <span class="t-title">ai-link@recruit:~$</span>
+            </div>
+            <div class="terminal-body" id="terminalBody">
+                <div class="t-line">&gt; Initializing AI-Link Recruit System...</div>
+                <div class="t-line">&gt; Loading modules: AI / CV / Hardware / Robotics / Competition / Design</div>
+                <div class="t-line">&gt; Linking advisors: 张汉成博士 · 胡圆圆博士 [ OK ]</div>
+                <div class="t-line">&gt; Mounting compute: rs630 (4× RTX A6000, 192GB VRAM) [ OK ]</div>
+                <div class="t-line">&gt; Mounting hardware: DJI Avata 360 / PCB Lab [ OK ]</div>
+                <div class="t-line t-line-hi">&gt; Welcome, new builder.</div>
+            </div>
+        </section>
+
+        <!-- Path Finder -->
+        <section class="pf-section">
+            <h2 class="pf-title">AI-Link Path Finder</h2>
+            <p class="pf-sub">选择你感兴趣的方向（可多选），我们会为你生成一条专属加入路线。</p>
+
+            <div class="pf-chips" id="pfChips">
+                <button class="pf-chip" data-tag="ai">AI 算法</button>
+                <button class="pf-chip" data-tag="cv">计算机视觉</button>
+                <button class="pf-chip" data-tag="hw">智能硬件</button>
+                <button class="pf-chip" data-tag="robot">无人机 / 机器人</button>
+                <button class="pf-chip" data-tag="comp">学科竞赛</button>
+                <button class="pf-chip" data-tag="ops">公众号 / 运营</button>
+                <button class="pf-chip" data-tag="design">视觉设计</button>
+                <button class="pf-chip" data-tag="plan">活动策划</button>
+                <button class="pf-chip" data-tag="adm">组织管理</button>
+                <button class="pf-chip" data-tag="fin">财务 / 经费</button>
+            </div>
+
+            <div class="pf-actions">
+                <button class="btn btn-primary" id="pfGenerate">生成我的 AI-Link 路线 →</button>
+                <button class="btn btn-secondary" id="pfReset">重置</button>
+            </div>
+
+            <div class="pf-result" id="pfResult" hidden>
+                <div class="pf-result-head">// 你的 AI-Link 路线</div>
+                <div class="pf-result-body" id="pfResultBody"></div>
+                <div class="pf-result-cta">
+                    <a href="#join-info" class="btn btn-primary">加入招新群 →</a>
+                    <a href="about.html" class="btn btn-secondary">了解社团</a>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider divider-section"></div>
+
+        <!-- 报名信息 -->
+        <section class="join-info" id="join-info">
+            <h2 class="section-title-left">加入 AI-Link</h2>
+            <div class="join-grid">
+                <div class="join-card">
+                    <div class="join-card-label">Step 1</div>
+                    <div class="join-card-title">填写报名表</div>
+                    <p>提交基础信息与兴趣方向。报名表链接由招新负责人在群内同步。</p>
+                    <div class="join-card-note">链接：待招新群发布</div>
+                </div>
+                <div class="join-card">
+                    <div class="join-card-label">Step 2</div>
+                    <div class="join-card-title">扫码进招新群</div>
+                    <p>群内会公告面试时间、项目介绍与试岗安排。</p>
+                    <div class="qr-placeholder">二维码占位 · 招新启动时替换</div>
+                </div>
+                <div class="join-card">
+                    <div class="join-card-label">Step 3</div>
+                    <div class="join-card-title">部门面试 / 试岗</div>
+                    <p>根据你选择的方向，由对应部长进行轻量化面试或试岗任务。</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider divider-section"></div>
+
+        <!-- 价值主张 -->
+        <section class="why-section">
+            <h2 class="section-title-left">为什么加入 AI-Link</h2>
+            <ul class="why-list">
+                <li><span class="why-tag">导师</span>双博士共同指导，亚琛工业大学学术背景，覆盖视觉 / 生成式 AI / 智能监测机器人。</li>
+                <li><span class="why-tag">算力</span>主力服务器 rs630：4× RTX A6000、192GB 显存。同类高校学生社团中较稀缺的训练资源。</li>
+                <li><span class="why-tag">项目</span>「路愈者 RobotHealer」已入围挑战杯，在 4 省落地试点，已注册商业化主体。</li>
+                <li><span class="why-tag">硬件</span>DJI Avata 360 + PCB 设计与调试设备，从 AI 算法到嵌入式装备全栈打通。</li>
+                <li><span class="why-tag">通道</span>学科竞赛、科研立项、创新创业项目均有明确出口，不只学，更出成果。</li>
+            </ul>
+        </section>
+
+    </div>
+
+    <footer>
+        <div>2026 AI-LINK GROUP © ALL RIGHTS RESERVED</div>
+        <span class="site-url">grayocean0133.github.io/recruit.html</span>
+    </footer>
+
+    <script src="effects.js"></script>
+    <script>
+    /* ===== Terminal 启动序列 ===== */
+    (function () {
+        const body = document.getElementById('terminalBody');
+        if (!body) return;
+        const lines = Array.from(body.querySelectorAll('.t-line'));
+        lines.forEach(l => { l.dataset.text = l.textContent; l.textContent = ''; });
+
+        let li = 0;
+        function typeLine() {
+            if (li >= lines.length) return;
+            const el = lines[li];
+            const text = el.dataset.text;
+            let ci = 0;
+            (function tick() {
+                if (ci <= text.length) {
+                    el.textContent = text.slice(0, ci++);
+                    setTimeout(tick, 14);
+                } else {
+                    li++;
+                    setTimeout(typeLine, 160);
+                }
+            })();
+        }
+        setTimeout(typeLine, 400);
+    })();
+
+    /* ===== Path Finder ===== */
+    (function () {
+        const chips    = document.querySelectorAll('.pf-chip');
+        const genBtn   = document.getElementById('pfGenerate');
+        const resetBtn = document.getElementById('pfReset');
+        const result   = document.getElementById('pfResult');
+        const resultB  = document.getElementById('pfResultBody');
+        if (!chips.length) return;
+
+        chips.forEach(c => c.addEventListener('click', () => c.classList.toggle('active')));
+
+        // 方向 → 部门 / 路线映射
+        const MAP = {
+            ai:     { dept: ['技术部'],            track: 'AI 算法',         path: ['Python + PyTorch 入门', '在 rs630 服务器上跑通第一个训练', '加入路愈者算法子模块'] },
+            cv:     { dept: ['技术部'],            track: '计算机视觉',      path: ['OpenCV + PyTorch 基础', '复现一个检测/分割模型', '参与路面病害检测算法迭代'] },
+            hw:     { dept: ['技术部'],            track: '智能硬件',        path: ['焊接 + 嵌入式入门', '在 PCB Lab 完成一块小板子', '参与车载/边缘部署调试'] },
+            robot:  { dept: ['技术部'],            track: '机器人 / 无人机', path: ['DJI Avata 操作练习', '空中 + 地面感知联动实验', '参与桥隧巡检数据采集'] },
+            comp:   { dept: ['技术部', '规划部'],  track: '学科竞赛',        path: ['挑选目标赛事（挑战杯 / 互联网+ / 计算机设计）', '组队 + 选题立项', '导师指导冲奖'] },
+            ops:    { dept: ['公关部'],            track: '内容运营',        path: ['公众号选题与排版练手', '负责一次活动报道', '建立外部合作联络'] },
+            design: { dept: ['艺术支持'],          track: '视觉设计',        path: ['完成一张招新海报', '主题视觉规范输出', '承接项目品牌物料'] },
+            plan:   { dept: ['规划部'],            track: '活动策划',        path: ['策划一场轻量分享会', '主导一次跨部门活动', '参与社团年度规划'] },
+            adm:    { dept: ['行政部'],            track: '组织管理',        path: ['会议纪要与文档体系', '成员事务协调', '推进季度复盘机制'] },
+            fin:    { dept: ['财务部'],            track: '财务经费',        path: ['账目登记与预算入门', '一次活动经费全流程', '协助科研项目经费管理'] },
+        };
+
+        function generate() {
+            const picked = Array.from(chips).filter(c => c.classList.contains('active')).map(c => c.dataset.tag);
+            if (!picked.length) {
+                resultB.innerHTML = '<div class="pf-empty">请先至少选一个方向。</div>';
+                result.hidden = false;
+                return;
+            }
+
+            const deptScore = {};
+            const tracks    = [];
+            const pathSteps = [];
+
+            picked.forEach(tag => {
+                const m = MAP[tag];
+                if (!m) return;
+                m.dept.forEach(d => { deptScore[d] = (deptScore[d] || 0) + 1; });
+                tracks.push(m.track);
+                m.path.forEach(s => { if (!pathSteps.includes(s)) pathSteps.push(s); });
+            });
+
+            const topDepts = Object.entries(deptScore).sort((a, b) => b[1] - a[1]).map(e => e[0]);
+
+            let html = '';
+            html += '<div class="pf-line"><span class="pf-key">推荐部门</span><span class="pf-val">' + topDepts.join(' / ') + '</span></div>';
+            html += '<div class="pf-line"><span class="pf-key">适合方向</span><span class="pf-val">' + Array.from(new Set(tracks)).join(' · ') + '</span></div>';
+            html += '<div class="pf-line"><span class="pf-key">成长路线</span><span class="pf-val"><ol class="pf-path">' + pathSteps.slice(0, 5).map(s => '<li>' + s + '</li>').join('') + '</ol></span></div>';
+            html += '<div class="pf-line"><span class="pf-key">配套资源</span><span class="pf-val">rs630 训练服务器 · DJI Avata 360 · PCB Lab · 双博士导师</span></div>';
+
+            resultB.innerHTML = html;
+            result.hidden = false;
+            result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function reset() {
+            chips.forEach(c => c.classList.remove('active'));
+            result.hidden = true;
+        }
+
+        genBtn.addEventListener('click', generate);
+        resetBtn.addEventListener('click', reset);
+    })();
+    </script>
+</body>
+</html>

@@ -119,7 +119,7 @@
     });
 
     // 卡片类：网格内的子卡片单独逐个出现（覆盖上面的 delay）
-    ['.dept-card', '.member-card', '.project'].forEach(function (sel) {
+    ['.dept-card', '.member-card', '.project', '.feature-card', '.join-card', '.fit-row'].forEach(function (sel) {
         document.querySelectorAll(sel).forEach(function (el, i) {
             register(el, (i * 0.08).toFixed(2));
         });
