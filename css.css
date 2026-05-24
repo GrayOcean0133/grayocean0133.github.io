@@ -1408,6 +1408,23 @@ footer {
     margin-right: 0.8rem;
 }
 
+.why-list em {
+    color: var(--primary);
+    font-style: normal;
+    font-weight: 600;
+}
+
+.why-note {
+    margin-top: 1.2rem;
+    padding: 0.9rem 1.1rem;
+    background: rgba(255, 200, 0, 0.05);
+    border-left: 3px solid rgba(255, 200, 0, 0.5);
+    border-radius: 4px;
+    color: var(--text-gray);
+    font-size: 0.85rem;
+    line-height: 1.7;
+}
+
 /* Recruit body 微调 */
 .recruit-body {
     background-color: #050505;

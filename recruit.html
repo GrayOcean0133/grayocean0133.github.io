@@ -48,21 +48,21 @@
             <p class="pf-sub">选择你感兴趣的方向（可多选），我们会为你生成一条专属加入路线。</p>
 
             <div class="pf-chips" id="pfChips">
-                <button class="pf-chip" data-tag="ai">AI 算法</button>
-                <button class="pf-chip" data-tag="cv">计算机视觉</button>
-                <button class="pf-chip" data-tag="hw">智能硬件</button>
-                <button class="pf-chip" data-tag="robot">无人机 / 机器人</button>
-                <button class="pf-chip" data-tag="comp">学科竞赛</button>
-                <button class="pf-chip" data-tag="ops">公众号 / 运营</button>
-                <button class="pf-chip" data-tag="design">视觉设计</button>
-                <button class="pf-chip" data-tag="plan">活动策划</button>
-                <button class="pf-chip" data-tag="adm">组织管理</button>
-                <button class="pf-chip" data-tag="fin">财务 / 经费</button>
+                <button type="button" class="pf-chip" data-tag="ai">AI 算法</button>
+                <button type="button" class="pf-chip" data-tag="cv">计算机视觉</button>
+                <button type="button" class="pf-chip" data-tag="hw">智能硬件</button>
+                <button type="button" class="pf-chip" data-tag="robot">无人机 / 机器人</button>
+                <button type="button" class="pf-chip" data-tag="comp">学科竞赛</button>
+                <button type="button" class="pf-chip" data-tag="ops">公众号 / 运营</button>
+                <button type="button" class="pf-chip" data-tag="design">视觉设计</button>
+                <button type="button" class="pf-chip" data-tag="plan">活动策划</button>
+                <button type="button" class="pf-chip" data-tag="adm">组织管理</button>
+                <button type="button" class="pf-chip" data-tag="fin">财务 / 经费</button>
             </div>
 
             <div class="pf-actions">
-                <button class="btn btn-primary" id="pfGenerate">生成我的 AI-Link 路线 →</button>
-                <button class="btn btn-secondary" id="pfReset">重置</button>
+                <button type="button" class="btn btn-primary" id="pfGenerate">生成我的 AI-Link 路线 →</button>
+                <button type="button" class="btn btn-secondary" id="pfReset">重置</button>
             </div>
 
             <div class="pf-result" id="pfResult" hidden>
@@ -108,11 +108,12 @@
             <h2 class="section-title-left">为什么加入 AI-Link</h2>
             <ul class="why-list">
                 <li><span class="why-tag">导师</span>双博士共同指导，亚琛工业大学学术背景，覆盖视觉 / 生成式 AI / 智能监测机器人。</li>
-                <li><span class="why-tag">算力</span>主力服务器 rs630：4× RTX A6000、192GB 显存。同类高校学生社团中较稀缺的训练资源。</li>
+                <li><span class="why-tag">算力</span>主力服务器 rs630：4× RTX A6000、192GB 显存。<em>项目立项并经导师审核后</em>可申请使用，同类高校学生社团中较稀缺。</li>
                 <li><span class="why-tag">项目</span>「路愈者 RobotHealer」已入围挑战杯，在 4 省落地试点，已注册商业化主体。</li>
-                <li><span class="why-tag">硬件</span>DJI Avata 360 + PCB 设计与调试设备，从 AI 算法到嵌入式装备全栈打通。</li>
+                <li><span class="why-tag">硬件</span>DJI Avata 360 无人机与 PCB 设计调试设备等装备<em>面向立项项目开放</em>，从算法到嵌入式装备全栈打通。</li>
                 <li><span class="why-tag">通道</span>学科竞赛、科研立项、创新创业项目均有明确出口，不只学，更出成果。</li>
             </ul>
+            <div class="why-note">说明：算力服务器、无人机、PCB Lab 等装备属于社团项目级资源，需通过项目立项与导师审核方可申请使用，并非默认开放。</div>
         </section>
 
     </div>
@@ -163,10 +164,10 @@
 
         // 方向 → 部门 / 路线映射
         const MAP = {
-            ai:     { dept: ['技术部'],            track: 'AI 算法',         path: ['Python + PyTorch 入门', '在 rs630 服务器上跑通第一个训练', '加入路愈者算法子模块'] },
-            cv:     { dept: ['技术部'],            track: '计算机视觉',      path: ['OpenCV + PyTorch 基础', '复现一个检测/分割模型', '参与路面病害检测算法迭代'] },
-            hw:     { dept: ['技术部'],            track: '智能硬件',        path: ['焊接 + 嵌入式入门', '在 PCB Lab 完成一块小板子', '参与车载/边缘部署调试'] },
-            robot:  { dept: ['技术部'],            track: '机器人 / 无人机', path: ['DJI Avata 操作练习', '空中 + 地面感知联动实验', '参与桥隧巡检数据采集'] },
+            ai:     { dept: ['技术部'],            track: 'AI 算法',         path: ['Python + PyTorch 入门', '本地完成一个小模型 Demo', '通过项目立项后申请 rs630 算力支持'] },
+            cv:     { dept: ['技术部'],            track: '计算机视觉',      path: ['OpenCV + PyTorch 基础', '复现一个检测/分割模型', '通过项目立项后参与路面病害检测算法迭代'] },
+            hw:     { dept: ['技术部'],            track: '智能硬件',        path: ['焊接 + 嵌入式入门', '完成一个小模块练手项目', '通过项目立项后申请 PCB Lab 设备使用'] },
+            robot:  { dept: ['技术部'],            track: '机器人 / 无人机', path: ['航拍 / 飞控基础学习', '完成飞行操作培训', '通过项目立项后参与 DJI Avata 360 巡检任务'] },
             comp:   { dept: ['技术部', '规划部'],  track: '学科竞赛',        path: ['挑选目标赛事（挑战杯 / 互联网+ / 计算机设计）', '组队 + 选题立项', '导师指导冲奖'] },
             ops:    { dept: ['公关部'],            track: '内容运营',        path: ['公众号选题与排版练手', '负责一次活动报道', '建立外部合作联络'] },
             design: { dept: ['艺术支持'],          track: '视觉设计',        path: ['完成一张招新海报', '主题视觉规范输出', '承接项目品牌物料'] },
@@ -201,7 +202,7 @@
             html += '<div class="pf-line"><span class="pf-key">推荐部门</span><span class="pf-val">' + topDepts.join(' / ') + '</span></div>';
             html += '<div class="pf-line"><span class="pf-key">适合方向</span><span class="pf-val">' + Array.from(new Set(tracks)).join(' · ') + '</span></div>';
             html += '<div class="pf-line"><span class="pf-key">成长路线</span><span class="pf-val"><ol class="pf-path">' + pathSteps.slice(0, 5).map(s => '<li>' + s + '</li>').join('') + '</ol></span></div>';
-            html += '<div class="pf-line"><span class="pf-key">配套资源</span><span class="pf-val">rs630 训练服务器 · DJI Avata 360 · PCB Lab · 双博士导师</span></div>';
+            html += '<div class="pf-line"><span class="pf-key">可申请资源</span><span class="pf-val">rs630 训练服务器 · DJI Avata 360 · PCB Lab（项目立项 + 导师审核通过后开放使用）</span></div>';
 
             resultB.innerHTML = html;
             result.hidden = false;
