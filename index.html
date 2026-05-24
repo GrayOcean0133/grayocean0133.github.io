@@ -1008,13 +1008,60 @@
         }
 
         function finish() {
-            overlay.classList.add('done');
-            document.body.classList.remove('intro-active');
-            // 通知 hero typewriter 等等待开场结束的脚本
-            document.dispatchEvent(new Event('intro-done'));
+            const headerTitle = document.querySelector('header .site-title');
+            const mainLine    = overlay.querySelector('.intro-line-main');
+            const subLine     = overlay.querySelector('.intro-line-sub');
+            const carets      = overlay.querySelectorAll('.intro-caret');
+
+            // 光标立刻消失，cursor 不会"飞"到 header
+            carets.forEach(function (c) { c.style.display = 'none'; });
+
+            // 没有 header title 兜底：直接淡出
+            if (!headerTitle) {
+                overlay.classList.add('done');
+                document.body.classList.remove('intro-active');
+                document.dispatchEvent(new Event('intro-done'));
+                setTimeout(function () {
+                    try { overlay.remove(); } catch (e) {}
+                }, 700);
+                return;
+            }
+
+            // 预先把 header title 隐起来，避免动画期间和 splash 主行同时出现两个 AI-LINK
+            headerTitle.style.opacity = '0';
+
+            // 主行：缩小 + 上移到 header 大致位置，临近终点时淡掉
+            // 用 vh 单位避免计算 rect（rect 在某些 layout 阶段不稳定）
+            mainLine.style.transformOrigin = 'center top';
+            mainLine.style.transition      = 'transform 0.9s cubic-bezier(0.65, 0, 0.25, 1), opacity 0.45s ease 0.5s';
+            mainLine.style.transform       = 'translateY(-42vh) scale(0.42)';
+            mainLine.style.opacity         = '0';
+
+            // 副行：原地淡出 + 轻微下沉
+            subLine.style.transition = 'opacity 0.3s ease, transform 0.45s ease';
+            subLine.style.opacity    = '0';
+            subLine.style.transform  = 'translateY(14px)';
+
+            // 遮罩黑底：略微滞后开始淡，让"上移"被看到
             setTimeout(function () {
+                overlay.style.transition = 'background-color 0.55s ease';
+                overlay.style.background = 'transparent';
+            }, 220);
+
+            // 主行接近终点（0.6s 之后）开始把 header title 淡入 ——
+            // 两者重叠瞬间形成 "splash → header" 的视觉接力
+            setTimeout(function () {
+                headerTitle.style.transition = 'opacity 0.45s ease';
+                headerTitle.style.opacity    = '1';
+            }, 620);
+
+            // 整段结束后清掉 overlay、释放滚动、通知后续脚本
+            setTimeout(function () {
+                document.body.classList.remove('intro-active');
+                document.dispatchEvent(new Event('intro-done'));
                 try { overlay.remove(); } catch (e) {}
-            }, 900);
+                headerTitle.style.transition = '';
+            }, 1080);
         }
 
         setTimeout(function () {
