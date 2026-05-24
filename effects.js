@@ -125,3 +125,64 @@
         });
     });
 })();
+
+/* ===== 数字滚动入场计数 ===== */
+(function () {
+    const targets = document.querySelectorAll('.metric-num');
+    if (!targets.length) return;
+
+    function parseNum(str) {
+        const trimmed = String(str).trim();
+        const clean = trimmed.replace(/,/g, '');
+        const value = parseFloat(clean);
+        if (isNaN(value)) return null;
+        const hasComma = trimmed.includes(',');
+        const m = trimmed.match(/\.(\d+)/);
+        const decimals = m ? m[1].length : 0;
+        return { value: value, decimals: decimals, hasComma: hasComma };
+    }
+
+    function format(n, decimals, hasComma) {
+        let s = n.toFixed(decimals);
+        if (hasComma) {
+            const parts = s.split('.');
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            s = parts.join('.');
+        }
+        return s;
+    }
+
+    function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+    function animate(el, target, duration) {
+        const start = performance.now();
+        const decimals = target.decimals;
+        const hasComma = target.hasComma;
+        const endVal = target.value;
+
+        function tick(now) {
+            const t = Math.min(1, (now - start) / duration);
+            const v = endVal * easeOutCubic(t);
+            el.textContent = format(v, decimals, hasComma);
+            if (t < 1) requestAnimationFrame(tick);
+            else el.textContent = format(endVal, decimals, hasComma);
+        }
+        requestAnimationFrame(tick);
+    }
+
+    const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            if (el.dataset.counted) return;
+            const parsed = parseNum(el.textContent);
+            if (!parsed) return;
+            el.dataset.counted = '1';
+            el.textContent = format(0, parsed.decimals, parsed.hasComma);
+            animate(el, parsed, 1400);
+            observer.unobserve(el);
+        });
+    }, { threshold: 0.35 });
+
+    targets.forEach(function (el) { observer.observe(el); });
+})();

@@ -1032,6 +1032,247 @@ footer {
     .metric-num { font-size: 1.4rem; }
 }
 
+/* =============================================
+   AK-style 视觉系统（参考鹰角官网，结构性元素）
+   ============================================= */
+
+/* —— 双斜杠双语章节标题 —— */
+.ak-section-label {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    width: 100%;
+    margin: 0.5rem 0 1.4rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--divider);
+    position: relative;
+}
+
+.ak-section-label::before {
+    content: '//';
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    text-shadow: 0 0 6px rgba(0, 255, 65, 0.5);
+}
+
+.ak-section-label::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 60px;
+    height: 2px;
+    background: var(--primary);
+    box-shadow: 0 0 8px rgba(0, 255, 65, 0.7);
+}
+
+.ak-label-en {
+    color: var(--text-light);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+.ak-label-zh {
+    color: var(--text-gray);
+    font-size: 0.88rem;
+    letter-spacing: 3px;
+}
+
+/* —— AK 卡片视觉强化（叠加在已有卡片类上）—— */
+.feature-card,
+.dept-card,
+.join-card {
+    position: relative;
+    overflow: hidden;
+    padding-left: 1.9rem;
+}
+
+/* 左侧竖条 accent */
+.feature-card::before,
+.dept-card::before,
+.join-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--primary);
+    opacity: 0.55;
+    transition: opacity 0.3s ease, width 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover::before,
+.dept-card:hover::before,
+.join-card:hover::before {
+    opacity: 1;
+    width: 5px;
+    box-shadow: 0 0 14px rgba(0, 255, 65, 0.6);
+}
+
+/* hover 扫描线扫过（使用 transform 触发 composite） */
+.feature-card::after,
+.dept-card::after,
+.join-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 255, 65, 0.10),
+        rgba(0, 255, 65, 0.18),
+        rgba(0, 255, 65, 0.10),
+        transparent
+    );
+    transform: translateX(-130%) skewX(-20deg);
+    will-change: transform;
+    pointer-events: none;
+    transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.feature-card:hover::after,
+.dept-card:hover::after,
+.join-card:hover::after {
+    transform: translateX(160%) skewX(-20deg);
+}
+
+/* HUD 直角括号（左上 + 右下） */
+.ak-bracket {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.ak-bracket-tl {
+    top: 8px;
+    left: 12px;
+    border-top: 2px solid var(--primary);
+    border-left: 2px solid var(--primary);
+}
+
+.ak-bracket-br {
+    bottom: 8px;
+    right: 8px;
+    border-bottom: 2px solid var(--primary);
+    border-right: 2px solid var(--primary);
+}
+
+.feature-card:hover .ak-bracket,
+.dept-card:hover .ak-bracket,
+.join-card:hover .ak-bracket {
+    opacity: 1;
+}
+
+/* feature-tag 改为右上角 AK 风格角标 */
+.feature-card {
+    padding-top: 1.4rem;
+}
+
+.feature-card .feature-tag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    background: var(--primary);
+    color: #060606;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    padding: 0.25rem 0.9rem 0.25rem 1.4rem;
+    clip-path: polygon(14px 0, 100% 0, 100% 100%, 0 100%);
+    opacity: 1;
+}
+
+/* dept-card 的 dept-tag 数字背景调一下保持一致 */
+.dept-card {
+    padding-top: 1.6rem;
+}
+
+/* —— AK 主按钮：右上角斜切 + hover 扫光 —— */
+.btn-primary {
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    transform: translateX(-180%) skewX(-20deg);
+    will-change: transform;
+    transition: transform 0.55s ease;
+    pointer-events: none;
+}
+
+.btn-primary:hover::before {
+    transform: translateX(220%) skewX(-20deg);
+}
+
+.btn-secondary {
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+
+/* —— 数字 metric 计数动画支持类 —— */
+.metric-num {
+    transition: text-shadow 0.3s ease;
+}
+
+.metric:hover .metric-num {
+    text-shadow: 0 0 18px rgba(0, 255, 65, 0.85);
+}
+
+/* —— hero eyebrow 上加上一个跑马灯式动效 —— */
+.hero-eyebrow {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-eyebrow::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(0, 255, 65, 0.5),
+        transparent
+    );
+    transform: translateX(-100%);
+    will-change: transform;
+    animation: eyebrow-sweep 3.6s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes eyebrow-sweep {
+    0%   { transform: translateX(-100%); }
+    55%  { transform: translateX(125%); }
+    100% { transform: translateX(125%); }
+}
+
 /* ===== 部门 fit-guide ===== */
 .fit-guide {
     width: 100%;
