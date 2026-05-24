@@ -1,39 +1,50 @@
-/* ===== Matrix Rain ===== */
+/* ===== Matrix Rain =====
+   关键调整：原版每 50ms 全屏所有列重抽随机字符 + 4% 高亮概率，
+   30+ 个亮白字符同时闪烁形成强烈频闪。现在做三件事：
+   1) 降低画布整体 opacity 到 0.35，减弱整体存在感
+   2) 高亮概率从 4% 降到 0.5%，几乎看不到闪点
+   3) 单元格字符在屏幕停留时间更长（每 5 帧才换字），减少视觉噪声 */
 (function () {
     const canvas = document.createElement('canvas');
-    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:0.8;';
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:0.35;';
     document.body.prepend(canvas);
 
     const ctx = canvas.getContext('2d');
     const chars = '01アイウエオカキクケコABCDEFGHIJKLMNOPQRSTUVWXYZ#@!$%&<>';
     const fontSize = 13;
-    let columns, drops;
+    let columns, drops, charCache, frame = 0;
 
     function resize() {
         canvas.width  = window.innerWidth;
         canvas.height = window.innerHeight;
         columns = Math.floor(canvas.width / fontSize);
         drops   = Array(columns).fill(0);
+        charCache = Array(columns).fill(null).map(function () { return chars[Math.floor(Math.random() * chars.length)]; });
     }
     resize();
     window.addEventListener('resize', resize);
 
     function draw() {
-        ctx.fillStyle = 'rgba(10,10,10,0.05)';
+        ctx.fillStyle = 'rgba(10,10,10,0.08)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.font = fontSize + 'px monospace';
+        frame++;
         drops.forEach(function (y, i) {
-            const char   = chars[Math.floor(Math.random() * chars.length)];
-            const bright = Math.random() > 0.96;
+            // 5 帧才换一次字符，去掉每帧随机翻转的强烈闪烁
+            if (frame % 5 === 0 && Math.random() > 0.6) {
+                charCache[i] = chars[Math.floor(Math.random() * chars.length)];
+            }
+            const char   = charCache[i];
+            const bright = Math.random() > 0.995;
             ctx.fillStyle  = bright ? '#ccffcc' : '#00ff41';
-            ctx.globalAlpha = bright ? 0.9 : 0.25 + Math.random() * 0.2;
+            ctx.globalAlpha = bright ? 0.85 : 0.22 + Math.random() * 0.12;
             ctx.fillText(char, i * fontSize, y * fontSize);
             ctx.globalAlpha = 1;
             if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
             else drops[i]++;
         });
     }
-    setInterval(draw, 50);
+    setInterval(draw, 60);
 })();
 
 /* ===== Typewriter (subtitle) ===== */

@@ -121,7 +121,9 @@ header {
     width: 100%;
     height: 2px;
     background: var(--primary);
-    animation: pulse 1.5s infinite;
+    box-shadow: 0 0 8px rgba(0, 255, 65, 0.55);
+    /* 原本带 animation: pulse 1.5s infinite，撤掉了 —— 在 header 透明的
+       前提下，下划线持续呼吸读起来也像频闪。改成静态绿条 + 微光 */
 }
 
 @keyframes pulse {
