@@ -1375,6 +1375,26 @@ footer {
     margin-bottom: 0.3rem;
 }
 
+.pf-res {
+    margin: 0;
+    padding-left: 1.2rem;
+    list-style: none;
+}
+
+.pf-res li {
+    position: relative;
+    padding-left: 0.4rem;
+    margin-bottom: 0.3rem;
+}
+
+.pf-res li::before {
+    content: '▸';
+    position: absolute;
+    left: -0.9rem;
+    color: var(--primary);
+    opacity: 0.7;
+}
+
 .pf-empty {
     color: var(--text-gray);
     font-style: italic;

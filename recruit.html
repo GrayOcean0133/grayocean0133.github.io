@@ -164,16 +164,26 @@
 
         // 方向 → 部门 / 路线映射
         const MAP = {
-            ai:     { dept: ['技术部'],            track: 'AI 算法',         path: ['Python + PyTorch 入门', '本地完成一个小模型 Demo', '通过项目立项后申请 rs630 算力支持'] },
-            cv:     { dept: ['技术部'],            track: '计算机视觉',      path: ['OpenCV + PyTorch 基础', '复现一个检测/分割模型', '通过项目立项后参与路面病害检测算法迭代'] },
-            hw:     { dept: ['技术部'],            track: '智能硬件',        path: ['焊接 + 嵌入式入门', '完成一个小模块练手项目', '通过项目立项后申请 PCB Lab 设备使用'] },
-            robot:  { dept: ['技术部'],            track: '机器人 / 无人机', path: ['航拍 / 飞控基础学习', '完成飞行操作培训', '通过项目立项后参与 DJI Avata 360 巡检任务'] },
-            comp:   { dept: ['技术部', '规划部'],  track: '学科竞赛',        path: ['挑选目标赛事（挑战杯 / 互联网+ / 计算机设计）', '组队 + 选题立项', '导师指导冲奖'] },
-            ops:    { dept: ['公关部'],            track: '内容运营',        path: ['公众号选题与排版练手', '负责一次活动报道', '建立外部合作联络'] },
-            design: { dept: ['艺术支持'],          track: '视觉设计',        path: ['完成一张招新海报', '主题视觉规范输出', '承接项目品牌物料'] },
-            plan:   { dept: ['规划部'],            track: '活动策划',        path: ['策划一场轻量分享会', '主导一次跨部门活动', '参与社团年度规划'] },
-            adm:    { dept: ['行政部'],            track: '组织管理',        path: ['会议纪要与文档体系', '成员事务协调', '推进季度复盘机制'] },
-            fin:    { dept: ['财务部'],            track: '财务经费',        path: ['账目登记与预算入门', '一次活动经费全流程', '协助科研项目经费管理'] },
+            ai:     { dept: ['技术部'],            track: 'AI 算法',         path: ['Python + PyTorch 入门', '本地完成一个小模型 Demo', '通过项目立项后申请 rs630 算力支持'],
+                     res: ['rs630 算力服务器（立项审核后申请）', 'RTX 3080 第二工作站', '导师算法指导'] },
+            cv:     { dept: ['技术部'],            track: '计算机视觉',      path: ['OpenCV + PyTorch 基础', '复现一个检测/分割模型', '通过项目立项后参与路面病害检测算法迭代'],
+                     res: ['rs630 算力服务器（立项审核后申请）', '路愈者项目数据集', '导师视觉算法指导'] },
+            hw:     { dept: ['技术部'],            track: '智能硬件',        path: ['焊接 + 嵌入式入门', '完成一个小模块练手项目', '通过项目立项后申请 PCB Lab 设备使用'],
+                     res: ['PCB Lab（立项审核后申请）', '示波器 / 焊接台等硬件实验设备', '导师硬件指导'] },
+            robot:  { dept: ['技术部'],            track: '机器人 / 无人机', path: ['航拍 / 飞控基础学习', '完成飞行操作培训', '通过项目立项后参与 DJI Avata 360 巡检任务'],
+                     res: ['DJI Avata 360 无人机（立项审核后申请）', '飞行操作培训', '路愈者实际巡检场景'] },
+            comp:   { dept: ['技术部', '规划部'],  track: '学科竞赛',        path: ['挑选目标赛事（挑战杯 / 互联网+ / 计算机设计）', '组队 + 选题立项', '导师指导冲奖'],
+                     res: ['挑战杯等赛事报名通道', '导师选题与冲奖指导', '历届参赛项目复盘资料'] },
+            ops:    { dept: ['公关部'],            track: '内容运营',        path: ['公众号选题与排版练手', '负责一次活动报道', '建立外部合作联络'],
+                     res: ['公众号编辑权限（试岗后开放）', '外部合作联络名单', '活动报道素材库'] },
+            design: { dept: ['艺术支持'],          track: '视觉设计',        path: ['完成一张招新海报', '主题视觉规范输出', '承接项目品牌物料'],
+                     res: ['品牌视觉规范与素材库', '海报 / 视频模板', '项目品牌物料需求池'] },
+            plan:   { dept: ['规划部'],            track: '活动策划',        path: ['策划一场轻量分享会', '主导一次跨部门活动', '参与社团年度规划'],
+                     res: ['活动策划模板', '场地与设备申报通道', '社团年度规划资料'] },
+            adm:    { dept: ['行政部'],            track: '组织管理',        path: ['会议纪要与文档体系', '成员事务协调', '推进季度复盘机制'],
+                     res: ['例会 / 会议室协调权限', '社团文档与制度库', '内部协同工具'] },
+            fin:    { dept: ['财务部'],            track: '财务经费',        path: ['账目登记与预算入门', '一次活动经费全流程', '协助科研项目经费管理'],
+                     res: ['财务流程模板', '预算管理工具', '科研项目经费指引'] },
         };
 
         function generate() {
@@ -187,6 +197,7 @@
             const deptScore = {};
             const tracks    = [];
             const pathSteps = [];
+            const resources = [];
 
             picked.forEach(tag => {
                 const m = MAP[tag];
@@ -194,6 +205,7 @@
                 m.dept.forEach(d => { deptScore[d] = (deptScore[d] || 0) + 1; });
                 tracks.push(m.track);
                 m.path.forEach(s => { if (!pathSteps.includes(s)) pathSteps.push(s); });
+                (m.res || []).forEach(r => { if (!resources.includes(r)) resources.push(r); });
             });
 
             const topDepts = Object.entries(deptScore).sort((a, b) => b[1] - a[1]).map(e => e[0]);
@@ -202,7 +214,7 @@
             html += '<div class="pf-line"><span class="pf-key">推荐部门</span><span class="pf-val">' + topDepts.join(' / ') + '</span></div>';
             html += '<div class="pf-line"><span class="pf-key">适合方向</span><span class="pf-val">' + Array.from(new Set(tracks)).join(' · ') + '</span></div>';
             html += '<div class="pf-line"><span class="pf-key">成长路线</span><span class="pf-val"><ol class="pf-path">' + pathSteps.slice(0, 5).map(s => '<li>' + s + '</li>').join('') + '</ol></span></div>';
-            html += '<div class="pf-line"><span class="pf-key">可申请资源</span><span class="pf-val">rs630 训练服务器 · DJI Avata 360 · PCB Lab（项目立项 + 导师审核通过后开放使用）</span></div>';
+            html += '<div class="pf-line"><span class="pf-key">对应资源</span><span class="pf-val"><ul class="pf-res">' + resources.map(r => '<li>' + r + '</li>').join('') + '</ul></span></div>';
 
             resultB.innerHTML = html;
             result.hidden = false;
