@@ -202,57 +202,11 @@
     targets.forEach(function (el) { observer.observe(el); });
 })();
 
-/* ===== Sticky header 折叠 =====
-   完整的反馈环：
-     scrollY > 阈值 → toggle .scrolled → header 高度变化 →
-     主内容在 document 里位移 → snap-scroll(proximity) 检测到
-     hero "几乎在顶部"，自动把 scrollY 拉回 0 → 哨兵又进入视口 →
-     toggle 反向 → 再触发 snap → 循环
-   两层防护：
-   1) 哨兵下移到 y=140，避开 snap 主要发力区
-   2) lockout 机制：一次 toggle 后锁 350ms（盖住 transition 动画），
-      期间忽略新事件；锁释放时再按最新观察到的状态校正一次，
-      所以即使 snap 来回扰动，人眼也只看到一次干净的折叠动画。 */
-(function () {
-    const header = document.querySelector('header');
-    if (!header) return;
-
-    const SENTINEL_TOP = 140;
-    const LOCKOUT_MS   = 350;
-
-    const sentinel = document.createElement('div');
-    sentinel.setAttribute('aria-hidden', 'true');
-    sentinel.style.cssText = 'position:absolute;top:' + SENTINEL_TOP + 'px;left:0;width:1px;height:1px;pointer-events:none;';
-    document.body.insertBefore(sentinel, document.body.firstChild);
-
-    let pendingScrolled = null;   // 最新观察到的目标状态
-    let locked = false;
-
-    function commit() {
-        if (pendingScrolled === null) return;
-        const want = pendingScrolled;
-        pendingScrolled = null;
-
-        const isScrolled = header.classList.contains('scrolled');
-        if (want === isScrolled) return;
-
-        header.classList.toggle('scrolled', want);
-        locked = true;
-        setTimeout(function () {
-            locked = false;
-            // 锁住期间状态可能又变了一次，释放后用最新值再校一次
-            if (pendingScrolled !== null) commit();
-        }, LOCKOUT_MS);
-    }
-
-    const obs = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-            pendingScrolled = !e.isIntersecting;
-        });
-        if (!locked) commit();
-    }, { threshold: 0 });
-    obs.observe(sentinel);
-})();
+/* ===== Sticky header =====
+   原本这里有 .scrolled 双态切换（hero 时展开、滚动后折叠），
+   但 toggle 引发的 header 高度变化会被 snap-scroll 反向触发，
+   形成无解的 layout 反馈环。现在 CSS 改成 header 始终紧凑，
+   不再需要 JS toggle，整段删除。 */
 
 /* ===== i18n：中英语言切换 ===== */
 (function () {

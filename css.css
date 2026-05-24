@@ -1282,59 +1282,40 @@ html {
     scroll-padding-top: 80px;
 }
 
-/* 全站 sticky 头部 —— 默认透明，跟 hero 背景融为一体；
-   滚动后（.scrolled）才出现毛玻璃底，避免在 #hero 时出现黑色衬底断层 */
+/* ========= Header: 砍掉 .scrolled 双态机制 =========
+   核心问题：toggle .scrolled 会改变 header 高度 → 主内容在 document 里
+   位移 → snap-scroll(proximity) 重新对齐 → scrollY 被浏览器改回 → 哨兵
+   反向触发 → 再 toggle …… 这是个 layout-driven 反馈环，哨兵和 lockout
+   都只能缓解、不能根治。
+
+   现在直接把双态砍掉：header 始终是紧凑高度，不存在状态切换，
+   因此不可能产生因高度变化引起的反馈环。代价是失去"hero 满版头部"
+   的视觉，但换来零抖动。 */
 header {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: transparent;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-    transition: padding 0.35s ease, background 0.35s ease, backdrop-filter 0.35s ease;
-}
-
-header.scrolled {
-    padding: 0.55rem 5%;
-    background: rgba(10, 10, 10, 0.85);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-}
-
-/* 平滑折叠 subtitle 与两条分割线：用 max-height + opacity 动画
-   替代原来的 display:none 突变，配合 header 自身 transition
-   让"hero ↔ scrolled"切换是一段连续动画，而不是断帧。 */
-header .site-subtitle,
-header > .divider {
-    overflow: hidden;
-    max-height: 60px;
-    opacity: 1;
-    transition: max-height 0.35s ease, opacity 0.25s ease, margin 0.35s ease;
-}
-
-header.scrolled .site-subtitle,
-header.scrolled > .divider {
-    max-height: 0;
-    opacity: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    pointer-events: none;
+    padding: 0.6rem 5%;
+    background: rgba(10, 10, 10, 0.55);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
 }
 
 header .site-title {
-    transition: font-size 0.35s ease, margin-bottom 0.35s ease;
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.55);
 }
 
-header.scrolled .site-title {
-    font-size: 1.4rem;
-    margin-bottom: 0.25rem;
+header .site-subtitle {
+    display: none;
+}
+
+header > .divider {
+    display: none;
 }
 
 header .nav-links {
-    transition: margin-top 0.35s ease;
-}
-
-header.scrolled .nav-links {
     margin-top: 0;
 }
 
