@@ -5,35 +5,32 @@
 
 .brand-link { color: inherit; text-decoration: none; }
 
-/* ============ #knowledge 区段：占满整屏，内部独立滚动 ============ */
+/* ============ #knowledge 区段：作为最后一屏，整页滚动 ============ */
 .snap-knowledge { justify-content: flex-start; }
-.snap-knowledge > .snap-inner {
-    flex: 1 1 auto;
-    min-height: 0;
-    height: 100%;
-}
 
-/* wiki 主体：左导航 + 右内容 */
+/* wiki 主体：左导航(sticky) + 右内容(随页面滚动) */
 .wiki {
-    flex: 1 1 auto;
-    min-height: 0;
     display: grid;
     grid-template-columns: 256px minmax(0, 1fr);
-    grid-template-rows: minmax(0, 1fr);   /* 行高跟随容器，单元格内部滚动 */
     gap: 1.4rem;
     width: 100%;
+    align-items: start;
     border: 1px solid var(--divider);
     border-radius: 12px;
     background: rgba(10, 10, 10, 0.35);
-    overflow: hidden;
 }
 
-/* ---------------- 左侧导航 ---------------- */
+/* ---------------- 左侧导航（粘性，随页面滚动常驻） ---------------- */
 .wiki-sidebar {
+    position: sticky;
+    top: 84px;
+    align-self: start;
+    max-height: calc(100vh - 100px);
     display: flex;
     flex-direction: column;
     min-height: 0;
     border-right: 1px solid var(--divider);
+    border-radius: 12px 0 0 12px;
     background: rgba(0, 0, 0, 0.25);
 }
 .wiki-search-wrap { padding: 0.9rem 0.9rem 0.6rem; }
@@ -102,23 +99,18 @@
 }
 .wiki-empty { color: var(--text-gray); font-size: 0.82rem; padding: 0.6rem; opacity: 0.7; }
 
-/* ---------------- 右侧内容 ---------------- */
+/* ---------------- 右侧内容（随页面滚动，自然增高） ---------------- */
 .wiki-main {
-    min-height: 0;
-    overflow-y: auto;
+    min-width: 0;
     padding: 1.4rem 1.8rem 2.4rem;
     position: relative;
 }
 .wiki-breadcrumb {
-    position: sticky;
-    top: 0;
-    z-index: 2;
     margin: -1.4rem -1.8rem 1.2rem;
     padding: 0.7rem 1.8rem;
-    background: rgba(10, 10, 10, 0.82);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, 0.25);
     border-bottom: 1px solid var(--divider);
+    border-radius: 0 12px 0 0;
     font-size: 0.8rem;
     color: var(--text-gray);
     letter-spacing: 0.5px;
@@ -205,7 +197,7 @@
 .reader-content { color: var(--text-light); font-size: 1rem; line-height: 1.85; }
 .reader-content > *:first-child { margin-top: 0; }
 .reader-content h1, .reader-content h2, .reader-content h3,
-.reader-content h4, .reader-content h5, .reader-content h6 { color: var(--text-light); line-height: 1.35; scroll-margin-top: 70px; }
+.reader-content h4, .reader-content h5, .reader-content h6 { color: var(--text-light); line-height: 1.35; scroll-margin-top: 16px; }
 .reader-content h2 { font-size: 1.45rem; margin: 2.2rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--divider); }
 .reader-content h2::before { content: '// '; color: var(--primary); font-weight: 800; text-shadow: 0 0 6px rgba(0, 255, 65, 0.5); }
 .reader-content h3 { font-size: 1.18rem; margin: 1.7rem 0 0.8rem; color: var(--primary); }
@@ -237,12 +229,17 @@
 
 /* ============ 响应式 ============ */
 @media (max-width: 900px) {
-    .snap-knowledge > .snap-inner { height: auto; }
-    .wiki { display: block; overflow: visible; }
-    .wiki-sidebar { border-right: none; border-bottom: 1px solid var(--divider); }
-    .wiki-nav { max-height: 38vh; }
-    .wiki-main { overflow: visible; padding: 1.2rem 1.1rem 1.8rem; }
-    .wiki-breadcrumb { position: static; margin: -1.2rem -1.1rem 1.1rem; padding: 0.6rem 1.1rem; }
+    .wiki { display: block; }
+    .wiki-sidebar {
+        position: static;
+        max-height: none;
+        border-right: none;
+        border-bottom: 1px solid var(--divider);
+        border-radius: 12px 12px 0 0;
+    }
+    .wiki-nav { max-height: 40vh; }
+    .wiki-main { padding: 1.2rem 1.1rem 1.8rem; }
+    .wiki-breadcrumb { margin: -1.2rem -1.1rem 1.1rem; padding: 0.6rem 1.1rem; }
     .kb-grid { grid-template-columns: 1fr; }
     .wiki-art-head h1 { font-size: 1.4rem; }
 }

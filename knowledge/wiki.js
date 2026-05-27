@@ -179,7 +179,6 @@
         setActive(id);
         setCrumb(entry);
         try { history.replaceState(null, '', '?kb=' + encodeURIComponent(id) + '#knowledge'); } catch (e) {}
-        if (mainEl) mainEl.scrollTop = 0;
         if (opts.scroll) sectionEl.scrollIntoView();
 
         var baseDir = ROOT + entry.file.replace(/[^/]+$/, '');
@@ -207,9 +206,7 @@
             a.addEventListener('click', function (e) {
                 e.preventDefault();
                 var t = document.getElementById(a.getAttribute('data-target'));
-                if (t && mainEl) {
-                    mainEl.scrollTop += t.getBoundingClientRect().top - mainEl.getBoundingClientRect().top - 12;
-                } else if (t) { t.scrollIntoView(); }
+                if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
     }
@@ -235,7 +232,6 @@
         setActive(null);
         setCrumb(null);
         try { history.replaceState(null, '', '#knowledge'); } catch (e) {}
-        if (mainEl) mainEl.scrollTop = 0;
         var cards = groups.filter(function (g) { return g.items.length; }).map(function (g) {
             return g.items.map(function (it) { return welcomeCard(it, g.key === 'chapters' ? (it.order || 0) : 0); }).join('');
         }).join('');
@@ -271,11 +267,11 @@
         var a = e.target.closest('.wiki-link');
         if (!a) return;
         e.preventDefault();
-        openDoc(a.getAttribute('data-id'), { scroll: false });
+        openDoc(a.getAttribute('data-id'), { scroll: true });
     });
     artEl.addEventListener('click', function (e) {
         var card = e.target.closest('.wiki-open');
-        if (card) { e.preventDefault(); openDoc(card.getAttribute('data-id'), { scroll: false }); return; }
+        if (card) { e.preventDefault(); openDoc(card.getAttribute('data-id'), { scroll: true }); return; }
         var home = e.target.closest('[data-home]');
         if (home) { e.preventDefault(); showWelcome(); }
     });
