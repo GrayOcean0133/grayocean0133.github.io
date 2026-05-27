@@ -1,0 +1,446 @@
+/* ============================================================
+   AI-Link 知识库 · hub + reader 样式
+   依赖 css.css 的 CSS 变量（--primary / --card-bg / ...）
+   ============================================================ */
+
+/* 长文页面：关掉首页的 snap，正常滚动 */
+html { scroll-snap-type: none; scroll-padding-top: 80px; }
+
+/* 站点标题链接回首页 */
+.brand-link { color: inherit; text-decoration: none; }
+
+/* ====================== 知识库 hub ====================== */
+.kb-intro {
+    color: var(--text-gray);
+    font-size: 0.98rem;
+    margin: -0.4rem 0 1.6rem;
+    line-height: 1.7;
+}
+
+.kb-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.6rem;
+    width: 100%;
+}
+
+.kb-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--card-bg);
+    border: 1px solid rgba(0, 200, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.8rem 1.7rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.kb-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--primary);
+    opacity: 0.5;
+    transition: opacity 0.3s ease, width 0.3s ease, box-shadow 0.3s ease;
+}
+.kb-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 255, 100, 0.18);
+    border-color: rgba(0, 255, 65, 0.35);
+}
+.kb-card:hover::before { opacity: 1; width: 5px; box-shadow: 0 0 14px rgba(0, 255, 65, 0.6); }
+
+.kb-card-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.6rem;
+}
+.kb-card-order {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: rgba(0, 255, 65, 0.18);
+    line-height: 1;
+}
+.kb-status {
+    flex-shrink: 0;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    padding: 0.16rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    color: var(--primary);
+    background: rgba(0, 255, 65, 0.06);
+}
+.kb-status.kb-status-draft {
+    color: #ffcf4d;
+    border-color: rgba(255, 207, 77, 0.4);
+    background: rgba(255, 207, 77, 0.08);
+}
+.kb-card-title {
+    color: var(--primary);
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+}
+.kb-card-title-en {
+    color: var(--text-gray);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    margin-bottom: 0.8rem;
+}
+.kb-desc {
+    color: var(--text-gray);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+.kb-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 1.3rem;
+}
+.kb-topic {
+    font-size: 0.74rem;
+    color: var(--primary);
+    background: rgba(0, 255, 65, 0.06);
+    border: 1px solid rgba(0, 255, 65, 0.22);
+    padding: 0.18rem 0.6rem;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+}
+.kb-card-cta {
+    margin-top: auto;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+}
+.kb-card-cta::after { content: ' →'; transition: margin-left 0.25s ease; }
+.kb-card:hover .kb-card-cta::after { margin-left: 4px; }
+
+.kb-subhead {
+    margin: 2.6rem 0 1.2rem;
+    color: var(--text-gray);
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border-top: 1px dashed var(--divider);
+    padding-top: 1.4rem;
+}
+
+@media (max-width: 760px) {
+    .kb-grid { grid-template-columns: 1fr; }
+}
+
+/* ====================== 阅读器 ====================== */
+/* 顶部阅读进度条 */
+.reader-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px; width: 0;
+    background: var(--primary);
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.7);
+    z-index: 200;
+    transition: width 0.08s linear;
+}
+
+.reader-shell {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 5.5rem 5% 4rem;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 2.6rem;
+    align-items: start;
+}
+
+/* 目录侧栏 */
+.reader-toc {
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    border-left: 1px solid var(--divider);
+    padding-left: 1.1rem;
+}
+.reader-toc-title {
+    color: var(--primary);
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 0.9rem;
+}
+.reader-toc-list { list-style: none; margin: 0; padding: 0; }
+.reader-toc-list li { margin: 0; }
+.reader-toc-list a {
+    display: block;
+    color: var(--text-gray);
+    text-decoration: none;
+    font-size: 0.86rem;
+    line-height: 1.5;
+    padding: 0.28rem 0.4rem;
+    border-radius: 4px;
+    border-left: 2px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.reader-toc-list a:hover { color: var(--text-light); background: rgba(0, 255, 65, 0.05); }
+.reader-toc-list a.active {
+    color: var(--primary);
+    border-left-color: var(--primary);
+    background: rgba(0, 255, 65, 0.07);
+}
+.reader-toc-list .toc-l3 a { padding-left: 1.3rem; font-size: 0.8rem; opacity: 0.85; }
+
+/* 文章主体 */
+.reader-article { min-width: 0; }
+
+.reader-breadcrumb {
+    font-size: 0.82rem;
+    color: var(--text-gray);
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+}
+.reader-breadcrumb a { color: var(--primary); text-decoration: none; }
+.reader-breadcrumb a:hover { text-decoration: underline; }
+.reader-breadcrumb .sep { margin: 0 0.5rem; opacity: 0.5; }
+
+.reader-head { margin-bottom: 0.6rem; }
+.reader-head h1 {
+    color: var(--text-light);
+    font-size: 2rem;
+    line-height: 1.25;
+    margin-bottom: 0.2rem;
+}
+.reader-title-en {
+    color: var(--text-gray);
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+}
+
+.reader-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 1rem 0 1.6rem;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid var(--divider);
+}
+.reader-badge {
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    padding: 0.18rem 0.65rem;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    color: var(--primary);
+    background: rgba(0, 255, 65, 0.06);
+}
+.reader-badge-draft {
+    color: #ffcf4d;
+    border-color: rgba(255, 207, 77, 0.4);
+    background: rgba(255, 207, 77, 0.08);
+}
+.reader-scripts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+}
+.reader-scripts-label { color: var(--text-gray); letter-spacing: 1px; }
+.reader-script {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.78rem;
+    color: var(--primary);
+    text-decoration: none;
+    padding: 0.12rem 0.55rem;
+    border: 1px solid rgba(0, 255, 65, 0.25);
+    border-radius: 4px;
+    background: rgba(0, 255, 65, 0.04);
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+.reader-script::before { content: '↓ '; opacity: 0.7; }
+.reader-script:hover { background: rgba(0, 255, 65, 0.12); box-shadow: 0 0 8px rgba(0, 255, 65, 0.25); }
+
+/* 加载 / 错误态 */
+.reader-state {
+    color: var(--text-gray);
+    padding: 3rem 0;
+    text-align: center;
+    letter-spacing: 1px;
+}
+.reader-error a { color: var(--primary); }
+
+/* ---------- 正文 Markdown 排版 ---------- */
+.reader-content { color: var(--text-light); font-size: 1.02rem; line-height: 1.85; }
+.reader-content > *:first-child { margin-top: 0; }
+
+.reader-content h1, .reader-content h2, .reader-content h3,
+.reader-content h4, .reader-content h5, .reader-content h6 {
+    color: var(--text-light);
+    line-height: 1.35;
+    scroll-margin-top: 90px;
+}
+.reader-content h2 {
+    font-size: 1.5rem;
+    margin: 2.4rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--divider);
+}
+.reader-content h2::before {
+    content: '// ';
+    color: var(--primary);
+    font-weight: 800;
+    text-shadow: 0 0 6px rgba(0, 255, 65, 0.5);
+}
+.reader-content h3 { font-size: 1.22rem; margin: 1.8rem 0 0.8rem; color: var(--primary); }
+.reader-content h4 { font-size: 1.05rem; margin: 1.4rem 0 0.6rem; color: var(--text-light); }
+
+.reader-content p { margin: 0.9rem 0; }
+.reader-content a { color: var(--primary); text-decoration: none; border-bottom: 1px solid rgba(0, 255, 65, 0.35); }
+.reader-content a:hover { background: rgba(0, 255, 65, 0.08); }
+.reader-content strong { color: #fff; font-weight: 700; }
+.reader-content em { color: var(--text-light); }
+
+.reader-content ul, .reader-content ol { margin: 0.9rem 0; padding-left: 1.6rem; }
+.reader-content li { margin: 0.4rem 0; }
+.reader-content li::marker { color: var(--primary); }
+
+.reader-content blockquote {
+    margin: 1.2rem 0;
+    padding: 0.8rem 1.2rem;
+    border-left: 3px solid var(--primary);
+    background: rgba(0, 255, 65, 0.04);
+    color: var(--text-gray);
+    border-radius: 0 6px 6px 0;
+}
+.reader-content blockquote p { margin: 0.4rem 0; }
+.reader-content blockquote strong { color: var(--primary); }
+
+.reader-content hr { border: none; border-top: 1px dashed var(--divider); margin: 2rem 0; }
+
+/* 表格 */
+.reader-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.3rem 0;
+    font-size: 0.92rem;
+    display: block;
+    overflow-x: auto;
+}
+.reader-content th, .reader-content td {
+    border: 1px solid rgba(0, 255, 65, 0.15);
+    padding: 0.6rem 0.85rem;
+    text-align: left;
+    vertical-align: top;
+}
+.reader-content thead th {
+    background: rgba(0, 255, 65, 0.08);
+    color: var(--primary);
+    font-weight: 600;
+    white-space: nowrap;
+}
+.reader-content tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+.reader-content tbody tr:hover { background: rgba(0, 255, 65, 0.05); }
+
+/* 代码 */
+.reader-content pre {
+    background: #0d0d0d;
+    border: 1px solid var(--divider);
+    border-left: 3px solid var(--primary);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    overflow-x: auto;
+    margin: 1.2rem 0;
+}
+.reader-content pre code {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.86rem;
+    line-height: 1.6;
+    color: #d6ffe0;
+    background: none;
+    padding: 0;
+    white-space: pre;
+}
+.reader-content :not(pre) > code {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.88em;
+    color: var(--primary);
+    background: rgba(0, 255, 65, 0.08);
+    border: 1px solid rgba(0, 255, 65, 0.18);
+    border-radius: 4px;
+    padding: 0.08rem 0.35rem;
+}
+.math-err { color: #ff6b6b !important; border-color: rgba(255, 107, 107, 0.3) !important; }
+
+/* 图片 */
+.reader-content img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1.4rem auto;
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    background: #fff;
+}
+
+/* KaTeX：块级公式可横向滚动，避免溢出 */
+.reader-content .katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.4rem 0;
+    margin: 1.2rem 0;
+}
+.reader-content .katex { color: var(--text-light); font-size: 1.05em; }
+
+/* 上一章 / 下一章 */
+.reader-pager {
+    display: flex;
+    align-items: stretch;
+    gap: 1rem;
+    margin-top: 2.6rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--divider);
+}
+.pager-slot { flex: 1; min-width: 0; }
+a.pager-slot {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-decoration: none;
+    border: 1px solid rgba(0, 255, 65, 0.18);
+    border-radius: 8px;
+    padding: 0.8rem 1.1rem;
+    transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+a.pager-slot:hover { border-color: rgba(0, 255, 65, 0.45); background: rgba(0, 255, 65, 0.05); transform: translateY(-2px); }
+.pager-next { text-align: right; }
+.pager-home {
+    flex: 0 0 auto;
+    align-items: center;
+    color: var(--primary);
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+.pager-dir { font-size: 0.72rem; color: var(--text-gray); letter-spacing: 1px; margin-bottom: 0.2rem; }
+.pager-name { color: var(--primary); font-size: 0.95rem; font-weight: 600; }
+
+@media (max-width: 900px) {
+    .reader-shell { grid-template-columns: 1fr; gap: 1.5rem; padding-top: 5rem; }
+    .reader-toc { display: none; }
+}
+@media (max-width: 600px) {
+    .reader-head h1 { font-size: 1.5rem; }
+    .reader-content { font-size: 0.98rem; }
+    .reader-content h2 { font-size: 1.3rem; }
+    .pager-name { font-size: 0.85rem; }
+}
