@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI-LINK Group · 2026 招新</title>
     <link rel="stylesheet" href="css.css">
+    <link rel="stylesheet" href="knowledge/vendor/katex.min.css">
+    <link rel="stylesheet" href="knowledge/knowledge.css">
     <script>
     // 在 CSS / body 渲染之前确定语言，避免首次加载闪一下 zh+en 同显
     (function () {
@@ -43,8 +45,8 @@
             <a href="#hero" class="active"><span class="nav-en">HOME</span> <span class="nav-zh">首页</span></a>
             <a href="#recruit" class="nav-join"><span class="nav-en">JOIN</span> <span class="nav-zh">招新</span></a>
             <a href="#departments"><span class="nav-en">DEPARTMENTS</span> <span class="nav-zh">部门</span></a>
-            <a href="knowledge.html"><span class="nav-en">KNOWLEDGE</span> <span class="nav-zh">学习</span></a>
             <a href="#advisors"><span class="nav-en">ABOUT</span> <span class="nav-zh">关于</span></a>
+            <a href="#knowledge"><span class="nav-en">KNOWLEDGE</span> <span class="nav-zh">学习</span></a>
         </nav>
         <div class="divider"></div>
     </header>
@@ -58,6 +60,7 @@
         <a href="#team" class="page-dot" data-label="团队" data-label-zh="团队" data-label-en="Team" aria-label="跳转到团队"></a>
         <a href="#recruit" class="page-dot" data-label="招新终端" data-label-zh="招新终端" data-label-en="Recruit" aria-label="跳转到招新终端"></a>
         <a href="#join" class="page-dot" data-label="加入步骤" data-label-zh="加入步骤" data-label-en="Join" aria-label="跳转到加入步骤"></a>
+        <a href="#knowledge" class="page-dot" data-label="知识库" data-label-zh="知识库" data-label-en="Knowledge" aria-label="跳转到知识库"></a>
     </aside>
 
     <main>
@@ -649,6 +652,29 @@
             </div>
         </section>
 
+        <!-- 9 · Knowledge Base (wiki) -->
+        <section id="knowledge" class="snap-section snap-knowledge">
+            <div class="snap-inner">
+                <div class="ak-section-label">
+                    <span class="ak-label-en">Knowledge Base</span>
+                    <span class="ak-label-zh">知识库</span>
+                </div>
+                <div class="wiki">
+                    <aside class="wiki-sidebar" aria-label="知识库导航">
+                        <div class="wiki-search-wrap">
+                            <input type="search" id="wikiSearch" class="wiki-search"
+                                   placeholder="搜索资料… / Search…" aria-label="搜索资料">
+                        </div>
+                        <nav class="wiki-nav" id="wikiNav"></nav>
+                    </aside>
+                    <section class="wiki-main" id="wikiMain">
+                        <div class="wiki-breadcrumb" id="wikiCrumb"></div>
+                        <article id="wikiArticle"></article>
+                    </section>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer>
@@ -656,6 +682,10 @@
         <span class="site-url">grayocean0133.github.io</span>
     </footer>
 
+    <script src="knowledge/vendor/marked.min.js"></script>
+    <script src="knowledge/vendor/katex.min.js"></script>
+    <script src="knowledge/manifest.js"></script>
+    <script src="knowledge/wiki.js"></script>
     <script src="effects.js"></script>
 
     <!-- D20 -->

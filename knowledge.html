@@ -1,113 +1,21 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-LINK Group · 知识库 Knowledge Base</title>
-    <link rel="stylesheet" href="css.css">
-    <link rel="stylesheet" href="knowledge/knowledge.css">
+    <meta http-equiv="refresh" content="0; url=index.html#knowledge">
+    <link rel="canonical" href="index.html#knowledge">
+    <title>AI-LINK Group · 知识库</title>
     <script>
     (function () {
-        var lang = null;
-        try { lang = localStorage.getItem('aiLinkLang'); } catch (e) {}
-        if (!lang) {
-            var b = (navigator.language || 'zh').toLowerCase();
-            lang = b.indexOf('en') === 0 ? 'en' : 'zh';
-        }
-        document.documentElement.setAttribute('data-lang', lang);
-        document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'zh-CN');
+        // 兼容旧链接 knowledge/reader.html?id=xxx → index.html?kb=xxx#knowledge
+        var id = new URLSearchParams(location.search).get('id')
+              || new URLSearchParams(location.search).get('kb');
+        location.replace('index.html' + (id ? '?kb=' + encodeURIComponent(id) : '') + '#knowledge');
     })();
     </script>
 </head>
 <body>
-    <div class="matrix-grid"></div>
-
-    <header>
-        <button type="button" class="lang-toggle" aria-label="切换语言 / Switch language">
-            <span class="lang-opt" data-lang-set="zh">中</span>
-            <span class="lang-sep">|</span>
-            <span class="lang-opt" data-lang-set="en">EN</span>
-        </button>
-        <div class="site-title"><a href="index.html" class="brand-link">AI-LINK GROUP</a></div>
-        <div class="site-subtitle">Think-Build-Connect</div>
-        <div class="divider"></div>
-        <nav class="nav-links">
-            <a href="index.html#hero"><span class="nav-en">HOME</span> <span class="nav-zh">首页</span></a>
-            <a href="index.html#recruit" class="nav-join"><span class="nav-en">JOIN</span> <span class="nav-zh">招新</span></a>
-            <a href="index.html#departments"><span class="nav-en">DEPARTMENTS</span> <span class="nav-zh">部门</span></a>
-            <a href="knowledge.html" class="active"><span class="nav-en">KNOWLEDGE</span> <span class="nav-zh">学习</span></a>
-            <a href="index.html#advisors"><span class="nav-en">ABOUT</span> <span class="nav-zh">关于</span></a>
-        </nav>
-        <div class="divider"></div>
-    </header>
-
-    <main class="main-content">
-        <div class="ak-section-label">
-            <span class="ak-label-en">Knowledge Base</span>
-            <span class="ak-label-zh">学习资料库</span>
-        </div>
-        <p class="kb-intro">
-            <span class="i18n-zh">社团内部技术学习资料，由成员与导师共同整理。点开任意一章在线阅读（含公式、图示与可下载的绘图脚本）。</span>
-            <span class="i18n-en">The club's internal technical learning materials, compiled by members and advisors. Open any chapter to read online — with formulas, figures, and downloadable plotting scripts.</span>
-        </p>
-
-        <div class="kb-grid" id="kbChapters"></div>
-
-        <div class="kb-subhead" id="kbDocsHead" hidden>
-            <span class="i18n-zh">社团资料 · Club Docs</span>
-            <span class="i18n-en">Club Docs</span>
-        </div>
-        <div class="kb-grid" id="kbDocs"></div>
-    </main>
-
-    <footer>
-        <div>2026 AI-LINK GROUP © ALL RIGHTS RESERVED</div>
-        <span class="site-url">grayocean0133.github.io</span>
-    </footer>
-
-    <script src="knowledge/manifest.js"></script>
-    <script>
-    (function () {
-        var KB = window.AILINK_KB || { chapters: [], docs: [] };
-        function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-
-        function statusBadge(status) {
-            if (status === 'draft') {
-                return '<span class="kb-status kb-status-draft"><span class="i18n-zh">连载中</span><span class="i18n-en">Draft</span></span>';
-            }
-            return '<span class="kb-status"><span class="i18n-zh">已完结</span><span class="i18n-en">Complete</span></span>';
-        }
-
-        function card(entry, ord) {
-            var topics = (entry.topics || []).map(function (t) {
-                return '<span class="kb-topic">' + esc(t) + '</span>';
-            }).join('');
-            var top = ord
-                ? '<span class="kb-card-order">' + (ord < 10 ? '0' + ord : ord) + '</span>'
-                : '<span class="kb-card-order">★</span>';
-            return '<a class="kb-card" href="knowledge/reader.html?id=' + encodeURIComponent(entry.id) + '">' +
-                '<div class="kb-card-top">' + top + statusBadge(entry.status) + '</div>' +
-                '<div class="kb-card-title">' + esc(entry.titleZh) + '</div>' +
-                '<div class="kb-card-title-en">' + esc(entry.titleEn) + '</div>' +
-                '<div class="kb-desc"><span class="i18n-zh">' + esc(entry.descZh) + '</span>' +
-                '<span class="i18n-en">' + esc(entry.descEn || entry.descZh) + '</span></div>' +
-                (topics ? '<div class="kb-topics">' + topics + '</div>' : '') +
-                '<div class="kb-card-cta"><span class="i18n-zh">开始阅读</span><span class="i18n-en">Read</span></div>' +
-                '</a>';
-        }
-
-        var chapters = (KB.chapters || []).slice().sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
-        document.getElementById('kbChapters').innerHTML =
-            chapters.map(function (c) { return card(c, c.order || 0); }).join('');
-
-        var docs = KB.docs || [];
-        if (docs.length) {
-            document.getElementById('kbDocsHead').hidden = false;
-            document.getElementById('kbDocs').innerHTML =
-                docs.map(function (d) { return card(d, 0); }).join('');
-        }
-    })();
-    </script>
-    <script src="effects.js"></script>
+    <p>正在跳转到 <a href="index.html#knowledge">AI-Link 知识库</a>...</p>
 </body>
 </html>
