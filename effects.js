@@ -313,9 +313,11 @@
     if (!sections.length) return;
 
     function currentIndex() {
-        var probe = window.scrollY + window.innerHeight * 0.4;
+        // 视口内 40% 处的探测线之上、最靠下的那个区段即为当前区段
+        // （用 getBoundingClientRect 而非 offsetTop，不受定位父级影响）
+        var probe = window.innerHeight * 0.4;
         var idx = 0;
-        sections.forEach(function (s, i) { if (s.offsetTop <= probe) idx = i; });
+        sections.forEach(function (s, i) { if (s.getBoundingClientRect().top <= probe) idx = i; });
         return idx;
     }
     function go(target) {
@@ -324,21 +326,36 @@
     }
 
     window.addEventListener('keydown', function (e) {
-        if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
+        if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
         // 在输入框 / 可编辑区里打字时不抢键
         var t = e.target;
         var tag = (t && t.tagName ? t.tagName : '').toLowerCase();
         if (tag === 'input' || tag === 'textarea' || tag === 'select' || (t && t.isContentEditable)) return;
 
-        switch (e.key) {
-            case 'ArrowDown': case 'j': case 'J':
-                e.preventDefault(); go(currentIndex() + 1); break;
-            case 'ArrowUp': case 'k': case 'K':
-                e.preventDefault(); go(currentIndex() - 1); break;
-            case 'Home':
-                e.preventDefault(); go(0); break;
-            case 'End':
-                e.preventDefault(); go(sections.length - 1); break;
+        var key = e.key;
+        if (key === 'Home') { e.preventDefault(); go(0); return; }
+        if (key === 'End')  { e.preventDefault(); go(sections.length - 1); return; }
+
+        var down = (key === 'ArrowDown' || key === 'j' || key === 'J');
+        var up   = (key === 'ArrowUp'   || key === 'k' || key === 'K');
+        if (!down && !up) return;
+
+        var cur  = currentIndex();
+        var next = cur + (down ? 1 : -1);
+        // 已在首/尾区段的尽头：完全交给浏览器原生滚动，不拦截
+        if (next < 0 || next >= sections.length) return;
+
+        // 长内容区段（如展开章节的知识库）：先原生滚动阅读，
+        // 只有滚到该区段上/下边界时，方向键才跳到相邻区段。
+        var sec = sections[cur];
+        var vh  = window.innerHeight;
+        if (sec.offsetHeight > vh * 1.3) {
+            var rect = sec.getBoundingClientRect();
+            if (down && rect.bottom > vh + 4) return;  // 下方还有内容 → 原生滚动
+            if (up   && rect.top  < -4)       return;  // 上方还有内容 → 原生滚动
         }
+
+        e.preventDefault();
+        go(next);
     });
 })();
