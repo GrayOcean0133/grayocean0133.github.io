@@ -3,7 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-LINK Group · 2026 招新</title>
+    <title>AI-LINK Group · 2026 招新 | 温州商学院智能装备社团</title>
+
+    <!-- ===== SEO / 社交分享 ===== -->
+    <meta name="description" content="AI-Link 智能装备社团 · 温州商学院信息工程学院。双博士导师指导，192GB AI 算力，真实工程项目「路愈者 RobotHealer」，覆盖 AI 算法 / 计算机视觉 / 智能硬件 / 无人机 / 学科竞赛。2026 招新启动。">
+    <meta name="keywords" content="AI-Link, 温州商学院, 人工智能社团, 计算机视觉, 智能硬件, 无人机, 机器学习, RobotHealer, 招新, AI Club">
+    <meta name="author" content="AI-LINK GROUP">
+    <meta name="theme-color" content="#00ff41">
+    <link rel="canonical" href="https://grayocean0133.github.io/">
+
+    <!-- favicon（SVG，现代浏览器原生支持） -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="favicon.svg">
+
+    <!-- Open Graph（微信 / QQ / Facebook / 飞书等分享卡片） -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AI-LINK GROUP">
+    <meta property="og:title" content="AI-LINK Group · 不只学 AI，把 AI 做成装备">
+    <meta property="og:description" content="双博士导师 · 192GB AI 算力 · 真实工程项目「路愈者 RobotHealer」。温州商学院 AI-Link 智能装备社团 2026 招新启动。">
+    <meta property="og:url" content="https://grayocean0133.github.io/">
+    <meta property="og:image" content="https://grayocean0133.github.io/og-image.svg">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:locale:alternate" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AI-LINK Group · 不只学 AI，把 AI 做成装备">
+    <meta name="twitter:description" content="双博士导师 · 192GB AI 算力 · 真实工程项目。温州商学院 AI-Link 社团 2026 招新。">
+    <meta name="twitter:image" content="https://grayocean0133.github.io/og-image.svg">
+
     <link rel="stylesheet" href="css.css">
     <link rel="stylesheet" href="knowledge/vendor/katex.min.css">
     <link rel="stylesheet" href="knowledge/knowledge.css">
@@ -115,6 +143,31 @@
                     <span class="ak-label-en">Why AI-Link</span>
                     <span class="ak-label-zh">为什么选择我们</span>
                 </div>
+
+                <!-- 数据成就带：滚动入场时数字从 0 计数到位 -->
+                <div class="stat-band" aria-label="社团关键数据">
+                    <div class="stat-cell">
+                        <div class="stat-num"><span class="metric-num">2</span></div>
+                        <div class="stat-label"><span class="i18n-zh">双博士导师</span><span class="i18n-en">PhD Advisors</span></div>
+                    </div>
+                    <div class="stat-cell">
+                        <div class="stat-num"><span class="metric-num">192</span><span class="stat-unit">GB</span></div>
+                        <div class="stat-label"><span class="i18n-zh">AI 算力显存</span><span class="i18n-en">GPU VRAM</span></div>
+                    </div>
+                    <div class="stat-cell">
+                        <div class="stat-num"><span class="metric-num">4</span></div>
+                        <div class="stat-label"><span class="i18n-zh">省落地试点</span><span class="i18n-en">Provinces Piloted</span></div>
+                    </div>
+                    <div class="stat-cell">
+                        <div class="stat-num"><span class="metric-num">6</span></div>
+                        <div class="stat-label"><span class="i18n-zh">职能部门</span><span class="i18n-en">Departments</span></div>
+                    </div>
+                    <div class="stat-cell">
+                        <div class="stat-num"><span class="metric-num">16</span><span class="stat-unit">+</span></div>
+                        <div class="stat-label"><span class="i18n-zh">现役成员</span><span class="i18n-en">Active Members</span></div>
+                    </div>
+                </div>
+
                 <section class="feature-grid">
                     <div class="feature-card">
                         <span class="ak-bracket ak-bracket-tl"></span>
@@ -495,28 +548,40 @@
                     <span class="ak-label-en">Team</span>
                     <span class="ak-label-zh">现有团队</span>
                 </div>
-                <div class="member-grid member-grid-3">
-                    <a href="https://github.com/GrayOcean0133" target="_blank" rel="noopener" class="member-card member-card-link">
+
+                <!-- 部门筛选条：点一下高亮该部门成员 -->
+                <div class="team-filter" id="teamFilter" role="group" aria-label="按部门筛选成员">
+                    <button type="button" class="tf-chip active" data-dept="all"><span class="i18n-zh">全部</span><span class="i18n-en">All</span></button>
+                    <button type="button" class="tf-chip" data-dept="tech">Tech</button>
+                    <button type="button" class="tf-chip" data-dept="adm">Adm</button>
+                    <button type="button" class="tf-chip" data-dept="plan">Plan</button>
+                    <button type="button" class="tf-chip" data-dept="fin">Fin</button>
+                    <button type="button" class="tf-chip" data-dept="pr">PR</button>
+                    <button type="button" class="tf-chip" data-dept="art">ART</button>
+                </div>
+
+                <div class="member-grid member-grid-3" id="teamGrid">
+                    <a href="https://github.com/GrayOcean0133" target="_blank" rel="noopener" class="member-card member-card-link" data-dept="tech">
                         <div class="member-name">GrayOcean</div>
                         <div class="member-role role-owner">OWNER</div>
                         <div class="member-dept">Tech Dep.</div>
                         <div class="member-github">↗ GitHub</div>
                     </a>
-                    <div class="member-card"><div class="member-name">Elwin</div><div class="member-role role-leader">Major</div><div class="member-dept">Adm Dep.</div></div>
-                    <div class="member-card"><div class="member-name">Lixxan</div><div class="member-role">Vice</div><div class="member-dept">Tech Dep.</div></div>
-                    <div class="member-card"><div class="member-name">Jin Yi</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
-                    <div class="member-card"><div class="member-name">Chen XueTao</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
-                    <div class="member-card"><div class="member-name">LY</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
-                    <div class="member-card"><div class="member-name">AChen</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
-                    <div class="member-card"><div class="member-name">QCY</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
-                    <div class="member-card"><div class="member-name">Antony Ye</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
-                    <div class="member-card"><div class="member-name">Wang XinYang</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
-                    <div class="member-card"><div class="member-name">Toaster</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
-                    <div class="member-card"><div class="member-name">Xu JiHong</div><div class="member-role">Member</div><div class="member-dept">Plan Dep.</div></div>
-                    <div class="member-card"><div class="member-name">Chen HongZhou</div><div class="member-role">Member</div><div class="member-dept">Fin Dep.</div></div>
-                    <div class="member-card"><div class="member-name">Peng PengWei</div><div class="member-role">Member</div><div class="member-dept">PR Dep.</div></div>
-                    <div class="member-card"><div class="member-name">Qrlirly</div><div class="member-role">Member</div><div class="member-dept">ART Support</div></div>
-                    <div class="member-card"><div class="member-name">Koi</div><div class="member-role">Member</div><div class="member-dept">ART Support</div></div>
+                    <div class="member-card" data-dept="adm"><div class="member-name">Elwin</div><div class="member-role role-leader">Major</div><div class="member-dept">Adm Dep.</div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-name">Lixxan</div><div class="member-role">Vice</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-name">Jin Yi</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-name">Chen XueTao</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-name">LY</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-name">AChen</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-name">QCY</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-name">Antony Ye</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-name">Wang XinYang</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-name">Toaster</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card" data-dept="plan"><div class="member-name">Xu JiHong</div><div class="member-role">Member</div><div class="member-dept">Plan Dep.</div></div>
+                    <div class="member-card" data-dept="fin"><div class="member-name">Chen HongZhou</div><div class="member-role">Member</div><div class="member-dept">Fin Dep.</div></div>
+                    <div class="member-card" data-dept="pr"><div class="member-name">Peng PengWei</div><div class="member-role">Member</div><div class="member-dept">PR Dep.</div></div>
+                    <div class="member-card" data-dept="art"><div class="member-name">Qrlirly</div><div class="member-role">Member</div><div class="member-dept">ART Support</div></div>
+                    <div class="member-card" data-dept="art"><div class="member-name">Koi</div><div class="member-role">Member</div><div class="member-dept">ART Support</div></div>
                 </div>
 
                 <div class="member-section special-thanks-row">
@@ -680,6 +745,10 @@
     <footer>
         <div>2026 AI-LINK GROUP © ALL RIGHTS RESERVED</div>
         <span class="site-url">grayocean0133.github.io</span>
+        <div class="kbd-hint">
+            <span class="i18n-zh">提示：用 <kbd>↑</kbd> <kbd>↓</kbd> 或 <kbd>J</kbd> <kbd>K</kbd> 翻页 · 招新终端可输入 <kbd>help</kbd></span>
+            <span class="i18n-en">Tip: navigate with <kbd>↑</kbd> <kbd>↓</kbd> or <kbd>J</kbd> <kbd>K</kbd> · type <kbd>help</kbd> in the recruit terminal</span>
+        </div>
     </footer>
 
     <script src="knowledge/vendor/marked.min.js"></script>
@@ -807,7 +876,10 @@
 
             let li = 0;
             function typeLine() {
-                if (li >= items.length) return;
+                if (li >= items.length) {
+                    document.dispatchEvent(new Event('terminal-boot-done'));
+                    return;
+                }
                 const item = items[li];
                 let ci = 0;
                 (function tick() {
@@ -1300,6 +1372,169 @@
         obs.observe(hero);
 
         requestAnimationFrame(frame);
+    })();
+    </script>
+
+    <!-- 团队部门筛选 -->
+    <script>
+    (function () {
+        const filter = document.getElementById('teamFilter');
+        const grid   = document.getElementById('teamGrid');
+        if (!filter || !grid) return;
+        const cards = Array.prototype.slice.call(grid.querySelectorAll('.member-card'));
+
+        filter.addEventListener('click', function (e) {
+            const chip = e.target.closest('.tf-chip');
+            if (!chip) return;
+            filter.querySelectorAll('.tf-chip').forEach(function (c) {
+                c.classList.toggle('active', c === chip);
+            });
+            const dept = chip.dataset.dept;
+            grid.classList.toggle('team-grid--filtered', dept !== 'all');
+            cards.forEach(function (c) {
+                const match = dept === 'all' || c.dataset.dept === dept;
+                c.classList.toggle('tf-dim', !match);
+            });
+        });
+    })();
+    </script>
+
+    <!-- 招新终端：可输入命令 -->
+    <script>
+    (function () {
+        const body = document.getElementById('terminalBody');
+        if (!body) return;
+
+        function L() { return document.documentElement.dataset.lang === 'en' ? 'en' : 'zh'; }
+
+        function helpLines(l) {
+            return l === 'en'
+                ? ['Available commands:',
+                   '  help     show this help',
+                   '  ls       list site sections',
+                   '  dept     list the 6 departments',
+                   '  whoami   who are you?',
+                   '  about    jump to advisors',
+                   '  join     jump to join steps',
+                   '  path     jump to Path Finder',
+                   '  docs     open the knowledge base',
+                   '  github   show project GitHub',
+                   '  clear    clear the screen']
+                : ['可用命令：',
+                   '  help     显示帮助',
+                   '  ls       列出网站区段',
+                   '  dept     列出六大部门',
+                   '  whoami   你是谁？',
+                   '  about    跳到指导老师',
+                   '  join     跳到加入步骤',
+                   '  path     跳到路线生成器',
+                   '  docs     打开知识库',
+                   '  github   查看项目 GitHub',
+                   '  clear    清屏'];
+        }
+
+        function run(raw) {
+            const l = L();
+            const cmd = raw.trim().toLowerCase();
+            if (!cmd) return { lines: [] };
+            switch (cmd) {
+                case 'help': case '?': case 'man':
+                    return { lines: helpLines(l) };
+                case 'ls': case 'dir':
+                    return { lines: [l === 'en'
+                        ? 'hero  why  advisors  projects  departments  team  recruit  join  knowledge'
+                        : '首页  为什么  导师  开源项目  部门  团队  招新  加入  知识库'] };
+                case 'dept': case 'departments':
+                    return { lines: ['Tech Dep.  ·  Adm Dep.  ·  Plan Dep.',
+                                     'Fin Dep.   ·  PR Dep.   ·  ART Support'] };
+                case 'whoami':
+                    return { lines: [l === 'en' ? 'guest@ai-link — a future builder.' : 'guest@ai-link — 一名未来的 builder。'] };
+                case 'about':
+                    return { lines: [l === 'en' ? '> opening advisors…' : '> 正在打开 指导老师…'], go: '#advisors' };
+                case 'join':
+                    return { lines: [l === 'en' ? '> opening join steps…' : '> 正在打开 加入步骤…'], go: '#join' };
+                case 'path': case 'pathfinder':
+                    return { lines: [l === 'en' ? '> opening Path Finder…' : '> 正在打开 路线生成器…'], go: '.pf-section' };
+                case 'docs': case 'knowledge': case 'wiki':
+                    return { lines: [l === 'en' ? '> opening knowledge base…' : '> 正在打开 知识库…'], go: '#knowledge' };
+                case 'github':
+                    return { lines: ['→ https://github.com/GrayOcean0133'], open: 'https://github.com/GrayOcean0133' };
+                case 'clear': case 'cls':
+                    return { clear: true };
+                case 'sudo': case 'su':
+                    return { lines: [l === 'en' ? 'Permission denied: nice try 😏' : '权限拒绝：想得美 😏'] };
+                case 'matrix':
+                    return { lines: [l === 'en' ? 'Wake up, Neo… the matrix has you. 🟢' : '醒醒，Neo… 你已身处矩阵。🟢'] };
+                default:
+                    return { lines: [(l === 'en' ? 'command not found: ' : '未找到命令：') + cmd,
+                                     l === 'en' ? "type 'help' for commands." : "输入 'help' 查看可用命令。"] };
+            }
+        }
+
+        // 输入行
+        const inputLine = document.createElement('div');
+        inputLine.className = 't-input-line';
+        inputLine.hidden = true;
+        const prompt = document.createElement('span');
+        prompt.className = 't-prompt';
+        prompt.textContent = 'ai-link@recruit:~$';
+        const input = document.createElement('input');
+        input.className = 't-input';
+        input.type = 'text';
+        input.setAttribute('autocomplete', 'off');
+        input.setAttribute('autocapitalize', 'off');
+        input.setAttribute('spellcheck', 'false');
+        input.setAttribute('aria-label', '终端命令输入 / terminal command input');
+        inputLine.appendChild(prompt);
+        inputLine.appendChild(input);
+        body.appendChild(inputLine);
+
+        function addLine(text, cls) {
+            const div = document.createElement('div');
+            div.className = 't-line ' + cls;
+            div.textContent = text;
+            body.insertBefore(div, inputLine);
+            return div;
+        }
+        function scrollBottom() { body.scrollTop = body.scrollHeight; }
+
+        input.addEventListener('keydown', function (e) {
+            if (e.key !== 'Enter') return;
+            const raw = input.value;
+            input.value = '';
+            addLine('ai-link@recruit:~$ ' + raw, 't-cmd-echo');
+            const res = run(raw);
+            if (res.clear) {
+                body.querySelectorAll('.t-cmd-echo, .t-cmd-out').forEach(function (n) { n.remove(); });
+                scrollBottom();
+                return;
+            }
+            (res.lines || []).forEach(function (line) { addLine(line, 't-cmd-out'); });
+            if (res.open) { try { window.open(res.open, '_blank', 'noopener'); } catch (err) {} }
+            if (res.go) {
+                const t = document.querySelector(res.go);
+                if (t) setTimeout(function () { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 120);
+            }
+            scrollBottom();
+        });
+
+        // 点终端任意处聚焦输入
+        body.addEventListener('click', function (e) {
+            if (inputLine.hidden) return;
+            if (e.target.closest('a')) return;
+            input.focus();
+        });
+
+        // boot 打完字再亮出输入行；防御性兜底，万一没收到事件
+        function reveal() {
+            if (!inputLine.hidden) return;
+            inputLine.hidden = false;
+            addLine(L() === 'en' ? "// type 'help' and hit Enter ↵" : "// 输入 'help' 回车试试 ↵", 't-cmd-out t-hint');
+            scrollBottom();
+        }
+        document.addEventListener('terminal-boot-done', reveal, { once: true });
+        const recruit = document.getElementById('recruit');
+        if (!recruit) setTimeout(reveal, 1200);
     })();
     </script>
 </body>

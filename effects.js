@@ -306,3 +306,39 @@
 
     sections.forEach(function (s) { observer.observe(s); });
 })();
+
+/* ===== 键盘区段导航：↑ ↓ / J K / Home / End ===== */
+(function () {
+    var sections = Array.prototype.slice.call(document.querySelectorAll('main .snap-section[id]'));
+    if (!sections.length) return;
+
+    function currentIndex() {
+        var probe = window.scrollY + window.innerHeight * 0.4;
+        var idx = 0;
+        sections.forEach(function (s, i) { if (s.offsetTop <= probe) idx = i; });
+        return idx;
+    }
+    function go(target) {
+        var i = Math.max(0, Math.min(sections.length - 1, target));
+        sections[i].scrollIntoView({ behavior: 'smooth' });
+    }
+
+    window.addEventListener('keydown', function (e) {
+        if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
+        // 在输入框 / 可编辑区里打字时不抢键
+        var t = e.target;
+        var tag = (t && t.tagName ? t.tagName : '').toLowerCase();
+        if (tag === 'input' || tag === 'textarea' || tag === 'select' || (t && t.isContentEditable)) return;
+
+        switch (e.key) {
+            case 'ArrowDown': case 'j': case 'J':
+                e.preventDefault(); go(currentIndex() + 1); break;
+            case 'ArrowUp': case 'k': case 'K':
+                e.preventDefault(); go(currentIndex() - 1); break;
+            case 'Home':
+                e.preventDefault(); go(0); break;
+            case 'End':
+                e.preventDefault(); go(sections.length - 1); break;
+        }
+    });
+})();
