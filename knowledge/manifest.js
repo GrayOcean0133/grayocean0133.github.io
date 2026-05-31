@@ -30,6 +30,18 @@ window.AILINK_KB = {
             descEn: 'The circuit-layer view: signal parameters & modulation (AM/FM/QAM), the PCB signal chain from power to ground, and electromagnetic waves — propagation, antennas, path loss and multipath.',
             topics: ['电信号描述量', '调制 AM / FM / QAM', '电源 / 去耦 / 接地', 'UART / SPI 时序', '电磁波与天线', '路径损耗与多径'],
             scripts: ['gen_figures.m', 'gen_figures_2.m', 'gen_figures_3.m']
+        },
+        {
+            id: 'chapter3',
+            file: 'chapters/chapter3/chapter3.md',
+            order: 3,
+            status: 'done',
+            titleZh: '第三章 · 电路原理、PN 结与元器件',
+            titleEn: 'Ch.3 · Circuit Principles, PN Junction & Components',
+            descZh: '补齐器件层拼图：从电路基本物理量与三大定律、伏安特性与工作点，到半导体与 PN 结的物理本质，再系统梳理电阻/电容/电感、二极管家族、BJT 与 MOSFET 等常用元器件。',
+            descEn: 'The device-layer view: basic circuit quantities and the three core laws, V-I characteristics and operating points, semiconductors and the PN junction, then a systematic tour of R/L/C, the diode family, BJTs and MOSFETs.',
+            topics: ['基本物理量与定律', '伏安特性与工作点', '半导体与 PN 结', '电阻 / 电容 / 电感', '二极管家族', 'BJT / MOSFET'],
+            scripts: ['gen_figures.m', 'gen_figures_2.m']
         }
     ],
     docs: [
