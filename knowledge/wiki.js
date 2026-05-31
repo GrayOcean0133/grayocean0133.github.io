@@ -33,7 +33,57 @@
     var byId = {};
     groups.forEach(function (g) { g.items.forEach(function (it) { byId[it.id] = it; it._group = g; }); });
 
-    var libsReady = (typeof marked !== 'undefined' && typeof katex !== 'undefined');
+    /* ---------------- 渲染库就绪保障（防止 vendor 脚本偶发加载失败） ----------------
+       marked / katex 是 render-blocking 脚本，正常情况下 wiki.js 执行时已就绪。
+       但网络抖动可能导致某个 vendor 脚本加载失败 → 全局缺失 → 章节渲染不出来。
+       这里改成「运行时实时检测 + 缺失则动态补载（带去重）」，让知识库能自愈，
+       不再卡死在「请刷新」。 */
+    function libsAvail() {
+        return typeof marked !== 'undefined' && typeof katex !== 'undefined';
+    }
+    function loadScript(src) {
+        return new Promise(function (resolve, reject) {
+            // 已存在同源 script 标签则复用其加载结果
+            var existing = document.querySelector('script[data-wiki-lib="' + src + '"]');
+            if (existing) {
+                existing.addEventListener('load', resolve);
+                existing.addEventListener('error', function () { reject(new Error('load failed: ' + src)); });
+                return;
+            }
+            var s = document.createElement('script');
+            s.src = src;
+            s.async = false;
+            s.setAttribute('data-wiki-lib', src);
+            s.onload = resolve;
+            s.onerror = function () { reject(new Error('load failed: ' + src)); };
+            document.head.appendChild(s);
+        });
+    }
+    var libPromise = null;
+    function ensureLibs() {
+        if (libsAvail()) return Promise.resolve();
+        if (libPromise) return libPromise;
+        var jobs = [];
+        if (typeof marked === 'undefined') jobs.push(loadScript(ROOT + 'vendor/marked.min.js'));
+        if (typeof katex === 'undefined') jobs.push(loadScript(ROOT + 'vendor/katex.min.js'));
+        libPromise = Promise.all(jobs).then(function () {
+            if (!libsAvail()) throw new Error('renderer libs missing');
+        }).catch(function (err) { libPromise = null; throw err; });
+        return libPromise;
+    }
+    function fetchText(url, tries) {
+        tries = tries == null ? 3 : tries;
+        return fetch(url, { cache: 'default' }).then(function (r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.text();
+        }).catch(function (err) {
+            if (tries > 1) {
+                return new Promise(function (res) { setTimeout(res, 400); })
+                    .then(function () { return fetchText(url, tries - 1); });
+            }
+            throw err;
+        });
+    }
 
     /* ---------------- markdown + math 渲染 ---------------- */
     function slugify(t) {
@@ -167,38 +217,53 @@
     }
 
     var cache = {};
+    function paintDoc(entry) {
+        var baseDir = ROOT + entry.file.replace(/[^/]+$/, '');
+        var out = renderMarkdown(cache[entry.id], baseDir);
+        artEl.innerHTML = articleHead(entry) + tocHtml(out.headings) +
+            '<div class="reader-content">' + out.html + '</div>';
+        wireToc();
+    }
+    function showLoading() {
+        artEl.innerHTML = '<div class="wiki-state"><span class="i18n-zh">加载中…</span><span class="i18n-en">Loading…</span></div>';
+    }
+    function showLoadError(id, err) {
+        artEl.innerHTML = '<div class="wiki-state wiki-error"><p><span class="i18n-zh">资料加载失败（' +
+            esc(err.message) + '）。</span><span class="i18n-en">Failed to load (' + esc(err.message) + ').</span></p>' +
+            '<p><button type="button" class="wiki-retry"><span class="i18n-zh">重试</span><span class="i18n-en">Retry</span></button></p>' +
+            '<p class="wiki-error-hint"><span class="i18n-zh">若在本地直接打开，请改用本地服务器或访问线上站点。</span>' +
+            '<span class="i18n-en">If opened from a local file, use a local server or the live site.</span></p></div>';
+        var btn = artEl.querySelector('.wiki-retry');
+        if (btn) btn.addEventListener('click', function () { openDoc(id, {}); });
+    }
     function openDoc(id, opts) {
         opts = opts || {};
         var entry = byId[id];
         if (!entry) { showWelcome(); return; }
-        if (!libsReady) {
-            artEl.innerHTML = '<div class="wiki-state wiki-error"><span class="i18n-zh">渲染组件未就绪，请刷新页面。</span>' +
-                '<span class="i18n-en">Renderer not ready, please refresh.</span></div>';
-            return;
-        }
         setActive(id);
         setCrumb(entry);
         try { history.replaceState(null, '', '?kb=' + encodeURIComponent(id) + '#knowledge'); } catch (e) {}
         if (opts.scroll) sectionEl.scrollIntoView();
 
-        var baseDir = ROOT + entry.file.replace(/[^/]+$/, '');
-        function paint(md) {
-            var out = renderMarkdown(md, baseDir);
-            artEl.innerHTML = articleHead(entry) + tocHtml(out.headings) +
-                '<div class="reader-content">' + out.html + '</div>';
-            wireToc();
-        }
-        if (cache[id]) { paint(cache[id]); return; }
-        artEl.innerHTML = '<div class="wiki-state"><span class="i18n-zh">加载中…</span><span class="i18n-en">Loading…</span></div>';
-        fetch(ROOT + entry.file, { cache: 'no-cache' })
-            .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
-            .then(function (md) { cache[id] = md; paint(md); })
-            .catch(function (err) {
-                artEl.innerHTML = '<div class="wiki-state wiki-error"><p><span class="i18n-zh">资料加载失败（' +
-                    esc(err.message) + '）。</span><span class="i18n-en">Failed to load (' + esc(err.message) + ').</span></p>' +
-                    '<p><span class="i18n-zh">若在本地直接打开，请改用本地服务器或访问线上站点。</span>' +
-                    '<span class="i18n-en">Use a local server or the live site.</span></p></div>';
-            });
+        // 每次打开都推进 token：任何更晚的 open（快/慢路径）都会让先前在途的慢加载作废
+        var token = openDoc._token = (openDoc._token || 0) + 1;
+
+        // 快路径：库已就绪 + 正文已缓存 → 立即渲染，无闪烁
+        if (libsAvail() && cache[id] != null) { paintDoc(entry); return; }
+
+        // 慢路径：并行「确保渲染库就绪」与「拉取正文」，任一可自愈重试
+        showLoading();
+        Promise.all([
+            ensureLibs(),
+            cache[id] != null ? Promise.resolve(cache[id]) : fetchText(ROOT + entry.file)
+        ]).then(function (res) {
+            if (token !== openDoc._token) return;   // 期间又点了别的文档，丢弃旧结果
+            cache[id] = res[1];
+            paintDoc(entry);
+        }).catch(function (err) {
+            if (token !== openDoc._token) return;
+            showLoadError(id, err);
+        });
     }
 
     function wireToc() {
@@ -229,6 +294,7 @@
             '<div class="kb-card-cta"><span class="i18n-zh">开始阅读</span><span class="i18n-en">Read</span></div></a>';
     }
     function showWelcome() {
+        openDoc._token = (openDoc._token || 0) + 1;   // 作废在途的章节加载，避免覆盖欢迎页
         setActive(null);
         setCrumb(null);
         try { history.replaceState(null, '', '#knowledge'); } catch (e) {}

@@ -121,6 +121,22 @@
 
 .wiki-state { color: var(--text-gray); padding: 2.5rem 0; text-align: center; letter-spacing: 1px; }
 .wiki-error a { color: var(--primary); }
+.wiki-error-hint { font-size: 0.82rem; opacity: 0.7; margin-top: 0.6rem; }
+.wiki-retry {
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: #0a0a0a;
+    background: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: 6px;
+    padding: 0.4rem 1.4rem;
+    margin-top: 0.4rem;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, transform 0.1s ease;
+}
+.wiki-retry:hover { box-shadow: 0 0 14px rgba(0, 255, 65, 0.45); }
+.wiki-retry:active { transform: translateY(1px); }
 
 /* 文章标题区 */
 .wiki-art-head h1 { color: var(--text-light); font-size: 1.7rem; line-height: 1.25; margin-bottom: 0.2rem; }
