@@ -54,8 +54,9 @@ header {
 }
 
 .site-title {
+    font-family: 'Microsoft YaHei', '微软雅黑', 'PingFang SC', sans-serif;
     font-size: 2.2rem;
-    letter-spacing: 4px;
+    letter-spacing: 2px;
     margin-bottom: 0.5rem;
     color: var(--primary);
     text-shadow: 0 0 15px rgba(0, 255, 65, 0.7);
@@ -548,8 +549,55 @@ footer {
     box-shadow: 0 8px 24px rgba(0, 255, 65, 0.1);
 }
 
+/* 指导老师卡片：环绕旋转的 RGB 流光描边 + 同色外发光（仅边框，不染卡面）。
+   ::after = 卡面+conic 描边；::before = 模糊光晕（内侧被 ::after 遮住，只在卡片外缘发光）。*/
+@property --advisor-ang {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+@keyframes advisor-rgb-spin {
+    to { --advisor-ang: 360deg; }
+}
 .member-card-advisor {
-    border-color: rgba(0, 255, 65, 0.2);
+    position: relative;
+    z-index: 0;
+    background: transparent;
+    border: none;
+    transition: transform 0.3s ease;
+}
+.member-card-advisor::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background:
+        linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+        conic-gradient(from var(--advisor-ang), #ff0040, #ff8a00, #ffe600, #37ff00, #00e5ff, #3b5bff, #c800ff, #ff0040) border-box;
+    animation: advisor-rgb-spin 5s linear infinite;
+}
+.member-card-advisor::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    z-index: -2;
+    border-radius: 14px;
+    background: conic-gradient(from var(--advisor-ang), #ff0040, #ff8a00, #ffe600, #37ff00, #00e5ff, #3b5bff, #c800ff, #ff0040);
+    filter: blur(11px);
+    opacity: 0.65;
+    animation: advisor-rgb-spin 5s linear infinite;
+}
+.member-card-advisor:hover {
+    transform: translateY(-3px);
+    box-shadow: none;
+}
+.member-card-advisor:hover::before { opacity: 0.9; }
+/* 静态回退（不支持 @property 时 conic 不旋转，仍是彩虹描边+光晕）；并尊重减少动态偏好 */
+@media (prefers-reduced-motion: reduce) {
+    .member-card-advisor::after,
+    .member-card-advisor::before { animation: none; }
 }
 
 .member-card-thanks {
@@ -561,6 +609,45 @@ footer {
     font-weight: 700;
     color: var(--text-light);
     margin-bottom: 0.4rem;
+}
+
+/* 竞赛获奖徽章：标在成员名字后，号码牌随级别配色（颜色对应奖项 data-tier）。
+   组织/县区=白 校级=蓝 省市=紫 国家/SCI二区=金 国家二等=红 SCI四区=绿 一等/一区=RGB */
+.member-award {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.3rem;
+    margin-left: 0.35rem;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    background: #b478ff;            /* 默认紫（省市级）*/
+    border-radius: 999px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.member-award[data-tier="org"],
+.member-award[data-tier="county"]          { background: #e8e8e8; color: #0a0a0a; }
+.member-award[data-tier="school"]          { background: #8fd0ff; color: #08263d; }
+.member-award[data-tier="provincial"],
+.member-award[data-tier="sci-q3"]          { background: #b478ff; color: #fff; }
+.member-award[data-tier="national"],
+.member-award[data-tier="sci-q2"]          { background: #ffd24a; color: #3a2c00; }
+.member-award[data-tier="national-second"] { background: #ff5a5a; color: #fff; }
+.member-award[data-tier="sci-q4"]          { background: #3ddc84; color: #06301c; }
+.member-award[data-tier="national-first"],
+.member-award[data-tier="sci-q1"],
+.member-award[data-tier="sci-q1-first"] {
+    color: #fff;
+    background: linear-gradient(90deg, #ff0040, #ff8a00, #ffe600, #37ff00, #00e5ff, #3b5bff, #c800ff, #ff0040);
+    background-size: 300% 100%;
+    animation: award-rgb-x 6s linear infinite;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .member-role {
@@ -1031,6 +1118,184 @@ footer {
     .metric-num { font-size: 1.4rem; }
 }
 
+/* ===== Competition Awards 竞赛奖项 ===== */
+.award-stats { margin-bottom: 1.6rem; }
+
+.award-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    width: 100%;
+}
+
+.award-card {
+    position: relative;
+    background: var(--card-bg);
+    border: 1px solid rgba(0, 255, 65, 0.12);
+    border-radius: 12px;
+    padding: 1.4rem 1.5rem 1.3rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.award-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(0, 255, 100, 0.16);
+    border-color: rgba(0, 255, 100, 0.3);
+}
+
+/* —— 分级配色体系（--tier 同时驱动色条 / 徽章 / 年份 / 项目符号）——
+   组织级 / 县区级：白    校级：蓝    省市级 / SCI三区：紫
+   国家级 / SCI二区：金    国家级二等：红    SCI四区：绿
+   国家级一等 / SCI一区 / 一区一作：RGB 流光（一区一作加皇冠）        */
+.award-card { --tier: #b478ff; }                 /* 默认紫（省市级）*/
+.award-card[data-tier="org"],
+.award-card[data-tier="county"]          { --tier: #e8e8e8; }   /* 白 */
+.award-card[data-tier="school"]          { --tier: #8fd0ff; }   /* 蓝 */
+.award-card[data-tier="provincial"],
+.award-card[data-tier="sci-q3"]          { --tier: #b478ff; }   /* 紫 */
+.award-card[data-tier="national"],
+.award-card[data-tier="sci-q2"]          { --tier: #ffd24a; }   /* 金 */
+.award-card[data-tier="national-second"] { --tier: #ff5a5a; }   /* 红 */
+.award-card[data-tier="sci-q4"]          { --tier: #3ddc84; }   /* 绿 */
+.award-card[data-tier="national-first"],
+.award-card[data-tier="sci-q1"],
+.award-card[data-tier="sci-q1-first"]    { --tier: #c46bff; }   /* RGB 卡的年份/符号取色 */
+
+/* 左侧色条：纯色发光条（颜色随 --tier，向卡片内侧辉光）*/
+.award-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--tier);
+    box-shadow: 0 0 8px var(--tier), 0 0 16px color-mix(in srgb, var(--tier) 55%, transparent);
+}
+
+/* 光柱上叠加的烟雾特效：沿左侧光柱极速翻涌的浓彩烟雾（颜色随 --tier，screen 叠加发光）*/
+@keyframes award-smoke {
+    from { background-position: 0 0,     0 0,      0 0,     0 0;      }
+    to   { background-position: 0 -90px, 0 -120px, 0 -70px, 0 -150px; }
+}
+.award-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 100%;
+    pointer-events: none;
+    background:
+        radial-gradient(14px 26px at 8px 15%,  color-mix(in srgb, var(--tier) 78%, transparent), transparent 68%),
+        radial-gradient(12px 20px at 14px 50%, color-mix(in srgb, var(--tier) 64%, transparent), transparent 70%),
+        radial-gradient(10px 17px at 5px 80%,  color-mix(in srgb, var(--tier) 56%, transparent), transparent 72%),
+        radial-gradient(9px 15px at 16px 35%,  color-mix(in srgb, var(--tier) 48%, transparent), transparent 72%);
+    background-size: 100% 90px, 100% 120px, 100% 70px, 100% 150px;
+    background-repeat: repeat-y;
+    filter: blur(4px);
+    mix-blend-mode: screen;
+    opacity: 1;
+    animation: award-smoke 2.2s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+    .award-card::after { animation: none; }
+}
+
+.award-tier {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 1px;
+    padding: 0.2rem 0.65rem;
+    border-radius: 4px;
+    margin-bottom: 0.7rem;
+    color: var(--tier);
+    background: color-mix(in srgb, var(--tier) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--tier) 45%, transparent);
+}
+
+/* —— RGB 流光（国家级一等 / SCI 一区 / 一区一作）—— */
+@keyframes award-rgb-y { 0% { background-position: 0 0; }   100% { background-position: 0 -300%; } }
+@keyframes award-rgb-x { 0% { background-position: 0 0; }   100% { background-position: 300% 0; } }
+.award-card[data-tier="national-first"]::before,
+.award-card[data-tier="sci-q1"]::before,
+.award-card[data-tier="sci-q1-first"]::before {
+    background: linear-gradient(180deg, #ff0040, #ff8a00, #ffe600, #37ff00, #00e5ff, #3b5bff, #c800ff, #ff0040);
+    background-size: 100% 300%;
+    animation: award-rgb-y 6s linear infinite;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.35);
+}
+.award-card[data-tier="national-first"] .award-tier,
+.award-card[data-tier="sci-q1"] .award-tier,
+.award-card[data-tier="sci-q1-first"] .award-tier {
+    color: #fff;
+    border-color: transparent;
+    background: linear-gradient(90deg, #ff0040, #ff8a00, #ffe600, #37ff00, #00e5ff, #3b5bff, #c800ff, #ff0040);
+    background-size: 300% 100%;
+    animation: award-rgb-x 6s linear infinite;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+/* 一区一作：皇冠图标 */
+.award-card[data-tier="sci-q1-first"] .award-tier::before { content: '👑 '; }
+
+.award-name {
+    font-size: 1.12rem;
+    color: var(--text-light);
+    line-height: 1.45;
+    margin-bottom: 0.5rem;
+}
+
+/* 奖项等级：荧光黄高亮（不随级别变色，强制炸眼睛）*/
+.award-grade {
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #eaff00;
+    text-shadow: 0 0 5px rgba(234, 255, 0, 0.85), 0 0 14px rgba(234, 255, 0, 0.45);
+    margin-bottom: 0.7rem;
+}
+
+.award-meta {
+    font-size: 0.85rem;
+    color: var(--text-gray);
+}
+.award-meta .award-year {
+    display: inline-block;
+    font-family: 'Consolas', 'Courier New', monospace;
+    color: var(--tier);
+    letter-spacing: 1px;
+    margin-bottom: 0.45rem;
+}
+
+/* 获奖人：一人一行 */
+.award-team {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.award-team li {
+    position: relative;
+    padding-left: 0.9rem;
+    line-height: 1.8;
+}
+.award-team li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--tier);
+}
+
+@media (max-width: 700px) {
+    .award-grid { grid-template-columns: 1fr; }
+    .award-card { padding: 1.2rem 1.3rem; }
+    .award-name { font-size: 1.05rem; }
+}
+
 /* =============================================
    AK-style 视觉系统（参考鹰角官网，结构性元素）
    ============================================= */
@@ -1361,15 +1626,19 @@ body.intro-active {
 }
 
 .intro-line-main {
-    font-size: clamp(1.8rem, 7vw, 3.4rem);
-    letter-spacing: 0.4em;
+    /* 品牌：微软雅黑，字距略收紧 */
+    font-family: 'Microsoft YaHei', '微软雅黑', 'PingFang SC', sans-serif;
+    font-size: clamp(1.35rem, 5.8vw, 2.9rem);
+    letter-spacing: 0.12em;
     margin-bottom: 0.8rem;
     font-weight: 700;
 }
 
 .intro-line-sub {
+    /* Slogan：Cascadia Code，词内字距收紧（词间停顿由打字逻辑加长）*/
+    font-family: 'Cascadia Code', 'Cascadia Mono', 'Consolas', monospace;
     font-size: clamp(0.78rem, 2.2vw, 1.1rem);
-    letter-spacing: 0.3em;
+    letter-spacing: 0.16em;
     opacity: 0.78;
 }
 

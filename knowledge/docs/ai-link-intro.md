@@ -1,6 +1,6 @@
 # AI-Link 智能装备社团 · 综合介绍材料（修订版）
 
-> **AI-LINK GROUP** ｜ Slogan：**Think · Build · Connect**  
+> **AI-LINK COMMUNITY** ｜ Slogan：**Think · Build · Connect**  
 > 隶属于温州商学院信息工程学院 ｜ 社团展示网站：<https://grayocean0133.github.io/about.html>
 
 AI-Link 智能装备社团聚焦“**智能装备 + 人工智能**”方向，由温州商学院信息工程学院两位博士教师共同担任指导老师。社团依托导师团队在计算机视觉、生成式 AI、智能交通、深度学习等方向的研究积累，组织成员开展算法研发、硬件集成、智能装备原型设计与学科竞赛实践。目前，社团已孵化出以“**路愈者 RobotHealer 道路病害检测系统**”为代表的产学研工程项目，并正推进试点应用与产业化探索。
