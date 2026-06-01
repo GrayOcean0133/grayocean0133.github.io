@@ -1,21 +1,116 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="0; url=index.html#knowledge">
-    <link rel="canonical" href="index.html#knowledge">
     <title>AI-LINK COMMUNITY · 知识库</title>
+
+    <meta name="description" content="AI-Link 社团内部技术学习资料：信号处理、电信号与电磁波、电路原理与元器件等课程讲义，含公式、图示与可下载绘图脚本。独立阅读页，长文阅读不打断。">
+    <meta name="author" content="AI-LINK COMMUNITY">
+    <meta name="theme-color" content="#00ff41">
+    <link rel="canonical" href="https://grayocean0133.github.io/knowledge.html">
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="favicon.svg">
+
+    <link rel="stylesheet" href="css.css">
+    <link rel="stylesheet" href="knowledge/vendor/katex.min.css">
+    <link rel="stylesheet" href="knowledge/knowledge.css">
+
     <script>
+    // 在渲染前确定语言，避免首次加载闪一下 zh+en 同显（与 index.html 共用 localStorage 键）
     (function () {
-        // 兼容旧链接 knowledge/reader.html?id=xxx → index.html?kb=xxx#knowledge
-        var id = new URLSearchParams(location.search).get('id')
-              || new URLSearchParams(location.search).get('kb');
-        location.replace('index.html' + (id ? '?kb=' + encodeURIComponent(id) : '') + '#knowledge');
+        var lang = null;
+        try { lang = localStorage.getItem('aiLinkLang'); } catch (e) {}
+        if (!lang) {
+            var b = (navigator.language || 'zh').toLowerCase();
+            lang = b.indexOf('en') === 0 ? 'en' : 'zh';
+        }
+        document.documentElement.setAttribute('data-lang', lang);
+        document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'zh-CN');
+    })();
+    // 兼容旧深链 ?id=xxx → ?kb=xxx（wiki.js 读取 kb 参数）
+    (function () {
+        var p = new URLSearchParams(location.search);
+        if (!p.get('kb') && p.get('id')) {
+            try { history.replaceState(null, '', '?kb=' + encodeURIComponent(p.get('id'))); } catch (e) {}
+        }
     })();
     </script>
+
+    <!-- 独立阅读页专属布局：关闭整页 snap，保证长文阅读不被打断 -->
+    <style>
+        html { scroll-snap-type: none; }
+        .kb-page main { max-width: 1240px; margin: 0 auto; padding: 1.4rem 5% 4rem; }
+        .kb-page #knowledge { width: 100%; }
+        .kb-page .ak-section-label { margin-top: 0.5rem; }
+        /* 头部滚走后侧栏贴近顶部常驻 */
+        .kb-page .wiki-sidebar { top: 1.5rem; max-height: calc(100vh - 3rem); }
+        .kb-back {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            color: var(--text-gray); text-decoration: none; font-size: 0.85rem;
+            margin-bottom: 0.6rem; transition: color 0.2s ease;
+        }
+        .kb-back:hover { color: var(--primary); }
+        @media (max-width: 860px) {
+            .kb-page .wiki-sidebar { position: static; max-height: none; }
+        }
+    </style>
 </head>
-<body>
-    <p>正在跳转到 <a href="index.html#knowledge">AI-Link 知识库</a>...</p>
+<body class="kb-page">
+    <div class="matrix-grid"></div>
+
+    <header>
+        <button type="button" class="lang-toggle" aria-label="切换语言 / Switch language">
+            <span class="lang-opt" data-lang-set="zh">中</span>
+            <span class="lang-sep">|</span>
+            <span class="lang-opt" data-lang-set="en">EN</span>
+        </button>
+        <a class="site-title brand-link" href="index.html">AI-LINK COMMUNITY</a>
+        <div class="site-subtitle">Knowledge Base</div>
+        <div class="divider"></div>
+        <nav class="nav-links">
+            <a href="index.html"><span class="nav-en">HOME</span> <span class="nav-zh">首页</span></a>
+            <a href="index.html#recruit"><span class="nav-en">JOIN</span> <span class="nav-zh">招新</span></a>
+            <a href="index.html#advisors"><span class="nav-en">ABOUT</span> <span class="nav-zh">关于</span></a>
+            <a href="knowledge.html" class="active"><span class="nav-en">KNOWLEDGE</span> <span class="nav-zh">学习</span></a>
+        </nav>
+        <div class="divider"></div>
+    </header>
+
+    <main>
+        <!-- wiki.js 依赖 id="knowledge" 容器；这里不是 snap-section，整页自然滚动 -->
+        <section id="knowledge">
+            <a class="kb-back" href="index.html#knowledge"><span class="i18n-zh">← 返回首页</span><span class="i18n-en">← Back to home</span></a>
+            <div class="ak-section-label">
+                <span class="ak-label-en">Knowledge Base</span>
+                <span class="ak-label-zh">知识库</span>
+            </div>
+            <div class="wiki">
+                <aside class="wiki-sidebar" aria-label="知识库导航">
+                    <div class="wiki-search-wrap">
+                        <input type="search" id="wikiSearch" class="wiki-search"
+                               placeholder="搜索资料… / Search…" aria-label="搜索资料">
+                    </div>
+                    <nav class="wiki-nav" id="wikiNav"></nav>
+                </aside>
+                <section class="wiki-main" id="wikiMain">
+                    <div class="wiki-breadcrumb" id="wikiCrumb"></div>
+                    <article id="wikiArticle"></article>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div>2026 AI-LINK COMMUNITY © ALL RIGHTS RESERVED</div>
+        <span class="site-url">grayocean0133.github.io</span>
+    </footer>
+
+    <script src="knowledge/vendor/marked.min.js"></script>
+    <script src="knowledge/vendor/katex.min.js"></script>
+    <script src="knowledge/manifest.js"></script>
+    <script src="knowledge/wiki.js"></script>
+    <script src="effects.js"></script>
 </body>
 </html>

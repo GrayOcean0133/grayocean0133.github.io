@@ -184,6 +184,8 @@
 .wiki-welcome-title { color: var(--text-light); font-size: 1.6rem; margin-bottom: 0.5rem; }
 .wiki-welcome-sub { color: var(--text-gray); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.6rem; }
 .kb-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+/* 首页知识库入口的「进入知识库」按钮区 */
+.kb-entry-actions { margin-top: 1.8rem; display: flex; justify-content: center; }
 .kb-card {
     position: relative; display: flex; flex-direction: column; background: var(--card-bg);
     border: 1px solid rgba(0, 200, 255, 0.1); border-radius: 12px; padding: 1.3rem 1.4rem;

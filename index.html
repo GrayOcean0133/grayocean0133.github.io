@@ -33,7 +33,6 @@
     <meta name="twitter:image" content="https://grayocean0133.github.io/og-image.svg">
 
     <link rel="stylesheet" href="css.css">
-    <link rel="stylesheet" href="knowledge/vendor/katex.min.css">
     <link rel="stylesheet" href="knowledge/knowledge.css">
     <script>
     // 在 CSS / body 渲染之前确定语言，避免首次加载闪一下 zh+en 同显
@@ -855,25 +854,22 @@
             </div>
         </section>
 
-        <!-- 9 · Knowledge Base (wiki) -->
+        <!-- 9 · Knowledge Base (入口：完整阅读在独立页 knowledge.html，避免整页滚动打断长文) -->
         <section id="knowledge" class="snap-section snap-knowledge">
             <div class="snap-inner">
                 <div class="ak-section-label">
                     <span class="ak-label-en">Knowledge Base</span>
                     <span class="ak-label-zh">知识库</span>
                 </div>
-                <div class="wiki">
-                    <aside class="wiki-sidebar" aria-label="知识库导航">
-                        <div class="wiki-search-wrap">
-                            <input type="search" id="wikiSearch" class="wiki-search"
-                                   placeholder="搜索资料… / Search…" aria-label="搜索资料">
-                        </div>
-                        <nav class="wiki-nav" id="wikiNav"></nav>
-                    </aside>
-                    <section class="wiki-main" id="wikiMain">
-                        <div class="wiki-breadcrumb" id="wikiCrumb"></div>
-                        <article id="wikiArticle"></article>
-                    </section>
+                <p class="section-intro">
+                    <span class="i18n-zh">社团内部技术学习资料，由成员与导师共同整理。完整阅读在独立页面进行，长文阅读不被打断（含公式、图示与可下载绘图脚本）。</span>
+                    <span class="i18n-en">The club’s internal learning materials. Full reading happens on a dedicated page so long articles aren’t interrupted — with formulas, figures and downloadable plotting scripts.</span>
+                </p>
+                <div class="kb-grid" id="kbEntryGrid"></div>
+                <div class="kb-entry-actions">
+                    <a class="btn btn-primary" href="knowledge.html">
+                        <span class="i18n-zh">进入知识库 →</span><span class="i18n-en">Enter Knowledge Base →</span>
+                    </a>
                 </div>
             </div>
         </section>
@@ -889,10 +885,36 @@
         </div>
     </footer>
 
-    <script src="knowledge/vendor/marked.min.js"></script>
-    <script src="knowledge/vendor/katex.min.js"></script>
     <script src="knowledge/manifest.js"></script>
-    <script src="knowledge/wiki.js"></script>
+    <script>
+    /* 知识库入口卡片：读取 manifest，渲染为跳转到独立阅读页 knowledge.html?kb=<id> 的卡片 */
+    (function () {
+        var grid = document.getElementById('kbEntryGrid');
+        var KB = window.AILINK_KB;
+        if (!grid || !KB) return;
+        function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+        function card(it, ord) {
+            var top = ord ? '<span class="kb-card-order">' + (ord < 10 ? '0' + ord : ord) + '</span>'
+                          : '<span class="kb-card-order">★</span>';
+            var badge = it.status === 'draft'
+                ? '<span class="kb-status kb-status-draft"><span class="i18n-zh">连载中</span><span class="i18n-en">Draft</span></span>'
+                : '<span class="kb-status"><span class="i18n-zh">已完结</span><span class="i18n-en">Complete</span></span>';
+            var topics = (it.topics || []).map(function (t) { return '<span class="kb-topic">' + esc(t) + '</span>'; }).join('');
+            return '<a class="kb-card" href="knowledge.html?kb=' + encodeURIComponent(it.id) + '">' +
+                '<div class="kb-card-top">' + top + badge + '</div>' +
+                '<div class="kb-card-title">' + esc(it.titleZh) + '</div>' +
+                '<div class="kb-card-title-en">' + esc(it.titleEn) + '</div>' +
+                '<div class="kb-desc"><span class="i18n-zh">' + esc(it.descZh) + '</span>' +
+                '<span class="i18n-en">' + esc(it.descEn || it.descZh) + '</span></div>' +
+                (topics ? '<div class="kb-topics">' + topics + '</div>' : '') +
+                '<div class="kb-card-cta"><span class="i18n-zh">开始阅读</span><span class="i18n-en">Read</span></div></a>';
+        }
+        var chapters = (KB.chapters || []).slice().sort(function (a, b) { return (a.order || 0) - (b.order || 0); });
+        var html = chapters.map(function (it) { return card(it, it.order || 0); }).join('') +
+                   (KB.docs || []).map(function (it) { return card(it, 0); }).join('');
+        grid.innerHTML = html;
+    })();
+    </script>
     <script src="effects.js"></script>
 
     <!-- D20 -->
