@@ -1545,6 +1545,16 @@ html {
     scroll-snap-type: y proximity;
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
+    /* 隐藏整页滚动条（仍可正常滚动）——Firefox / 旧 Edge */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+/* 隐藏整页滚动条 —— Chrome / Safari / 新 Edge */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
 }
 
 /* ========= Header: 砍掉 .scrolled 双态机制 =========
