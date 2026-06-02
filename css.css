@@ -611,43 +611,108 @@ footer {
     margin-bottom: 0.4rem;
 }
 
-/* 竞赛获奖徽章：标在成员名字后，号码牌随级别配色（颜色对应奖项 data-tier）。
-   组织/县区=白 校级=蓝 省市=紫 国家/SCI二区=金 国家二等=红 SCI四区=绿 一等/一区=RGB */
-.member-award {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 1.25rem;
-    height: 1.25rem;
-    padding: 0 0.3rem;
+/* 「正在开发」转动齿轮：标记参与在研项目（路愈者）的成员 */
+@keyframes gear-spin { to { transform: rotate(360deg); } }
+.dev-gear {
+    display: inline-block;
+    width: 0.82em;
+    height: 0.82em;
     margin-left: 0.35rem;
-    font-family: 'Consolas', 'Courier New', monospace;
-    font-size: 0.78rem;
-    font-weight: 700;
+    vertical-align: -0.08em;
+    background-color: var(--primary);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Cpath%20fill='%23fff'%20d='M19.14%2012.94a7.49%207.49%200%200%200%20.05-.94%207.49%207.49%200%200%200-.05-.94l2.03-1.58a.5.5%200%200%200%20.12-.64l-1.92-3.32a.5.5%200%200%200-.61-.22l-2.39.96a7%207%200%200%200-1.62-.94l-.36-2.54a.5.5%200%200%200-.5-.42h-3.84a.5.5%200%200%200-.5.42l-.36%202.54a7%207%200%200%200-1.62.94l-2.39-.96a.5.5%200%200%200-.61.22L2.74%208.84a.5.5%200%200%200%20.12.64l2.03%201.58a7.49%207.49%200%200%200%200%201.88l-2.03%201.58a.5.5%200%200%200-.12.64l1.92%203.32a.5.5%200%200%200%20.61.22l2.39-.96a7%207%200%200%200%201.62.94l.36%202.54a.5.5%200%200%200%20.5.42h3.84a.5.5%200%200%200%20.5-.42l.36-2.54a7%207%200%200%200%201.62-.94l2.39.96a.5.5%200%200%200%20.61-.22l1.92-3.32a.5.5%200%200%200-.12-.64zM12%2015.5A3.5%203.5%200%201%201%2012%208.5a3.5%203.5%200%200%201%200%207z'/%3E%3C/svg%3E") center / contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Cpath%20fill='%23fff'%20d='M19.14%2012.94a7.49%207.49%200%200%200%20.05-.94%207.49%207.49%200%200%200-.05-.94l2.03-1.58a.5.5%200%200%200%20.12-.64l-1.92-3.32a.5.5%200%200%200-.61-.22l-2.39.96a7%207%200%200%200-1.62-.94l-.36-2.54a.5.5%200%200%200-.5-.42h-3.84a.5.5%200%200%200-.5.42l-.36%202.54a7%207%200%200%200-1.62.94l-2.39-.96a.5.5%200%200%200-.61.22L2.74%208.84a.5.5%200%200%200%20.12.64l2.03%201.58a7.49%207.49%200%200%200%200%201.88l-2.03%201.58a.5.5%200%200%200-.12.64l1.92%203.32a.5.5%200%200%200%20.61.22l2.39-.96a7%207%200%200%200%201.62.94l.36%202.54a.5.5%200%200%200%20.5.42h3.84a.5.5%200%200%200%20.5-.42l.36-2.54a7%207%200%200%200%201.62-.94l2.39.96a.5.5%200%200%200%20.61-.22l1.92-3.32a.5.5%200%200%200-.12-.64zM12%2015.5A3.5%203.5%200%201%201%2012%208.5a3.5%203.5%200%200%201%200%207z'/%3E%3C/svg%3E") center / contain no-repeat;
+    animation: gear-spin 4s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) { .dev-gear { animation: none; } }
+
+/* 竞赛获奖徽章：名字后的「数字 + 发光流光下划线」，颜色对应奖项级别。
+   组织/县区=白 校级=蓝 省市=紫 国家/SCI二区=荧光黄 国家二等=红 SCI四区=绿 一等/一区=RGB */
+@keyframes award-underline {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+/* 有获奖的卡片：左侧信息 + 右侧单开一列放徽章 */
+.member-card:has(.member-awards) {
+    display: flex;
+    align-items: flex-start;      /* 徽章列顶端与人名对齐 */
+    gap: 0.7rem;
+}
+.member-card:has(.member-awards) > .member-main {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+.member-card:has(.member-awards) > .member-awards {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;          /* 多枚徽章水平居中、下划线等宽对齐 */
+    gap: 0.55rem;
+    margin: 0;
+}
+.member-award {
+    --aw: #b026ff;                  /* 默认紫（省市级）*/
+    position: relative;
+    display: inline-block;
+    min-width: 1.4rem;              /* 统一宽度 → 下划线等宽 */
+    padding: 0 0.25rem 0.28rem;     /* 底部留白给下划线 */
+    font-family: 'Orbitron', 'Consolas', monospace;
+    font-size: 1.2rem;              /* 与人名接近 */
+    font-weight: 800;
     line-height: 1;
-    color: #fff;
-    background: #b478ff;            /* 默认紫（省市级）*/
-    border-radius: 999px;
-    vertical-align: middle;
-    white-space: nowrap;
+    color: var(--aw);
+    text-align: center;
+    vertical-align: baseline;
+    text-shadow: 0 0 6px color-mix(in srgb, var(--aw) 55%, transparent);
+}
+/* 发光 + 流光下划线（数字落在下划线上方）*/
+.member-award::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, var(--aw) 28%, #fff 50%, var(--aw) 72%, transparent);
+    background-size: 220% 100%;
+    box-shadow: 0 0 7px var(--aw), 0 0 2px var(--aw);
+    animation: award-underline 2.6s linear infinite;
 }
 .member-award[data-tier="org"],
-.member-award[data-tier="county"]          { background: #e8e8e8; color: #0a0a0a; }
-.member-award[data-tier="school"]          { background: #8fd0ff; color: #08263d; }
+.member-award[data-tier="county"]          { --aw: #e8e8e8; }
+.member-award[data-tier="school"]          { --aw: #2f54b0; }
 .member-award[data-tier="provincial"],
-.member-award[data-tier="sci-q3"]          { background: #b478ff; color: #fff; }
+.member-award[data-tier="sci-q3"]          { --aw: #b026ff; }
 .member-award[data-tier="national"],
-.member-award[data-tier="sci-q2"]          { background: #ffd24a; color: #3a2c00; }
-.member-award[data-tier="national-second"] { background: #ff5a5a; color: #fff; }
-.member-award[data-tier="sci-q4"]          { background: #3ddc84; color: #06301c; }
+.member-award[data-tier="sci-q2"]          { --aw: #eaff00; }
+.member-award[data-tier="national-second"] { --aw: #ff1744; }
+.member-award[data-tier="sci-q4"]          { --aw: #3ddc84; }
+/* RGB 级别：数字彩虹裁切 + 下划线彩虹流光 */
 .member-award[data-tier="national-first"],
 .member-award[data-tier="sci-q1"],
 .member-award[data-tier="sci-q1-first"] {
-    color: #fff;
+    --aw: #c46bff;
+    color: transparent;
     background: linear-gradient(90deg, #ff0040, #ff8a00, #ffe600, #37ff00, #00e5ff, #3b5bff, #c800ff, #ff0040);
     background-size: 300% 100%;
+    -webkit-background-clip: text;
+            background-clip: text;
     animation: award-rgb-x 6s linear infinite;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+.member-award[data-tier="national-first"]::after,
+.member-award[data-tier="sci-q1"]::after,
+.member-award[data-tier="sci-q1-first"]::after {
+    background: linear-gradient(90deg, #ff0040, #ff8a00, #ffe600, #37ff00, #00e5ff, #3b5bff, #c800ff, #ff0040);
+    background-size: 300% 100%;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    animation: award-rgb-x 6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+    .member-award::after,
+    .member-award[data-tier="national-first"],
+    .member-award[data-tier="sci-q1"],
+    .member-award[data-tier="sci-q1-first"] { animation: none; }
 }
 
 .member-role {
@@ -1118,8 +1183,267 @@ footer {
     .metric-num { font-size: 1.4rem; }
 }
 
+/* ===== Projects in Progress 进行中的项目 ===== */
+.wip-card {
+    width: 100%;
+    background: var(--card-bg);
+    border: 1px solid rgba(0, 255, 65, 0.15);
+    border-radius: 12px;
+    padding: 1.8rem 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.wip-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 0.35rem;
+}
+.wip-name {
+    font-size: 1.5rem;
+    color: var(--primary);
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+}
+.wip-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.74rem;
+    letter-spacing: 1px;
+    color: #ffb000;
+    background: rgba(255, 176, 0, 0.1);
+    border: 1px solid rgba(255, 176, 0, 0.4);
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem;
+}
+.wip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ffb000;
+    box-shadow: 0 0 6px #ffb000;
+    animation: wip-pulse 1.4s ease-in-out infinite;
+}
+@keyframes wip-pulse {
+    0%, 100% { opacity: 1;   transform: scale(1); }
+    50%      { opacity: 0.4; transform: scale(0.7); }
+}
+.wip-sub {
+    font-size: 0.95rem;
+    color: var(--text-gray);
+    margin-bottom: 1rem;
+}
+.wip-summary {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-light);
+    margin-bottom: 1.1rem;
+}
+.wip-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.3rem;
+}
+.wip-progress { margin-bottom: 1.3rem; }
+.wip-progress-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    margin-bottom: 0.5rem;
+}
+.wip-progress-pct {
+    margin-left: auto;
+    font-family: 'Orbitron', 'Consolas', monospace;
+    font-weight: 700;
+    color: #ff1744;
+}
+.wip-progress-track {
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+}
+.wip-progress-bar {
+    width: var(--p, 0%);
+    height: 100%;
+    border-radius: 999px;
+    /* 国家级项目：红色流光进度条 */
+    background: linear-gradient(90deg, #ff1744, #ff6b8a, #ff1744);
+    background-size: 200% 100%;
+    box-shadow: 0 0 10px rgba(255, 23, 68, 0.55);
+    animation: award-rgb-x 3s linear infinite;
+}
+.wip-stage-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.45rem;
+    margin: 0 0 1.2rem;
+    padding: 0;
+}
+.wip-stage-list li {
+    position: relative;
+    font-size: 0.82rem;
+    color: var(--text-gray);
+    padding: 0.25rem 0.7rem 0.25rem 1.55rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+}
+.wip-stage-list li::before {
+    content: '○';
+    position: absolute;
+    left: 0.6rem;
+    color: var(--text-gray);
+}
+.wip-stage-list li.done {
+    color: var(--text-light);
+    border-color: rgba(0, 255, 65, 0.25);
+}
+.wip-stage-list li.done::before { content: '✓'; color: var(--primary); }
+.wip-stage-list li.partial {
+    color: var(--text-light);
+    border-color: rgba(0, 255, 65, 0.18);
+}
+.wip-stage-list li.partial::before { content: '◐'; color: #6cff9b; }
+.wip-stage-list li.current {
+    color: #ffb000;
+    border-color: rgba(255, 176, 0, 0.45);
+    background: rgba(255, 176, 0, 0.06);
+}
+.wip-stage-list li.current::before { content: '◉'; color: #ffb000; }
+/* 项目分工 · 各小组 */
+.wip-groups {
+    margin-top: 1.3rem;
+    padding-top: 1.1rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+}
+.wip-groups-title {
+    font-size: 0.78rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-gray);
+    margin-bottom: 0.85rem;
+}
+.wip-group-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 0.6rem;
+}
+.wip-group-list li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.6rem 0.85rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(0, 255, 65, 0.12);
+    border-left: 3px solid rgba(0, 255, 65, 0.45);
+    border-radius: 8px;
+}
+.wip-group-name {
+    font-size: 0.76rem;
+    letter-spacing: 0.5px;
+    color: var(--text-gray);
+}
+.wip-group-members {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.wip-foot {
+    margin-top: 1.2rem;
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    padding-top: 0.8rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+}
+@media (max-width: 700px) {
+    .wip-card { padding: 1.4rem 1.3rem; }
+    .wip-name { font-size: 1.25rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .wip-dot, .wip-progress-bar { animation: none; }
+}
+
 /* ===== Competition Awards 竞赛奖项 ===== */
 .award-stats { margin-bottom: 1.6rem; }
+
+/* —— 颜色图例（条带颜色 ↔ 奖项级别）—— */
+.award-legend {
+    width: 100%;
+    margin: 0 0 1.6rem;
+    padding: 1rem 1.2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--divider);
+    border-radius: 10px;
+}
+.award-legend-head {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 0.8rem;
+}
+.award-legend-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 1.4rem;
+}
+.award-legend-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-gray);
+}
+/* 图例小 bar：全部动态 —— 流光扫过 + 辉光呼吸（颜色随级别）*/
+@keyframes lg-glow {
+    0%, 100% { box-shadow: 0 0 4px var(--lb); }
+    50%      { box-shadow: 0 0 11px var(--lb); }
+}
+.lg-bar {
+    --lb: #e8e8e8;
+    flex: 0 0 auto;
+    width: 32px;
+    height: 6px;
+    border-radius: 3px;
+    /* 底色为主，仅一道窄高光扫过（避免白光盖住颜色）*/
+    background: linear-gradient(90deg, var(--lb) 0%, var(--lb) 42%, #fff 50%, var(--lb) 58%, var(--lb) 100%);
+    background-size: 240% 100%;
+    animation: award-underline 2.4s linear infinite, lg-glow 2.4s ease-in-out infinite;
+}
+.lg-bar[data-tier="org"],
+.lg-bar[data-tier="county"]          { --lb: #e8e8e8; }
+.lg-bar[data-tier="school"]          { --lb: #2f54b0; }
+.lg-bar[data-tier="provincial"]      { --lb: #b026ff; }
+.lg-bar[data-tier="national"]        { --lb: #eaff00; }
+.lg-bar[data-tier="national-second"] { --lb: #ff1744; }
+.lg-bar[data-tier="sci-q4"]          { --lb: #3ddc84; }
+.lg-bar[data-tier="national-first"] {
+    --lb: #c800ff;
+    background: linear-gradient(90deg, #ff0040, #ff8a00, #ffe600, #37ff00, #00e5ff, #3b5bff, #c800ff, #ff0040);
+    background-size: 300% 100%;
+    animation: award-rgb-x 6s linear infinite, lg-glow 2.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+    .lg-bar { animation: none; }
+}
+.award-legend-note {
+    margin: 0.85rem 0 0;
+    padding-top: 0.7rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--text-gray);
+}
+.award-legend-note strong { color: var(--text-light); font-weight: 600; }
 
 .award-grid {
     display: grid;
@@ -1146,17 +1470,17 @@ footer {
 
 /* —— 分级配色体系（--tier 同时驱动色条 / 徽章 / 年份 / 项目符号）——
    组织级 / 县区级：白    校级：蓝    省市级 / SCI三区：紫
-   国家级 / SCI二区：金    国家级二等：红    SCI四区：绿
+   国家级 / SCI二区：荧光黄    国家级二等：红    SCI四区：绿
    国家级一等 / SCI一区 / 一区一作：RGB 流光（一区一作加皇冠）        */
-.award-card { --tier: #b478ff; }                 /* 默认紫（省市级）*/
+.award-card { --tier: #b026ff; }                 /* 默认紫（省市级）*/
 .award-card[data-tier="org"],
 .award-card[data-tier="county"]          { --tier: #e8e8e8; }   /* 白 */
-.award-card[data-tier="school"]          { --tier: #8fd0ff; }   /* 蓝 */
+.award-card[data-tier="school"]          { --tier: #2f54b0; }   /* 藏青蓝 */
 .award-card[data-tier="provincial"],
-.award-card[data-tier="sci-q3"]          { --tier: #b478ff; }   /* 紫 */
+.award-card[data-tier="sci-q3"]          { --tier: #b026ff; }   /* 紫 */
 .award-card[data-tier="national"],
-.award-card[data-tier="sci-q2"]          { --tier: #ffd24a; }   /* 金 */
-.award-card[data-tier="national-second"] { --tier: #ff5a5a; }   /* 红 */
+.award-card[data-tier="sci-q2"]          { --tier: #eaff00; }   /* 荧光黄 */
+.award-card[data-tier="national-second"] { --tier: #ff1744; }   /* 红 */
 .award-card[data-tier="sci-q4"]          { --tier: #3ddc84; }   /* 绿 */
 .award-card[data-tier="national-first"],
 .award-card[data-tier="sci-q1"],
@@ -1245,6 +1569,17 @@ footer {
     line-height: 1.45;
     margin-bottom: 0.5rem;
 }
+
+/* 奖项等级 + 级别徽章 同行（级别跟在奖项等级后面，避免顶格被误解为赛事级别）*/
+.award-gradeline {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-bottom: 0.7rem;
+}
+.award-gradeline .award-grade,
+.award-gradeline .award-tier { margin-bottom: 0; }
 
 /* 奖项等级：荧光黄高亮（不随级别变色，强制炸眼睛）*/
 .award-grade {

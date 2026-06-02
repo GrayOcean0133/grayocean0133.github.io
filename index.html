@@ -32,6 +32,11 @@
     <meta name="twitter:description" content="双博士导师 · 192GB AI 算力 · 真实工程项目。温州商学院 AI-Link 社团 2026 招新。">
     <meta name="twitter:image" content="https://grayocean0133.github.io/og-image.svg">
 
+    <!-- Orbitron：竞赛获奖数字的科技几何字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&display=swap">
+
     <link rel="stylesheet" href="css.css">
     <link rel="stylesheet" href="knowledge/knowledge.css">
     <script>
@@ -71,6 +76,7 @@
         <nav class="nav-links">
             <a href="#hero" class="active"><span class="nav-en">HOME</span> <span class="nav-zh">首页</span></a>
             <a href="#recruit" class="nav-join"><span class="nav-en">JOIN</span> <span class="nav-zh">招新</span></a>
+            <a href="#processing"><span class="nav-en">PROJECTS</span> <span class="nav-zh">在研</span></a>
             <a href="#awards"><span class="nav-en">AWARDS</span> <span class="nav-zh">奖项</span></a>
             <a href="#departments"><span class="nav-en">DEPARTMENTS</span> <span class="nav-zh">部门</span></a>
             <a href="#advisors"><span class="nav-en">ABOUT</span> <span class="nav-zh">关于</span></a>
@@ -83,6 +89,7 @@
         <a href="#hero" class="page-dot active" data-label="首页" data-label-zh="首页" data-label-en="Home" aria-label="跳转到首页"></a>
         <a href="#why" class="page-dot" data-label="为什么" data-label-zh="为什么" data-label-en="Why" aria-label="跳转到为什么选择我们"></a>
         <a href="#advisors" class="page-dot" data-label="指导老师" data-label-zh="指导老师" data-label-en="Advisors" aria-label="跳转到指导老师"></a>
+        <a href="#processing" class="page-dot" data-label="在研项目" data-label-zh="在研项目" data-label-en="In Progress" aria-label="跳转到进行中的项目"></a>
         <a href="#projects" class="page-dot" data-label="开源项目" data-label-zh="开源项目" data-label-en="Projects" aria-label="跳转到开源项目"></a>
         <a href="#awards" class="page-dot" data-label="竞赛奖项" data-label-zh="竞赛奖项" data-label-en="Awards" aria-label="跳转到竞赛奖项"></a>
         <a href="#departments" class="page-dot" data-label="部门" data-label-zh="部门" data-label-en="Departments" aria-label="跳转到部门"></a>
@@ -239,6 +246,7 @@
                             <span class="i18n-zh">张汉成 博士</span>
                             <span class="i18n-en">Dr. Zhang Hancheng</span>
                             <span class="advisor-alias">(Errmaker)</span>
+                            <span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span>
                         </div>
                         <div class="member-role role-advisor">Faculty Advisor</div>
                         <div class="advisor-meta">
@@ -264,6 +272,7 @@
                             <span class="i18n-zh">胡圆圆 博士</span>
                             <span class="i18n-en">Dr. Hu Yuanyuan</span>
                             <span class="advisor-alias">(Yyuan)</span>
+                            <span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span>
                         </div>
                         <div class="member-role role-advisor">Faculty Advisor</div>
                         <div class="advisor-meta">
@@ -288,7 +297,92 @@
             </div>
         </section>
 
-        <!-- 4 · Member Projects -->
+        <!-- 4 · Projects in Progress 进行中的项目
+            ★ 维护：复制 .wip-card 卡片即可新增在研项目。
+              · .wip-status 是状态徽章（进行中）；.wip-progress 的 --p 变量控制进度条百分比（如 --p: 70%）。
+              · .wip-stage-list 是里程碑步骤，给已完成步骤加 class "done"，给当前步骤加 class "current"。
+              · 图片可在 .wip-summary 后加 <img>，路径相对 index.html。 -->
+        <section id="processing" class="snap-section">
+            <div class="snap-inner">
+                <div class="ak-section-label">
+                    <span class="ak-label-en">Projects in Progress</span>
+                    <span class="ak-label-zh">进行中的项目</span>
+                </div>
+                <p class="section-intro">
+                    <span class="i18n-zh">社团正在推进的工程项目，方便随时查看进展。</span>
+                    <span class="i18n-en">Engineering projects the club is actively working on — progress at a glance.</span>
+                </p>
+
+                <article class="wip-card">
+                    <div class="wip-head">
+                        <h3 class="wip-name">路愈者 RobotHealer</h3>
+                        <span class="wip-status"><span class="wip-dot"></span><span class="i18n-zh">进行中</span><span class="i18n-en">In Progress</span></span>
+                    </div>
+                    <div class="wip-sub">
+                        <span class="i18n-zh">道路病害智能检测系统 · 无人机巡检 + 深度学习</span>
+                        <span class="i18n-en">Intelligent road-distress detection · drone inspection + deep learning</span>
+                    </div>
+
+                    <p class="wip-summary">
+                        <span class="i18n-zh">基于深度学习的道路病害（裂缝、坑洞、网裂等）检测系统，结合无人机巡检与轻量化边缘部署。已入围「挑战杯」，算法与系统集成均已部分完成，目前正处于装备开发阶段。</span>
+                        <span class="i18n-en">A deep-learning system for detecting road distress (cracks, potholes, alligator cracking) combining drone inspection with lightweight edge deployment. A "Challenge Cup" finalist; algorithm and system integration are partially done, and the project is currently in equipment development.</span>
+                    </p>
+
+                    <div class="wip-stack">
+                        <span class="stack-chip"><span class="i18n-zh">目标检测</span><span class="i18n-en">Object Detection</span></span>
+                        <span class="stack-chip"><span class="i18n-zh">无人机巡检</span><span class="i18n-en">Drone Inspection</span></span>
+                        <span class="stack-chip"><span class="i18n-zh">轻量化部署</span><span class="i18n-en">Lightweight Deploy</span></span>
+                        <span class="stack-chip"><span class="i18n-zh">边缘推理</span><span class="i18n-en">Edge Inference</span></span>
+                        <span class="stack-chip"><span class="i18n-zh">计算机视觉</span><span class="i18n-en">Computer Vision</span></span>
+                    </div>
+
+                    <!-- 进度条：改 --p 调整百分比 -->
+                    <div class="wip-progress" style="--p: 40%;">
+                        <div class="wip-progress-head">
+                            <span class="i18n-zh">当前阶段：装备开发</span>
+                            <span class="i18n-en">Stage: equipment development</span>
+                            <span class="wip-progress-pct">40%</span>
+                        </div>
+                        <div class="wip-progress-track"><div class="wip-progress-bar"></div></div>
+                    </div>
+
+                    <ul class="wip-stage-list">
+                        <li class="done"><span class="i18n-zh">立项与需求调研</span><span class="i18n-en">Kickoff &amp; research</span></li>
+                        <li class="partial"><span class="i18n-zh">算法研发（部分完成）</span><span class="i18n-en">Algorithm R&amp;D (partial)</span></li>
+                        <li class="partial"><span class="i18n-zh">系统集成（部分完成）</span><span class="i18n-en">System integration (partial)</span></li>
+                        <li class="current"><span class="i18n-zh">装备开发</span><span class="i18n-en">Equipment development</span></li>
+                        <li><span class="i18n-zh">多省试点应用</span><span class="i18n-en">Multi-province pilot</span></li>
+                        <li><span class="i18n-zh">迭代优化与产品化</span><span class="i18n-en">Iteration &amp; productization</span></li>
+                    </ul>
+
+                    <div class="wip-groups">
+                        <div class="wip-groups-title">
+                            <span class="i18n-zh">项目分工 · 各小组成员</span>
+                            <span class="i18n-en">Team Structure · Sub-groups</span>
+                        </div>
+                        <ul class="wip-group-list">
+                            <li><span class="wip-group-name"><span class="i18n-zh">指导老师</span><span class="i18n-en">Advisors</span></span><span class="wip-group-members">Errmaker · Yyuan</span></li>
+                            <li><span class="wip-group-name"><span class="i18n-zh">决策小组</span><span class="i18n-en">Decision</span></span><span class="wip-group-members">GrayOcean · Errmaker</span></li>
+                            <li><span class="wip-group-name"><span class="i18n-zh">龙门架控制小组</span><span class="i18n-en">Gantry Control</span></span><span class="wip-group-members">QCY · Chen XueTao</span></li>
+                            <li><span class="wip-group-name"><span class="i18n-zh">沥青灌注设备开发小组</span><span class="i18n-en">Asphalt-Filling Equipment</span></span><span class="wip-group-members">LY · Jin Yi</span></li>
+                            <li><span class="wip-group-name"><span class="i18n-zh">双目摄像头开发小组</span><span class="i18n-en">Stereo Camera</span></span><span class="wip-group-members">Toaster</span></li>
+                            <li><span class="wip-group-name"><span class="i18n-zh">激光雷达开发小组</span><span class="i18n-en">LiDAR</span></span><span class="wip-group-members">Yin JiaKai</span></li>
+                            <li><span class="wip-group-name"><span class="i18n-zh">车辆底盘开发小组</span><span class="i18n-en">Vehicle Chassis</span></span><span class="wip-group-members">ARong</span></li>
+                            <li><span class="wip-group-name"><span class="i18n-zh">车辆导航 GPS 设计小组</span><span class="i18n-en">GPS Navigation</span></span><span class="wip-group-members">Errmaker</span></li>
+                            <li><span class="wip-group-name"><span class="i18n-zh">后端服务器重构小组</span><span class="i18n-en">Backend Refactor</span></span><span class="wip-group-members">一颗卫星</span></li>
+                            <li><span class="wip-group-name"><span class="i18n-zh">宣传小组</span><span class="i18n-en">PR &amp; Outreach</span></span><span class="wip-group-members">Lixxan · Elwin</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="wip-foot">
+                        <span class="i18n-zh">双博士导师指导 · 技术部主导研发</span>
+                        <span class="i18n-en">Guided by two PhD advisors · led by the Tech Department</span>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- 5 · Member Projects -->
         <section id="projects" class="snap-section">
             <div class="snap-inner">
                 <div class="ak-section-label">
@@ -369,7 +463,7 @@
               · 左侧条带为纯色发光条，颜色由 data-tier 决定。
               · data-tier 控制左侧色条 / 徽章 / 年份 / 项目符号的配色，可选值：
                   org / county = 白(组织级·县区级)   school = 蓝(校级)
-                  provincial / sci-q3 = 紫(省市级·SCI三区)   national / sci-q2 = 金(国家级·SCI二区)
+                  provincial / sci-q3 = 紫(省市级·SCI三区)   national / sci-q2 = 荧光黄(国家级·SCI二区)
                   national-second = 红(国家级二等)   sci-q4 = 绿(SCI四区)
                   national-first / sci-q1 = RGB 流光   sci-q1-first = RGB 流光 + 皇冠(一区一作)
         -->
@@ -384,12 +478,35 @@
                     <span class="i18n-en">Awards earned by club members across academic competitions.</span>
                 </p>
 
+                <!-- 图例：条带颜色 ↔ 奖项级别，并说明与 Team 个人卡片徽章的关系 -->
+                <div class="award-legend">
+                    <div class="award-legend-head">
+                        <span class="i18n-zh">每张奖项卡左侧的发光条带，颜色对应奖项级别：</span>
+                        <span class="i18n-en">The glowing strip on each card is colored by award tier:</span>
+                    </div>
+                    <ul class="award-legend-list">
+                        <li><span class="lg-bar" data-tier="org"></span><span class="i18n-zh">组织 / 县区级</span><span class="i18n-en">Org / County</span></li>
+                        <li><span class="lg-bar" data-tier="school"></span><span class="i18n-zh">校级</span><span class="i18n-en">School</span></li>
+                        <li><span class="lg-bar" data-tier="provincial"></span><span class="i18n-zh">省市级 · SCI 三区</span><span class="i18n-en">Provincial · SCI Q3</span></li>
+                        <li><span class="lg-bar" data-tier="national"></span><span class="i18n-zh">国家级 · SCI 二区</span><span class="i18n-en">National · SCI Q2</span></li>
+                        <li><span class="lg-bar" data-tier="national-second"></span><span class="i18n-zh">国家级二等</span><span class="i18n-en">National 2nd</span></li>
+                        <li><span class="lg-bar" data-tier="sci-q4"></span><span class="i18n-zh">SCI 四区</span><span class="i18n-en">SCI Q4</span></li>
+                        <li><span class="lg-bar" data-tier="national-first"></span><span class="i18n-zh">国家级一等 · SCI 一区（流光）</span><span class="i18n-en">National 1st · SCI Q1 (RGB)</span></li>
+                    </ul>
+                    <p class="award-legend-note">
+                        <span class="i18n-zh">同时，每位成员的累计获奖数会以<strong>同色「数字 + 发光下划线」</strong>标注在下方「现有团队」的个人卡片右侧——颜色一致，即对应同一奖项级别。</span>
+                        <span class="i18n-en">Each member's cumulative awards also appear as a <strong>same-colored “number + glowing underline”</strong> badge on the right of their card in the Team section below — matching colors mean the same tier.</span>
+                    </p>
+                </div>
+
                 <div class="award-grid">
                     <!-- 1 · MathorCup 赛区一等奖 -->
                     <article class="award-card" data-tier="provincial">
-                        <span class="award-tier"><span class="i18n-zh">省市级</span><span class="i18n-en">Provincial</span></span>
                         <h3 class="award-name"><span class="i18n-zh">2026 年第十六届 MathorCup 数学应用挑战赛</span><span class="i18n-en">The 16th MathorCup Mathematical Application Challenge 2026</span></h3>
-                        <div class="award-grade"><span class="i18n-zh">赛区一等奖</span><span class="i18n-en">Division First Prize</span></div>
+                        <div class="award-gradeline">
+                            <div class="award-grade"><span class="i18n-zh">赛区一等奖</span><span class="i18n-en">Division First Prize</span></div>
+                            <span class="award-tier"><span class="i18n-zh">省市级</span><span class="i18n-en">Provincial</span></span>
+                        </div>
                         <div class="award-meta">
                             <span class="award-year">2026</span>
                             <ul class="award-team">
@@ -402,9 +519,11 @@
 
                     <!-- 2 · MathorCup 赛区二等奖 -->
                     <article class="award-card" data-tier="provincial">
-                        <span class="award-tier"><span class="i18n-zh">省市级</span><span class="i18n-en">Provincial</span></span>
                         <h3 class="award-name"><span class="i18n-zh">2026 年第十六届 MathorCup 数学应用挑战赛</span><span class="i18n-en">The 16th MathorCup Mathematical Application Challenge 2026</span></h3>
-                        <div class="award-grade"><span class="i18n-zh">赛区二等奖</span><span class="i18n-en">Division Second Prize</span></div>
+                        <div class="award-gradeline">
+                            <div class="award-grade"><span class="i18n-zh">赛区二等奖</span><span class="i18n-en">Division Second Prize</span></div>
+                            <span class="award-tier"><span class="i18n-zh">省市级</span><span class="i18n-en">Provincial</span></span>
+                        </div>
                         <div class="award-meta">
                             <span class="award-year">2026</span>
                             <ul class="award-team">
@@ -417,9 +536,11 @@
 
                     <!-- 3 · 挑战杯（小挑）省铜奖 -->
                     <article class="award-card" data-tier="provincial">
-                        <span class="award-tier"><span class="i18n-zh">省市级</span><span class="i18n-en">Provincial</span></span>
                         <h3 class="award-name"><span class="i18n-zh">浙江省第十五届“挑战杯”大学生创业计划竞赛（小挑）</span><span class="i18n-en">The 15th Zhejiang “Challenge Cup” College Student Business Plan Competition</span></h3>
-                        <div class="award-grade"><span class="i18n-zh">省铜奖</span><span class="i18n-en">Provincial Bronze Award</span></div>
+                        <div class="award-gradeline">
+                            <div class="award-grade"><span class="i18n-zh">省铜奖</span><span class="i18n-en">Provincial Bronze Award</span></div>
+                            <span class="award-tier"><span class="i18n-zh">省市级</span><span class="i18n-en">Provincial</span></span>
+                        </div>
                         <div class="award-meta">
                             <ul class="award-team">
                                 <li>AI-Link@Community</li>
@@ -429,9 +550,11 @@
 
                     <!-- 4 · 温州黑客松 温州赛区二等奖 -->
                     <article class="award-card" data-tier="provincial">
-                        <span class="award-tier"><span class="i18n-zh">省市级</span><span class="i18n-en">Provincial</span></span>
                         <h3 class="award-name"><span class="i18n-zh">2026·温州 黑客松联赛 线下赛</span><span class="i18n-en">2026 Wenzhou · Hackathon League · On-site Round</span></h3>
-                        <div class="award-grade"><span class="i18n-zh">温州赛区二等奖</span><span class="i18n-en">Wenzhou Division Second Prize</span></div>
+                        <div class="award-gradeline">
+                            <div class="award-grade"><span class="i18n-zh">温州赛区二等奖</span><span class="i18n-en">Wenzhou Division Second Prize</span></div>
+                            <span class="award-tier"><span class="i18n-zh">省市级</span><span class="i18n-en">Provincial</span></span>
+                        </div>
                         <div class="award-meta">
                             <span class="award-year">2026</span>
                             <ul class="award-team">
@@ -442,9 +565,11 @@
 
                     <!-- 5 · 浙江省网络安全知识竞赛 三等奖 -->
                     <article class="award-card" data-tier="provincial">
-                        <span class="award-tier"><span class="i18n-zh">省市级</span><span class="i18n-en">Provincial</span></span>
                         <h3 class="award-name"><span class="i18n-zh">2026 浙江省网络安全知识竞赛</span><span class="i18n-en">2026 Zhejiang Cybersecurity Knowledge Contest</span></h3>
-                        <div class="award-grade"><span class="i18n-zh">三等奖</span><span class="i18n-en">Third Prize</span></div>
+                        <div class="award-gradeline">
+                            <div class="award-grade"><span class="i18n-zh">三等奖</span><span class="i18n-en">Third Prize</span></div>
+                            <span class="award-tier"><span class="i18n-zh">省市级</span><span class="i18n-en">Provincial</span></span>
+                        </div>
                         <div class="award-meta">
                             <span class="award-year">2026</span>
                             <ul class="award-team">
@@ -455,9 +580,11 @@
 
                     <!-- 6 · 服务外包创新应用大赛 校二等奖（校级）-->
                     <article class="award-card" data-tier="school">
-                        <span class="award-tier"><span class="i18n-zh">校级</span><span class="i18n-en">School</span></span>
                         <h3 class="award-name"><span class="i18n-zh">2025“蚂蚁·数字马力杯”第十二届浙江省大学生服务外包创新应用大赛</span><span class="i18n-en">The 12th Zhejiang Collegiate Service-Outsourcing Innovation &amp; Application Competition 2025 (“Ant · Digital Power Cup”)</span></h3>
-                        <div class="award-grade"><span class="i18n-zh">校二等奖</span><span class="i18n-en">School Second Prize</span></div>
+                        <div class="award-gradeline">
+                            <div class="award-grade"><span class="i18n-zh">校二等奖</span><span class="i18n-en">School Second Prize</span></div>
+                            <span class="award-tier"><span class="i18n-zh">校级</span><span class="i18n-en">School</span></span>
+                        </div>
                         <div class="award-meta">
                             <span class="award-year">2025</span>
                             <ul class="award-team">
@@ -676,30 +803,35 @@
 
                 <div class="member-grid member-grid-3" id="teamGrid">
                     <a href="https://github.com/GrayOcean0133" target="_blank" rel="noopener" class="member-card member-card-link" data-dept="tech">
-                        <div class="member-name">GrayOcean <span class="member-award" data-tier="provincial" title="省市级获奖 2 项">2</span> <span class="member-award" data-tier="school" title="校级获奖 1 项">1</span></div>
-                        <div class="member-role role-owner">OWNER</div>
-                        <div class="member-dept">Tech Dep.</div>
-                        <div class="member-github">↗ GitHub</div>
+                        <div class="member-main">
+                            <div class="member-name">GrayOcean <span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span></div>
+                            <div class="member-role role-owner">OWNER</div>
+                            <div class="member-dept">Tech Dep.</div>
+                            <div class="member-github">↗ GitHub</div>
+                        </div>
+                        <div class="member-awards"><span class="member-award" data-tier="provincial" title="省市级获奖 2 项">2</span><span class="member-award" data-tier="school" title="校级获奖 1 项">1</span></div>
                     </a>
-                    <div class="member-card" data-dept="adm"><div class="member-name">Elwin <span class="member-award" data-tier="provincial" title="省市级获奖 1 项">1</span></div><div class="member-role role-leader">Major</div><div class="member-dept">Adm Dep.</div></div>
-                    <div class="member-card" data-dept="tech"><div class="member-name">Lixxan <span class="member-award" data-tier="provincial" title="省市级获奖 1 项">1</span></div><div class="member-role">Vice</div><div class="member-dept">Tech Dep.</div></div>
-                    <div class="member-card" data-dept="tech"><div class="member-name">Jin Yi <span class="member-award" data-tier="school" title="校级获奖 1 项">1</span></div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
-                    <div class="member-card" data-dept="tech"><div class="member-name">Chen XueTao <span class="member-award" data-tier="provincial" title="省市级获奖 1 项">1</span></div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
-                    <div class="member-card" data-dept="tech"><div class="member-name">LY</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card" data-dept="adm"><div class="member-main"><div class="member-name">Elwin <span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span></div><div class="member-role role-leader">Major</div><div class="member-dept">Adm Dep.</div></div><div class="member-awards"><span class="member-award" data-tier="provincial" title="省市级获奖 1 项">1</span></div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-main"><div class="member-name">Lixxan <span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span></div><div class="member-role">Vice</div><div class="member-dept">Tech Dep.</div></div><div class="member-awards"><span class="member-award" data-tier="provincial" title="省市级获奖 1 项">1</span></div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-main"><div class="member-name">Jin Yi <span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span></div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div><div class="member-awards"><span class="member-award" data-tier="school" title="校级获奖 1 项">1</span></div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-main"><div class="member-name">Chen XueTao <span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span></div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div><div class="member-awards"><span class="member-award" data-tier="provincial" title="省市级获奖 1 项">1</span></div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-name">LY <span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span></div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
                     <div class="member-card" data-dept="tech"><div class="member-name">AChen</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
-                    <div class="member-card" data-dept="tech"><div class="member-name">QCY</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-name">QCY <span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span></div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
                     <div class="member-card" data-dept="tech"><div class="member-name">Antony Ye</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
-                    <div class="member-card" data-dept="tech"><div class="member-name">Wang XinYang</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
-                    <div class="member-card" data-dept="tech"><div class="member-name">Toaster <span class="member-award" data-tier="provincial" title="省市级获奖 1 项">1</span></div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-name">一颗卫星 <span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span></div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-main"><div class="member-name">Toaster <span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span></div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div><div class="member-awards"><span class="member-award" data-tier="provincial" title="省市级获奖 1 项">1</span></div></div>
                     <div class="member-card" data-dept="tech"><div class="member-name">用户1021</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
                     <div class="member-card" data-dept="tech"><div class="member-name">小程同学有点东西</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
                     <div class="member-card" data-dept="tech"><div class="member-name">煎饼狗子</div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-name">Yin JiaKai <span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span></div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
+                    <div class="member-card" data-dept="tech"><div class="member-name">ARong <span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span></div><div class="member-role">Member</div><div class="member-dept">Tech Dep.</div></div>
                     <div class="member-card" data-dept="plan"><div class="member-name">Xu JiHong</div><div class="member-role">Member</div><div class="member-dept">Plan Dep.</div></div>
                     <div class="member-card" data-dept="fin"><div class="member-name">Chen HongZhou</div><div class="member-role">Member</div><div class="member-dept">Fin Dep.</div></div>
                     <div class="member-card" data-dept="pr"><div class="member-name">Peng PengWei</div><div class="member-role">Member</div><div class="member-dept">PR Dep.</div></div>
                     <div class="member-card" data-dept="pr"><div class="member-name">Lanina</div><div class="member-role">Member</div><div class="member-dept">PR Dep.</div></div>
-                    <div class="member-card" data-dept="art"><div class="member-name">Qrlirly <span class="member-award" data-tier="provincial" title="省市级获奖 1 项">1</span></div><div class="member-role">Member</div><div class="member-dept">ART Support</div></div>
-                    <div class="member-card" data-dept="art"><div class="member-name">Koi <span class="member-award" data-tier="provincial" title="省市级获奖 1 项">1</span></div><div class="member-role">Member</div><div class="member-dept">ART Support</div></div>
+                    <div class="member-card" data-dept="art"><div class="member-main"><div class="member-name">Qrlirly</div><div class="member-role">Member</div><div class="member-dept">ART Support</div></div><div class="member-awards"><span class="member-award" data-tier="provincial" title="省市级获奖 1 项">1</span></div></div>
+                    <div class="member-card" data-dept="art"><div class="member-main"><div class="member-name">Koi</div><div class="member-role">Member</div><div class="member-dept">ART Support</div></div><div class="member-awards"><span class="member-award" data-tier="provincial" title="省市级获奖 1 项">1</span></div></div>
 
                     <!-- 未归类成员（Member Unsorted）：注意 Antony Ye 已存在于 Tech，按原卡为准未重复添加 -->
                     <div class="member-card" data-dept="unsorted"><div class="member-name">Xu WenTao</div><div class="member-role">Member</div><div class="member-dept">Unsorted</div></div>
@@ -710,7 +842,6 @@
                     <div class="member-card" data-dept="unsorted"><div class="member-name">杂哥</div><div class="member-role">Member</div><div class="member-dept">Unsorted</div></div>
                     <div class="member-card" data-dept="unsorted"><div class="member-name">Wei</div><div class="member-role">Member</div><div class="member-dept">Unsorted</div></div>
                     <div class="member-card" data-dept="unsorted"><div class="member-name">-</div><div class="member-role">Member</div><div class="member-dept">Unsorted</div></div>
-                    <div class="member-card" data-dept="unsorted"><div class="member-name">一颗卫星</div><div class="member-role">Member</div><div class="member-dept">Unsorted</div></div>
                     <div class="member-card" data-dept="unsorted"><div class="member-name">112.1MHZ</div><div class="member-role">Member</div><div class="member-dept">Unsorted</div></div>
                     <div class="member-card" data-dept="unsorted"><div class="member-name">网左</div><div class="member-role">Member</div><div class="member-dept">Unsorted</div></div>
                     <div class="member-card" data-dept="unsorted"><div class="member-name">冬熙然</div><div class="member-role">Member</div><div class="member-dept">Unsorted</div></div>
