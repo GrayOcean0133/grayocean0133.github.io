@@ -34,7 +34,7 @@ Chen HongZhou
 Peng PengWei
 #PR Dep.
 
-Jin Yi
+wgyl
 #Tech Dep.
 
 牧夕、
