@@ -53,6 +53,17 @@ window.AILINK_KB = {
             descZh: '工程上手三件套：用 Git/GitHub 做版本管理与多人协作，用 VS Code 写代码调试，用 Anaconda 隔离每个项目的 Python 环境，并把三者串成一条完整工作流。',
             descEn: 'The engineering starter kit: version control & collaboration with Git/GitHub, coding & debugging in VS Code, per-project Python environments with Anaconda — wired into one end-to-end workflow.',
             topics: ['Git 基础与四区模型', 'GitHub 协作与 Pull Request', 'VS Code 配置与扩展', 'Anaconda 环境管理', 'conda 与 pip', '常见问题排查']
+        },
+        {
+            id: 'chapter5',
+            file: 'chapters/chapter5/chapter5.md',
+            order: 5,
+            status: 'done',
+            titleZh: '第五章 · 应急实战：校园网木马的持久化与对抗',
+            titleEn: 'Ch.5 · Incident Response: Campus-Network Trojan Persistence & Defense',
+            descZh: '基于一次真实校园网应急事件改编（蓝队视角）：从“杀不死的病毒”入手，拆解恶意服务持久化、看门狗互保、命令混淆、进程注入与加密 C2 外联，再到下载劫持(MITM)根因与一套完整的应急响应方法论。进攻只讲原理，防守给出可用的检测与清除代码。',
+            descEn: 'Adapted from a real campus-network incident (blue-team view): from an "unkillable" malware, it dissects service-based persistence, watchdog mutual-revival, command obfuscation, process injection and encrypted C2, down to the MITM download-hijack root cause and a full incident-response methodology. Offense as principles only; defense with usable detection & removal code.',
+            topics: ['恶意服务持久化', '看门狗进程互保', '命令混淆对抗', '进程注入与隐蔽外联', 'C2 与下载劫持 MITM', '应急响应方法论']
         }
     ],
     docs: [

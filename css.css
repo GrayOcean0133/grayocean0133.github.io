@@ -535,6 +535,13 @@ footer {
 .member-grid-1 { grid-template-columns: repeat(1, minmax(0, 280px)); }
 .member-grid-2 { grid-template-columns: repeat(2, 1fr); }
 .member-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.member-grid-solo { grid-template-columns: minmax(0, 540px); justify-content: center; }
+
+/* 合作导师 · 二级标题与外链 chip */
+.ak-section-label.ak-section-label-sub { margin-top: 2.4rem; }
+.advisor-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.9rem; }
+.advisor-chip-link { text-decoration: none; cursor: pointer; transition: border-color .2s, color .2s; }
+.advisor-chip-link:hover { border-color: currentColor; }
 
 .member-card {
     background: var(--card-bg);
