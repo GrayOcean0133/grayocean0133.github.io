@@ -249,6 +249,79 @@
 .reader-content .katex-display { overflow-x: auto; overflow-y: hidden; padding: 0.4rem 0; margin: 1.1rem 0; }
 .reader-content .katex { color: var(--text-light); font-size: 1.04em; }
 
+/* ============ 浏览器内 Python 运行（runner.js） ============ */
+/* 顶部运行状态条 */
+.kb-runbar {
+    display: flex; align-items: center; gap: 0.7rem;
+    margin: 1.2rem 0 1.6rem; padding: 0.6rem 0.9rem;
+    border: 1px solid var(--divider); border-left: 3px solid var(--primary);
+    border-radius: 8px; background: rgba(0, 255, 65, 0.03);
+    font-size: 0.82rem; color: var(--text-gray);
+}
+.kb-runbar-icon { color: var(--primary); flex-shrink: 0; }
+.kb-runbar-msg { flex: 1; line-height: 1.5; }
+.kb-runbar.is-loading { border-left-color: #ffcf4d; }
+.kb-runbar.is-loading .kb-runbar-icon { color: #ffcf4d; animation: kb-blink 1s steps(2) infinite; }
+.kb-runbar.is-ready { border-left-color: var(--primary); }
+.kb-runbar.is-error { border-left-color: #ff6b6b; }
+.kb-runbar.is-error .kb-runbar-icon { color: #ff6b6b; }
+@keyframes kb-blink { 50% { opacity: 0.3; } }
+.kb-runbar-reset {
+    flex-shrink: 0; cursor: pointer; font-family: inherit; font-size: 0.74rem;
+    color: var(--text-gray); background: transparent;
+    border: 1px solid var(--divider); border-radius: 5px; padding: 0.25rem 0.6rem;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+.kb-runbar-reset:hover { color: var(--primary); border-color: var(--primary); }
+.kb-runbar-reset:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* 代码块包裹：工具条 + 代码 + 输出 */
+.kb-code { margin: 1.1rem 0; }
+.kb-code > pre { margin: 0; border-radius: 0; }
+.kb-code-bar {
+    display: flex; align-items: center; gap: 0.7rem;
+    padding: 0.4rem 0.7rem; background: #111; border: 1px solid var(--divider);
+    border-bottom: none; border-left: 3px solid var(--primary);
+    border-radius: 8px 8px 0 0;
+}
+.kb-run {
+    cursor: pointer; font-family: inherit; font-size: 0.78rem; font-weight: 600;
+    color: #0a0a0a; background: var(--primary); border: none; border-radius: 5px;
+    padding: 0.28rem 0.85rem; letter-spacing: 0.5px;
+    transition: filter 0.2s ease, box-shadow 0.2s ease;
+}
+.kb-run:hover { filter: brightness(1.12); box-shadow: 0 0 10px rgba(0, 255, 65, 0.4); }
+.kb-run:disabled { opacity: 0.45; cursor: not-allowed; filter: none; box-shadow: none; }
+.kb-code-status { font-size: 0.74rem; letter-spacing: 0.5px; }
+.kb-code-status.is-run { color: #ffcf4d; }
+.kb-code-status.is-ok { color: var(--primary); }
+.kb-code-status.is-err { color: #ff6b6b; }
+
+/* 输出区 */
+.kb-code-out {
+    border: 1px solid var(--divider); border-top: 1px dashed rgba(0, 255, 65, 0.25);
+    border-left: 3px solid var(--primary); border-radius: 0 0 8px 8px;
+    background: #0b0b0b; padding: 0.7rem 0.9rem;
+}
+.kb-out-text {
+    margin: 0 0 0.5rem; font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.8rem; line-height: 1.55; color: #d6ffe0;
+    white-space: pre-wrap; word-break: break-word; background: none; border: none; padding: 0;
+}
+.kb-out-text:last-child { margin-bottom: 0; }
+.kb-out-err {
+    margin: 0.3rem 0 0; font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.78rem; line-height: 1.5; color: #ff8f8f;
+    white-space: pre-wrap; word-break: break-word; background: rgba(255, 107, 107, 0.06);
+    border: 1px solid rgba(255, 107, 107, 0.25); border-radius: 5px; padding: 0.5rem 0.7rem;
+}
+.kb-out-fig { display: block; max-width: 100%; height: auto; margin: 0.6rem auto; border-radius: 6px; background: #fff; }
+.kb-out-df { overflow-x: auto; margin: 0.4rem 0; }
+.kb-out-df table { width: auto; min-width: 40%; border-collapse: collapse; font-size: 0.8rem; color: var(--text-light); }
+.kb-out-df th, .kb-out-df td { border: 1px solid rgba(0, 255, 65, 0.15); padding: 0.3rem 0.6rem; text-align: right; white-space: nowrap; }
+.kb-out-df th { background: rgba(0, 255, 65, 0.08); color: var(--primary); }
+.kb-out-empty { font-size: 0.78rem; color: var(--text-gray); font-style: italic; }
+
 /* ============ 响应式 ============ */
 @media (max-width: 900px) {
     .wiki { display: block; }

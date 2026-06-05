@@ -74,7 +74,8 @@ window.AILINK_KB = {
             titleEn: 'Ch.6 · Machine Learning Final Review',
             descZh: '一份完整的机器学习期末复习：覆盖 KNN、线性/逻辑回归、朴素贝叶斯、决策树、SVM、神经网络与无监督学习（聚类/降维/关联规则）九大主题，每个知识点配「讲解 + 完整可运行代码 + 说明」。',
             descEn: 'A complete machine-learning final review: KNN, linear/logistic regression, naive Bayes, decision trees, SVM, neural networks and unsupervised learning (clustering / dimensionality reduction / association rules), each with notes plus runnable code.',
-            topics: ['机器学习概述', 'KNN 近邻', '线性 / 逻辑回归', '朴素贝叶斯', '决策树 ID3/C4.5/CART', '支持向量机 SVM', '神经网络 / BP', '聚类 / 降维 / 关联规则']
+            topics: ['机器学习概述', 'KNN 近邻', '线性 / 逻辑回归', '朴素贝叶斯', '决策树 ID3/C4.5/CART', '支持向量机 SVM', '神经网络 / BP', '聚类 / 降维 / 关联规则'],
+            data: ['regress_data1.csv', 'ex2data1.txt', 'svmdata1.csv', 'svmdata2.csv', 'svmdata3.csv', 'svmdata3val.csv', 'ex7data2.csv', 'bird_small.png']
         }
     ],
     docs: [

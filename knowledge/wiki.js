@@ -226,6 +226,7 @@
         artEl.innerHTML = articleHead(entry) + tocHtml(out.headings) +
             '<div class="reader-content">' + out.html + '</div>';
         wireToc();
+        if (window.KBRunner) { try { window.KBRunner.enhance(artEl, entry); } catch (e) {} }
     }
     function showLoading() {
         artEl.innerHTML = '<div class="wiki-state"><span class="i18n-zh">加载中…</span><span class="i18n-en">Loading…</span></div>';
