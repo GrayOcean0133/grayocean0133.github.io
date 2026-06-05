@@ -288,6 +288,16 @@
         bannerEl = bar;
         bar.querySelector('.kb-runbar-reset').addEventListener('click', resetKernel);
 
+        // 预下载/预热：空闲时后台静默初始化 Python 环境，用户点「运行」时即就绪。
+        // 省流量 / 弱网(saveData、2g) 用户跳过，避免自动下大包。
+        (function schedulePreload() {
+            var conn = navigator.connection || {};
+            if (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || '')) return;
+            var kick = function () { if (!booted && !booting) boot().catch(function () {}); };
+            if ('requestIdleCallback' in window) requestIdleCallback(kick, { timeout: 4000 });
+            else setTimeout(kick, 1800);
+        })();
+
         Array.prototype.forEach.call(codes, function (codeEl, i) {
             var pre = codeEl.parentElement;
             var wrap = document.createElement('div');
