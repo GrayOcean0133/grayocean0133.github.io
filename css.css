@@ -3500,3 +3500,138 @@ select.auth-input option { background: #0a0a0a; color: var(--text-light); }
 
 /* 抽屉顶部常驻吉祥物 D8 的间距 */
 .auth-d8-mascot { margin: 0.4rem auto 1.3rem; }
+
+/* ===== 顶级卡(national-first)：卡片本体保持与其它卡一致，只改 烟雾→RGB + 徽章描边 ===== */
+/* 烟雾：单色紫 → RGB 多彩 */
+.award-card[data-tier="national-first"]::after,
+.award-card[data-tier="sci-q1"]::after,
+.award-card[data-tier="sci-q1-first"]::after {
+    background:
+        radial-gradient(14px 26px at 8px 15%,  rgba(255, 0, 64, 0.70),  transparent 68%),
+        radial-gradient(12px 20px at 14px 50%, rgba(0, 229, 255, 0.60), transparent 70%),
+        radial-gradient(10px 17px at 5px 80%,  rgba(55, 255, 0, 0.55),  transparent 72%),
+        radial-gradient(9px 15px at 16px 35%,  rgba(200, 0, 255, 0.50), transparent 72%);
+    background-size: 100% 90px, 100% 120px, 100% 70px, 100% 150px;
+    background-repeat: repeat-y;
+}
+
+/* 顶级卡的「级别徽章」(国际区域赛等)：黑底 + RGB流光边框 + 白字（描边款，不再是刺眼填充）*/
+.award-card[data-tier="national-first"] .award-tier,
+.award-card[data-tier="sci-q1"] .award-tier,
+.award-card[data-tier="sci-q1-first"] .award-tier {
+    color: #fff;
+    background:
+        linear-gradient(#000, #000) padding-box,
+        linear-gradient(90deg, #ff0040, #ff8a00, #ffe600, #37ff00, #00e5ff, #3b5bff, #c800ff, #ff0040) border-box;
+    background-size: 100% 100%, 300% 100%;
+    border: 1px solid transparent;
+    animation: award-rgb-x 6s linear infinite;
+    text-shadow: none;
+}
+
+/* ===== 顶级卡：金色粒子从上往下飘落（加密 14 列 · 多层视差）===== */
+@keyframes award-gold-fall {
+    from { background-position: 0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0; }
+    to   { background-position: 0 210px,0 300px,0 250px,0 360px,0 280px,0 330px,0 230px,0 390px,0 260px,0 310px,0 200px,0 350px,0 270px,0 320px; }
+}
+.award-card[data-tier="national-first"],
+.award-card[data-tier="sci-q1"],
+.award-card[data-tier="sci-q1-first"] {
+    background-color: var(--card-bg);
+    background-image:
+        radial-gradient(circle 4px at 6% 0,  rgba(255,222,110,1),    rgba(255,200,60,0.45) 45%, transparent 72%),
+        radial-gradient(circle 3px at 13% 0, rgba(255,210,80,0.95),  rgba(255,195,55,0.40) 45%, transparent 72%),
+        radial-gradient(circle 5px at 20% 0, rgba(255,232,140,1),    rgba(255,205,70,0.50) 45%, transparent 70%),
+        radial-gradient(circle 3px at 27% 0, rgba(255,210,80,0.95),  rgba(255,195,55,0.40) 45%, transparent 72%),
+        radial-gradient(circle 4px at 34% 0, rgba(255,222,110,1),    rgba(255,200,60,0.45) 45%, transparent 72%),
+        radial-gradient(circle 3px at 41% 0, rgba(255,205,70,0.92),  rgba(255,190,50,0.38) 45%, transparent 72%),
+        radial-gradient(circle 5px at 48% 0, rgba(255,232,140,1),    rgba(255,205,70,0.50) 45%, transparent 70%),
+        radial-gradient(circle 3px at 55% 0, rgba(255,210,80,0.95),  rgba(255,195,55,0.40) 45%, transparent 72%),
+        radial-gradient(circle 4px at 62% 0, rgba(255,222,110,1),    rgba(255,200,60,0.45) 45%, transparent 72%),
+        radial-gradient(circle 3px at 69% 0, rgba(255,210,80,0.95),  rgba(255,195,55,0.40) 45%, transparent 72%),
+        radial-gradient(circle 5px at 76% 0, rgba(255,232,140,1),    rgba(255,205,70,0.50) 45%, transparent 70%),
+        radial-gradient(circle 3px at 83% 0, rgba(255,210,80,0.95),  rgba(255,195,55,0.40) 45%, transparent 72%),
+        radial-gradient(circle 4px at 90% 0, rgba(255,222,110,1),    rgba(255,200,60,0.45) 45%, transparent 72%),
+        radial-gradient(circle 3px at 97% 0, rgba(255,205,70,0.92),  rgba(255,190,50,0.38) 45%, transparent 72%);
+    background-size:
+        100% 210px,100% 300px,100% 250px,100% 360px,100% 280px,100% 330px,100% 230px,
+        100% 390px,100% 260px,100% 310px,100% 200px,100% 350px,100% 270px,100% 320px;
+    background-repeat: repeat-y;
+    animation: award-gold-fall 6s linear infinite;
+}
+
+/* ===== 全局动效开关按钮（左上角，登录按钮下方）===== */
+.motion-toggle {
+    position: absolute;
+    top: 3.35rem;
+    left: 1.4rem;
+    z-index: 120;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(0, 255, 65, 0.05);
+    border: 1px solid rgba(0, 255, 65, 0.3);
+    border-radius: 999px;
+    padding: 0.28rem 0.72rem;
+    color: var(--primary);
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, color 0.25s ease;
+}
+.motion-toggle:hover { background: rgba(0, 255, 65, 0.14); box-shadow: 0 0 10px rgba(0, 255, 65, 0.35); }
+.motion-toggle .motion-ico { display: inline-block; animation: motion-spin 4s linear infinite; }
+@keyframes motion-spin { to { transform: rotate(360deg); } }
+.motion-toggle.off { color: var(--text-gray); border-color: rgba(255, 255, 255, 0.18); opacity: 0.72; }
+.motion-toggle.off .motion-label { text-decoration: line-through; }
+@media (max-width: 560px) {
+    .motion-toggle { left: 1.4rem; padding: 0.3rem 0.5rem; }
+}
+
+/* ===== 关闭动效：所有 CSS 动画瞬时完成(不破坏内容显隐)，并隐藏 matrix 雨 ===== */
+html.reduce-motion *,
+html.reduce-motion *::before,
+html.reduce-motion *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+}
+html.reduce-motion .matrix-canvas { display: none !important; }
+
+/* ===== 顶级卡：改用「电竞夺冠金色彩带雨」(CSS confetti)，停用旧背景金点 ===== */
+.award-card[data-tier="national-first"],
+.award-card[data-tier="sci-q1"],
+.award-card[data-tier="sci-q1-first"] {
+    background-image: none;
+    animation: none;
+}
+.gold-rain {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+}
+.gold-rain i {
+    position: absolute;
+    top: -16px;
+    width: 5px;
+    height: 10px;
+    border-radius: 1px;
+    background: linear-gradient(135deg, #fff6c0 0%, #ffd23a 45%, #d9970c 100%);
+    box-shadow: 0 0 4px rgba(255, 205, 70, 0.6);
+    opacity: 0;
+    will-change: transform;
+    animation: gold-confetti 3s linear infinite;
+}
+@keyframes gold-confetti {
+    0%   { transform: translate3d(0, 0, 0) rotateZ(0deg) rotateY(0deg);       opacity: 0; }
+    10%  { opacity: 1; }
+    85%  { opacity: 1; }
+    100% { transform: translate3d(16px, 360px, 0) rotateZ(540deg) rotateY(900deg); opacity: 0; }
+}
+/* 文字浮在彩带雨之上，保证可读 */
+.award-card[data-tier="national-first"] > h3,
+.award-card[data-tier="national-first"] > .award-gradeline,
+.award-card[data-tier="national-first"] > .award-meta { position: relative; z-index: 1; }

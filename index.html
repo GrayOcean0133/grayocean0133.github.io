@@ -51,6 +51,11 @@
         document.documentElement.setAttribute('data-lang', lang);
         document.documentElement.setAttribute('lang', lang === 'en' ? 'en' : 'zh-CN');
     })();
+    (function () {
+        var m = null;
+        try { m = localStorage.getItem('aiLinkMotion'); } catch (e) {}
+        if (m === 'off') document.documentElement.classList.add('reduce-motion');
+    })();
     </script>
 </head>
 <body>
@@ -71,6 +76,10 @@
                 <path d="M5 20c0-3.6 3.1-6.2 7-6.2s7 2.6 7 6.2"></path>
             </svg>
             <span class="auth-trigger-label" id="authTriggerLabel"><span class="i18n-zh">登录</span><span class="i18n-en">LOGIN</span></span>
+        </button>
+        <button type="button" class="motion-toggle" id="motionToggle" aria-label="动效开关 / Toggle animations" title="动效开关 / Toggle FX">
+            <span class="motion-ico" aria-hidden="true">✦</span>
+            <span class="motion-label"><span class="i18n-zh">动效</span><span class="i18n-en">FX</span></span>
         </button>
         <button type="button" class="lang-toggle" aria-label="切换语言 / Switch language">
             <span class="lang-opt" data-lang-set="zh">中</span>
@@ -534,7 +543,7 @@
                 ctx.lineWidth = 1;
                 ctx.stroke();
             });
-            ry += reduce ? 0 : 0.012;
+            ry += (reduce || document.documentElement.classList.contains('reduce-motion')) ? 0 : 0.012;
             requestAnimationFrame(frame);
         }
         frame();
@@ -993,6 +1002,53 @@
                 </div>
 
                 <div class="award-grid" id="awardGrid">
+                    <!-- ★★★ 高展（牧夕、）老学长 · 竞赛程序设计奖项 ★★★ -->
+                    <!-- 0a · ICPC 亚洲沈阳区域赛 铜牌 -->
+                    <article class="award-card" data-tier="national-first">
+                        <div class="gold-rain" aria-hidden="true"></div>
+                        <h3 class="award-name"><span class="i18n-zh">2025 ICPC 国际大学生程序设计竞赛 · 亚洲沈阳区域赛</span><span class="i18n-en">The 2025 ICPC Asia Shenyang Regional Contest</span></h3>
+                        <div class="award-gradeline">
+                            <div class="award-grade"><span class="i18n-zh">铜牌 Bronze Medal</span><span class="i18n-en">Bronze Medal</span></div>
+                            <span class="award-tier"><span class="i18n-zh">国际区域赛</span><span class="i18n-en">Intl. Regional</span></span>
+                        </div>
+                        <div class="award-meta">
+                            <span class="award-year">2025</span>
+                            <ul class="award-team">
+                                <li>牧夕、@AI-Link Community</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- 0b · CCCC 团体程序设计天梯赛 全国个人二等奖 -->
+                    <article class="award-card" data-tier="national-second">
+                        <h3 class="award-name"><span class="i18n-zh">2026 中国高校计算机大赛 · 团体程序设计天梯赛（GPLT）全国总决赛</span><span class="i18n-en">2026 China Collegiate Computing Contest · GPLT National Finals</span></h3>
+                        <div class="award-gradeline">
+                            <div class="award-grade"><span class="i18n-zh">全国个人二等奖</span><span class="i18n-en">National Individual Second Prize</span></div>
+                            <span class="award-tier"><span class="i18n-zh">国家级二等</span><span class="i18n-en">National 2nd</span></span>
+                        </div>
+                        <div class="award-meta">
+                            <span class="award-year">2026</span>
+                            <ul class="award-team">
+                                <li>牧夕、@AI-Link Community</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- 0c · 浙江省大学生程序设计竞赛 铜奖 -->
+                    <article class="award-card" data-tier="provincial">
+                        <h3 class="award-name"><span class="i18n-zh">2026 浙江省第二十三届大学生程序设计竞赛</span><span class="i18n-en">The 23rd Zhejiang Collegiate Programming Contest 2026</span></h3>
+                        <div class="award-gradeline">
+                            <div class="award-grade"><span class="i18n-zh">铜奖</span><span class="i18n-en">Bronze Award</span></div>
+                            <span class="award-tier"><span class="i18n-zh">省市级</span><span class="i18n-en">Provincial</span></span>
+                        </div>
+                        <div class="award-meta">
+                            <span class="award-year">2026</span>
+                            <ul class="award-team">
+                                <li>牧夕、@AI-Link Community</li>
+                            </ul>
+                        </div>
+                    </article>
+
                     <!-- 1 · MathorCup 赛区一等奖 -->
                     <article class="award-card" data-tier="provincial">
                         <h3 class="award-name"><span class="i18n-zh">2026 年第十六届 MathorCup 数学应用挑战赛</span><span class="i18n-en">The 16th MathorCup Mathematical Application Challenge 2026</span></h3>
@@ -1367,7 +1423,7 @@
                     </div>
                     <div class="member-grid member-grid-2" id="thanksGrid">
                         <div class="member-card member-card-thanks"><div class="member-name">@一碗夹生</div><div class="member-role">Special Thanks</div></div>
-                        <div class="member-card member-card-thanks"><div class="member-name">@牧夕、</div><div class="member-role">Special Thanks</div></div>
+                        <div class="member-card member-card-thanks"><div class="member-main"><div class="member-name">@牧夕、</div><div class="member-role">Special Thanks</div></div><div class="member-awards"><span class="member-award" data-tier="national-first" title="国家级一等获奖 1 项">1</span><span class="member-award" data-tier="national-second" title="国家级二等获奖 1 项">1</span><span class="member-award" data-tier="provincial" title="省市级获奖 1 项">1</span></div></div>
                     </div>
                 </div>
             </div>
@@ -1410,6 +1466,8 @@
             // 合并：成员自带计数(awards_provincial/school) + 该成员名下已通过的申报(按 tier 计数)
             function countsFor(m, claimsBy) {
                 var c = {};
+                if (m.awards_national_first > 0)  c['national-first']  = (c['national-first'] || 0)  + m.awards_national_first;
+                if (m.awards_national_second > 0) c['national-second'] = (c['national-second'] || 0) + m.awards_national_second;
                 if (m.awards_provincial > 0) c.provincial = (c.provincial || 0) + m.awards_provincial;
                 if (m.awards_school > 0) c.school = (c.school || 0) + m.awards_school;
                 var cl = claimsBy[m.name];
@@ -1431,9 +1489,12 @@
                 return '<div class="member-card" data-dept="' + dept + '">'
                      + '<div class="member-main">' + inner + '</div>' + awards + '</div>';
             }
-            function thanksCardHtml(m) {
-                return '<div class="member-card member-card-thanks"><div class="member-name">' + esc(m.name) + '</div>'
-                     + '<div class="member-role">' + esc(m.role || 'Special Thanks') + '</div></div>';
+            function thanksCardHtml(m, claimsBy) {
+                var nameRole = '<div class="member-name">' + esc(m.name) + '</div>'
+                             + '<div class="member-role">' + esc(m.role || 'Special Thanks') + '</div>';
+                var awards = awardsHtml(countsFor(m, claimsBy || {}));
+                if (!awards) return '<div class="member-card member-card-thanks">' + nameRole + '</div>';
+                return '<div class="member-card member-card-thanks"><div class="member-main">' + nameRole + '</div>' + awards + '</div>';
             }
             function applyFilter(dept) {
                 grid.querySelectorAll('.member-card').forEach(function (c) {
@@ -1451,7 +1512,7 @@
             }
             // 并行拉成员 + 已通过的奖项申报；按 member_name 聚合后合并进徽章
             Promise.all([
-                fetch(API + '/items/members?limit=-1&sort=sort&fields=name,role,department,dept_code,awards_provincial,awards_school,in_dev,github,category').then(function (r) { return r.ok ? r.json() : { data: [] }; }),
+                fetch(API + '/items/members?limit=-1&sort=sort&fields=name,role,department,dept_code,awards_provincial,awards_school,awards_national_first,awards_national_second,in_dev,github,category').then(function (r) { return r.ok ? r.json() : { data: [] }; }),
                 fetch(API + '/items/award_claims?limit=-1&fields=member_name,tier').then(function (r) { return r.ok ? r.json() : { data: [] }; })
             ]).then(function (res) {
                 var list = (res[0] && res[0].data) || [];
@@ -1465,7 +1526,7 @@
                 var thanks = list.filter(function (m) { return m.category === 'thanks'; });
                 grid.innerHTML = team.map(function (m) { return teamCardHtml(m, claimsBy); }).join('');
                 var thanksGrid = document.getElementById('thanksGrid');
-                if (thanksGrid && thanks.length) thanksGrid.innerHTML = thanks.map(thanksCardHtml).join('');
+                if (thanksGrid && thanks.length) thanksGrid.innerHTML = thanks.map(function (m) { return thanksCardHtml(m, claimsBy); }).join('');
                 var active = filter && filter.querySelector('.tf-chip.active');
                 applyFilter(active ? (active.getAttribute('data-dept') || 'all') : 'all');
             }).catch(function (err) {
@@ -2535,6 +2596,47 @@
         document.addEventListener('terminal-boot-done', reveal, { once: true });
         const recruit = document.getElementById('recruit');
         if (!recruit) setTimeout(reveal, 1200);
+    })();
+    </script>
+
+    <!-- 全局动效开关 -->
+    <script>
+    (function () {
+        var KEY = 'aiLinkMotion';
+        var btn = document.getElementById('motionToggle');
+        function apply(on) {
+            document.documentElement.classList.toggle('reduce-motion', !on);
+            if (btn) {
+                btn.classList.toggle('off', !on);
+                btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+            }
+        }
+        var saved = null;
+        try { saved = localStorage.getItem(KEY); } catch (e) {}
+        var on = saved !== 'off';   // 默认开
+        apply(on);
+        btn && btn.addEventListener('click', function () {
+            on = !on;
+            try { localStorage.setItem(KEY, on ? 'on' : 'off'); } catch (e) {}
+            apply(on);
+        });
+    })();
+    </script>
+
+    <!-- 顶级卡金色彩带雨：JS 随机铺片（密度高 + 各相位均匀，无波次顿挫）-->
+    <script>
+    (function () {
+        var rain = document.querySelector('.award-card[data-tier="national-first"] .gold-rain');
+        if (!rain) return;
+        var N = 42, html = '';
+        for (var i = 0; i < N; i++) {
+            var dur = (2.6 + Math.random() * 1.8);                 // 2.6~4.4s（下落更从容）
+            var delay = (-Math.random() * dur).toFixed(2);          // 延迟 = 自身周期的随机比例 → 各相位均匀，无顿挫
+            var w = (3 + Math.random() * 3).toFixed(1);
+            var h = (7 + Math.random() * 6).toFixed(1);
+            html += '<i style="left:' + (Math.random() * 100).toFixed(1) + '%;width:' + w + 'px;height:' + h + 'px;animation-duration:' + dur.toFixed(2) + 's;animation-delay:' + delay + 's"></i>';
+        }
+        rain.innerHTML = html;
     })();
     </script>
 </body>
