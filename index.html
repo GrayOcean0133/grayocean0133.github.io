@@ -65,6 +65,13 @@
     <div class="matrix-grid"></div>
 
     <header>
+        <button type="button" class="auth-trigger" id="authTrigger" aria-label="登录 / 注册">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <circle cx="12" cy="8" r="3.4"></circle>
+                <path d="M5 20c0-3.6 3.1-6.2 7-6.2s7 2.6 7 6.2"></path>
+            </svg>
+            <span class="auth-trigger-label" id="authTriggerLabel"><span class="i18n-zh">登录</span><span class="i18n-en">LOGIN</span></span>
+        </button>
         <button type="button" class="lang-toggle" aria-label="切换语言 / Switch language">
             <span class="lang-opt" data-lang-set="zh">中</span>
             <span class="lang-sep">|</span>
@@ -84,6 +91,455 @@
         </nav>
         <div class="divider"></div>
     </header>
+
+    <!-- ===== 账户抽屉：登录 / 注册 / 报名（右侧滑入，仿明日方舟） ===== -->
+    <div class="auth-scrim" id="authScrim" hidden></div>
+    <aside class="auth-drawer" id="authDrawer" aria-hidden="true" aria-label="账户终端">
+        <span class="ak-bracket ak-bracket-tl"></span>
+        <span class="ak-bracket ak-bracket-br"></span>
+        <button type="button" class="auth-close" id="authClose" aria-label="关闭">×</button>
+        <div class="auth-head">
+            <div class="auth-logo">AI-LINK</div>
+            <div class="auth-sub">// TERMINAL ACCESS</div>
+        </div>
+
+        <!-- 吉祥物 D8 八面骰：常驻，三态都显示 -->
+        <canvas id="d8canvas" class="auth-d8 auth-d8-mascot" aria-hidden="true"></canvas>
+
+        <div class="auth-body" id="authBody">
+            <p class="auth-welcome">
+                <span class="i18n-zh">欢迎来到 AI-Link 终端。登录后即可申请加入或（成员）申报奖项。</span>
+                <span class="i18n-en">Welcome to the AI-Link terminal. Log in to apply, or declare awards as a member.</span>
+            </p>
+            <div class="auth-tabs" role="tablist">
+                <button type="button" class="auth-tab active" data-tab="login"><span class="i18n-zh">登录</span><span class="i18n-en">LOG IN</span></button>
+                <button type="button" class="auth-tab" data-tab="register"><span class="i18n-zh">注册</span><span class="i18n-en">SIGN UP</span></button>
+            </div>
+
+            <form class="auth-pane active" data-pane="login" novalidate>
+                <label class="auth-field">
+                    <span class="auth-label">EMAIL</span>
+                    <input class="auth-input" type="email" name="email" autocomplete="email" placeholder="you@example.com">
+                </label>
+                <label class="auth-field">
+                    <span class="auth-label"><span class="i18n-zh">密码</span><span class="i18n-en">PASSWORD</span></span>
+                    <input class="auth-input" type="password" name="password" autocomplete="current-password" placeholder="••••••••">
+                </label>
+                <button type="submit" class="auth-submit"><span class="i18n-zh">登录 →</span><span class="i18n-en">LOG IN →</span></button>
+            </form>
+
+            <form class="auth-pane" data-pane="register" novalidate>
+                <label class="auth-field">
+                    <span class="auth-label">EMAIL</span>
+                    <input class="auth-input" type="email" name="email" autocomplete="email" placeholder="you@example.com">
+                </label>
+                <label class="auth-field">
+                    <span class="auth-label"><span class="i18n-zh">密码（至少 8 位）</span><span class="i18n-en">PASSWORD (min 8)</span></span>
+                    <input class="auth-input" type="password" name="password" autocomplete="new-password" placeholder="••••••••">
+                </label>
+                <label class="auth-field">
+                    <span class="auth-label"><span class="i18n-zh">确认密码</span><span class="i18n-en">CONFIRM</span></span>
+                    <input class="auth-input" type="password" name="password2" autocomplete="new-password" placeholder="••••••••">
+                </label>
+                <button type="submit" class="auth-submit"><span class="i18n-zh">注册并登录 →</span><span class="i18n-en">SIGN UP →</span></button>
+            </form>
+
+            <div class="auth-msg" id="authMsg" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="auth-profile" id="authProfile" hidden>
+            <div class="auth-email" id="authEmail"></div>
+            <div class="auth-status" id="authStatus"></div>
+
+            <form class="auth-declare" id="declareForm" hidden novalidate>
+                <div class="auth-declare-title"><span class="i18n-zh">申报奖项 · 成员专属</span><span class="i18n-en">DECLARE AWARD · MEMBERS</span></div>
+                <label class="auth-field">
+                    <span class="auth-label"><span class="i18n-zh">展示名（须与团队卡片一致）</span><span class="i18n-en">DISPLAY NAME (match team card)</span></span>
+                    <input class="auth-input" name="member_name" maxlength="60">
+                </label>
+                <label class="auth-field">
+                    <span class="auth-label"><span class="i18n-zh">赛事名称</span><span class="i18n-en">COMPETITION</span></span>
+                    <input class="auth-input" name="competition" maxlength="120">
+                </label>
+                <div class="auth-row">
+                    <label class="auth-field">
+                        <span class="auth-label"><span class="i18n-zh">奖项等级</span><span class="i18n-en">GRADE</span></span>
+                        <input class="auth-input" name="grade" maxlength="60" placeholder="三等奖">
+                    </label>
+                    <label class="auth-field">
+                        <span class="auth-label"><span class="i18n-zh">年份</span><span class="i18n-en">YEAR</span></span>
+                        <input class="auth-input" name="year" maxlength="10" placeholder="2025">
+                    </label>
+                </div>
+                <label class="auth-field">
+                    <span class="auth-label"><span class="i18n-zh">级别（决定徽章颜色）</span><span class="i18n-en">TIER</span></span>
+                    <select class="auth-input" name="tier">
+                        <option value="school">校级 / School</option>
+                        <option value="provincial" selected>省市级 / Provincial</option>
+                        <option value="national">国家级 / National</option>
+                        <option value="national-second">国家级二等 / National 2nd</option>
+                        <option value="national-first">国家级一等 / National 1st</option>
+                    </select>
+                </label>
+                <button type="submit" class="auth-submit"><span class="i18n-zh">提交申报（待审核）→</span><span class="i18n-en">SUBMIT (PENDING) →</span></button>
+                <div class="auth-msg" id="declareMsg" role="status" aria-live="polite"></div>
+            </form>
+
+            <form class="auth-declare" id="joinForm" hidden novalidate>
+                <div class="auth-declare-title"><span class="i18n-zh">申请加入 AI-Link</span><span class="i18n-en">APPLY TO JOIN</span></div>
+                <p class="auth-first-note"><span class="i18n-zh">你已登录，但还不是 AI-Link 成员。提交申请，管理员审核通过后即成为成员、即可申报奖项。</span><span class="i18n-en">You're logged in but not a member yet. Apply — an admin will review and approve.</span></p>
+                <label class="auth-field"><span class="auth-label"><span class="i18n-zh">姓名 *</span><span class="i18n-en">NAME *</span></span><input class="auth-input" name="name" maxlength="50" autocomplete="name"></label>
+                <label class="auth-field"><span class="auth-label"><span class="i18n-zh">联系方式 *（微信/QQ/手机）</span><span class="i18n-en">CONTACT *</span></span><input class="auth-input" name="contact" maxlength="100"></label>
+                <label class="auth-field"><span class="auth-label"><span class="i18n-zh">年级 / 专业</span><span class="i18n-en">GRADE / MAJOR</span></span><input class="auth-input" name="grade_major" maxlength="100"></label>
+                <label class="auth-field"><span class="auth-label"><span class="i18n-zh">意向方向</span><span class="i18n-en">DIRECTION</span></span><input class="auth-input" name="direction" maxlength="100" placeholder="AI 算法 / 计算机视觉 …"></label>
+                <label class="auth-field"><span class="auth-label"><span class="i18n-zh">一句话留言</span><span class="i18n-en">MESSAGE</span></span><textarea class="auth-input auth-textarea" name="message" rows="2" maxlength="500"></textarea></label>
+                <button type="submit" class="auth-submit"><span class="i18n-zh">提交申请 →</span><span class="i18n-en">APPLY →</span></button>
+                <div class="auth-msg" id="joinMsg" role="status" aria-live="polite"></div>
+            </form>
+
+            <button type="button" class="auth-submit auth-logout" id="authLogout"><span class="i18n-zh">退出登录</span><span class="i18n-en">LOG OUT</span></button>
+        </div>
+
+        <!-- 首次登录：强制设置自己的邮箱 + 新密码 -->
+        <div class="auth-first" id="authFirst" hidden>
+            <div class="auth-declare-title"><span class="i18n-zh">首次登录 · 设置账号</span><span class="i18n-en">FIRST LOGIN · SET UP</span></div>
+            <p class="auth-first-note">
+                <span class="i18n-zh">你的初始密码与用户名相同，为了安全，请设置你自己的邮箱和一个新密码。</span>
+                <span class="i18n-en">Your initial password equals your username. Please set your own email and a new password.</span>
+            </p>
+            <form id="firstForm" novalidate>
+                <label class="auth-field">
+                    <span class="auth-label"><span class="i18n-zh">你的邮箱（以后用它登录）</span><span class="i18n-en">YOUR EMAIL</span></span>
+                    <input class="auth-input" type="email" name="email" autocomplete="email">
+                </label>
+                <label class="auth-field">
+                    <span class="auth-label"><span class="i18n-zh">新密码（至少 8 位）</span><span class="i18n-en">NEW PASSWORD (min 8)</span></span>
+                    <input class="auth-input" type="password" name="password" autocomplete="new-password">
+                </label>
+                <label class="auth-field">
+                    <span class="auth-label"><span class="i18n-zh">确认新密码</span><span class="i18n-en">CONFIRM</span></span>
+                    <input class="auth-input" type="password" name="password2" autocomplete="new-password">
+                </label>
+                <button type="submit" class="auth-submit"><span class="i18n-zh">保存并进入 →</span><span class="i18n-en">SAVE →</span></button>
+                <div class="auth-msg" id="firstMsg" role="status" aria-live="polite"></div>
+            </form>
+        </div>
+    </aside>
+
+    <script>
+    /* ===== 账户抽屉逻辑：登录 / 注册 / 报名（Directus 后端） ===== */
+    (function () {
+        var API = 'https://api.incropai.top';
+        var KEY = 'aiLinkAuth';
+        var MEMBER_ROLE = 'db8a94a6-3d96-4c08-ac15-c8c0b096de1b'; // AI-Link 成员角色 id
+        var drawer = document.getElementById('authDrawer');
+        if (!drawer) return;
+        var scrim   = document.getElementById('authScrim');
+        var trigger = document.getElementById('authTrigger');
+        var tLabel  = document.getElementById('authTriggerLabel');
+        var body    = document.getElementById('authBody');
+        var profile = document.getElementById('authProfile');
+        var emailOut= document.getElementById('authEmail');
+        var msg     = document.getElementById('authMsg');
+        var tabs    = drawer.querySelectorAll('.auth-tab');
+        var panes   = drawer.querySelectorAll('.auth-pane');
+        var first   = document.getElementById('authFirst');
+        var firstForm = document.getElementById('firstForm');
+
+        var en = function () { return document.documentElement.getAttribute('data-lang') === 'en'; };
+        var t  = function (zh, eng) { return en() ? eng : zh; };
+        function say(text, kind) { msg.textContent = text; msg.className = 'auth-msg' + (kind ? ' auth-msg-' + kind : ''); }
+
+        function load()  { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { return null; } }
+        function save(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
+        function wipe()  { try { localStorage.removeItem(KEY); } catch (e) {} }
+
+        function showIn(email, isMember) {
+            body.hidden = true; profile.hidden = false; if (first) first.hidden = true;
+            emailOut.textContent = email || '';
+            if (tLabel) tLabel.textContent = (email || '').split('@')[0] || t('账户', 'ACCOUNT');
+            trigger && trigger.classList.add('is-auth');
+            var dF = document.getElementById('declareForm'), jF = document.getElementById('joinForm'), st = document.getElementById('authStatus');
+            if (dF) dF.hidden = !isMember;     // 成员才显示申报
+            if (jF) jF.hidden = !!isMember;    // 非成员才显示申请加入
+            if (st) st.innerHTML = isMember
+                ? '<span class="auth-badge auth-badge-member">' + t('AI-Link 成员', 'AI-LINK MEMBER') + '</span>'
+                : '<span class="auth-badge">' + t('普通账号 · 可申请加入', 'REGISTERED · CAN APPLY') + '</span>';
+        }
+        function showOut() {
+            body.hidden = false; profile.hidden = true; if (first) first.hidden = true;
+            if (tLabel) tLabel.innerHTML = '<span class="i18n-zh">登录</span><span class="i18n-en">LOGIN</span>';
+            trigger && trigger.classList.remove('is-auth');
+        }
+        function showFirst(email) {
+            body.hidden = true; profile.hidden = true; if (first) first.hidden = false;
+            var ef = firstForm && firstForm.elements['email'];
+            if (ef && !ef.value) ef.value = email || '';
+            if (tLabel) tLabel.textContent = t('首次登录', 'SET UP');
+            trigger && trigger.classList.add('is-auth');
+        }
+        // 有有效 token 后：读 must_change 决定显示「首登设置」还是正常资料
+        function syncUser(email) {
+            var s = load();
+            if (!s || !s.token) { showIn(email, false); return Promise.resolve(); }
+            return fetch(API + '/users/me?fields=must_change,email,role', { headers: { Authorization: 'Bearer ' + s.token } })
+                .then(function (r) { return r.ok ? r.json() : { data: {} }; })
+                .then(function (j) {
+                    var d = (j && j.data) || {};
+                    var em = d.email || email;
+                    var ss = load(); if (ss) { ss.email = em; save(ss); }
+                    if (d.must_change) showFirst(em);
+                    else showIn(em, d.role === MEMBER_ROLE);
+                })
+                .catch(function () { showIn(email, false); });
+        }
+
+        function selectTab(name) {
+            tabs.forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-tab') === name); });
+            panes.forEach(function (p) { p.classList.toggle('active', p.getAttribute('data-pane') === name); });
+            say('', '');
+        }
+        function open(tab) {
+            if (tab) selectTab(tab);
+            drawer.classList.add('open'); scrim.hidden = false;
+            requestAnimationFrame(function () { scrim.classList.add('show'); });
+            drawer.setAttribute('aria-hidden', 'false');
+            document.documentElement.style.overflow = 'hidden';
+        }
+        function close() {
+            drawer.classList.remove('open'); scrim.classList.remove('show');
+            drawer.setAttribute('aria-hidden', 'true');
+            document.documentElement.style.overflow = '';
+            setTimeout(function () { scrim.hidden = true; }, 320);
+        }
+
+        trigger && trigger.addEventListener('click', function () {
+            var s = load();
+            open(s && s.token ? null : 'login');
+        });
+        document.getElementById('authClose').addEventListener('click', close);
+        scrim.addEventListener('click', close);
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && drawer.classList.contains('open')) close(); });
+        tabs.forEach(function (b) { b.addEventListener('click', function () { selectTab(b.getAttribute('data-tab')); }); });
+        // 页面任意位置的 data-auth-open（事件委托，兼容动态/后置元素）
+        document.addEventListener('click', function (e) {
+            var el = e.target.closest && e.target.closest('[data-auth-open]');
+            if (!el) return;
+            e.preventDefault();
+            var target = el.getAttribute('data-auth-open');
+            var s = load();
+            if (target === 'join') {
+                if (s && s.token) { open(null); }                 // 已登录 → 资料区(成员看申报/非成员看申请)
+                else { open('login'); say(t('请先登录或注册，再申请加入', 'Log in or register first to apply'), ''); }
+            } else { open(target); }
+        });
+
+        function pane(name) { return drawer.querySelector('.auth-pane[data-pane="' + name + '"]'); }
+        function field(form, n) { var el = form.elements[n]; return el ? el.value.trim() : ''; }
+
+        function doLogin(email, password) {
+            return fetch(API + '/auth/login', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email, password: password, mode: 'json' })
+            }).then(function (r) { if (!r.ok) return r.json().then(function (j) { throw j; }); return r.json(); })
+              .then(function (j) {
+                  var d = j.data;
+                  save({ token: d.access_token, refresh: d.refresh_token, email: email });
+              });
+        }
+
+        pane('login').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var email = field(this, 'email'), pw = field(this, 'password');
+            if (!email || !pw) { say(t('请输入邮箱和密码', 'Enter email and password'), 'err'); return; }
+            say(t('登录中…', 'Logging in…'), '');
+            doLogin(email, pw)
+                .then(function () { say(''); return syncUser(email); })
+                .catch(function () { say(t('✗ 邮箱或密码错误', '✗ Wrong email or password'), 'err'); });
+        });
+
+        pane('register').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var email = field(this, 'email'), pw = field(this, 'password'), pw2 = field(this, 'password2');
+            if (!email || !pw) { say(t('请填写邮箱和密码', 'Enter email and password'), 'err'); return; }
+            if (pw.length < 8) { say(t('密码至少 8 位', 'Password needs 8+ characters'), 'err'); return; }
+            if (pw !== pw2)    { say(t('两次密码不一致', 'Passwords do not match'), 'err'); return; }
+            say(t('注册中…', 'Signing up…'), '');
+            fetch(API + '/users/register', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email, password: pw })
+            }).then(function (r) { if (!r.ok) return r.json().then(function (j) { throw j; }); return doLogin(email, pw); })
+              .then(function () {
+                  var s = load();
+                  return fetch(API + '/users/me', { method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + (s && s.token) }, body: JSON.stringify({ must_change: false }) }).catch(function () {});
+              })
+              .then(function () { showIn(load().email, false); say(t('✓ 注册成功，已登录。可申请加入 AI-Link', '✓ Registered & logged in'), 'ok'); })
+              .catch(function (err) {
+                  var code = err && err.errors && err.errors[0] && err.errors[0].extensions && err.errors[0].extensions.code;
+                  if (code === 'RECORD_NOT_UNIQUE') say(t('该邮箱已注册，请直接登录', 'Email already registered'), 'err');
+                  else say(t('✗ 注册失败，请稍后再试', '✗ Sign up failed, try later'), 'err');
+              });
+        });
+
+        // 申请加入 AI-Link（登录后可见，提交到 submissions，带账号）
+        var joinForm = document.getElementById('joinForm');
+        if (joinForm) {
+            var joinMsg = document.getElementById('joinMsg');
+            function jsay(m, k) { joinMsg.textContent = m; joinMsg.className = 'auth-msg' + (k ? ' auth-msg-' + k : ''); }
+            joinForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                var s = load();
+                if (!s || !s.token) { jsay(t('请先登录', 'Please log in first'), 'err'); return; }
+                var data = { name: field(joinForm, 'name'), contact: field(joinForm, 'contact'), grade_major: field(joinForm, 'grade_major'), direction: field(joinForm, 'direction'), message: field(joinForm, 'message'), account_email: s.email || '' };
+                if (!data.name || !data.contact) { jsay(t('请填写姓名和联系方式', 'Enter name and contact'), 'err'); return; }
+                jsay(t('提交中…', 'Submitting…'), '');
+                fetch(API + '/items/submissions', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + s.token },
+                    body: JSON.stringify(data)
+                }).then(function (r) { if (!r.ok) throw new Error(r.status); joinForm.reset(); jsay(t('✓ 申请已提交，等管理员审核', '✓ Application submitted, pending review'), 'ok'); })
+                  .catch(function () { jsay(t('✗ 提交失败，请稍后再试', '✗ Submit failed, try later'), 'err'); });
+            });
+        }
+
+        document.getElementById('authLogout').addEventListener('click', function () {
+            var s = load();
+            if (s && s.refresh) {
+                fetch(API + '/auth/logout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ refresh_token: s.refresh }) }).catch(function () {});
+            }
+            wipe(); showOut(); selectTab('login'); say(t('已退出登录', 'Logged out'), 'ok');
+        });
+
+        // 申报奖项（登录后可见；提交即 pending，待管理员审核）
+        var declareForm = document.getElementById('declareForm');
+        if (declareForm) {
+            var declareMsg = document.getElementById('declareMsg');
+            function dsay(msg, kind) { declareMsg.textContent = msg; declareMsg.className = 'auth-msg' + (kind ? ' auth-msg-' + kind : ''); }
+            declareForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                var s = load();
+                var data = {
+                    member_name: field(declareForm, 'member_name'),
+                    competition: field(declareForm, 'competition'),
+                    grade: field(declareForm, 'grade'),
+                    tier: field(declareForm, 'tier'),
+                    year: field(declareForm, 'year'),
+                    claimant_email: (s && s.email) || ''
+                };
+                if (!data.member_name || !data.competition || !data.grade) {
+                    dsay(t('请填写展示名、赛事和奖项等级', 'Fill name, competition and grade'), 'err'); return;
+                }
+                if (!s || !s.token) { dsay(t('请先登录再申报', 'Please log in first'), 'err'); return; }
+                dsay(t('提交中…', 'Submitting…'), '');
+                fetch(API + '/items/award_claims', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + s.token },
+                    body: JSON.stringify(data)
+                }).then(function (r) {
+                    if (!r.ok) throw new Error(r.status);
+                    declareForm.reset();
+                    dsay(t('✓ 已提交，管理员审核通过后会显示在卡片和奖项栏', '✓ Submitted, pending admin review'), 'ok');
+                }).catch(function () { dsay(t('✗ 提交失败，请稍后再试', '✗ Submit failed, try later'), 'err'); });
+            });
+        }
+
+        // 首次登录：设置自己的邮箱 + 新密码 → 清 must_change → 用新账号重登
+        if (firstForm) {
+            var firstMsg = document.getElementById('firstMsg');
+            function fsay(m, k) { firstMsg.textContent = m; firstMsg.className = 'auth-msg' + (k ? ' auth-msg-' + k : ''); }
+            firstForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                var s = load();
+                if (!s || !s.token) { fsay(t('会话已失效，请重新登录', 'Session expired'), 'err'); return; }
+                var newEmail = field(firstForm, 'email'), pw = field(firstForm, 'password'), pw2 = field(firstForm, 'password2');
+                if (!newEmail || !pw) { fsay(t('请填写邮箱和新密码', 'Enter email and new password'), 'err'); return; }
+                if (pw.length < 8) { fsay(t('密码至少 8 位', 'Password needs 8+ characters'), 'err'); return; }
+                if (pw !== pw2) { fsay(t('两次密码不一致', 'Passwords do not match'), 'err'); return; }
+                fsay(t('保存中…', 'Saving…'), '');
+                fetch(API + '/users/me', {
+                    method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + s.token },
+                    body: JSON.stringify({ email: newEmail, password: pw, must_change: false })
+                }).then(function (r) { if (!r.ok) return r.json().then(function (j) { throw j; }); return doLogin(newEmail, pw); })
+                  .then(function () { firstForm.reset(); fsay('', ''); return syncUser(newEmail); })
+                  .catch(function (err) {
+                      var code = err && err.errors && err.errors[0] && err.errors[0].extensions && err.errors[0].extensions.code;
+                      if (code === 'RECORD_NOT_UNIQUE') fsay(t('该邮箱已被占用', 'Email already in use'), 'err');
+                      else fsay(t('保存失败，请重试', 'Save failed, try again'), 'err');
+                  });
+            });
+        }
+
+        // 启动：用 refresh_token 续期，保持登录状态
+        (function init() {
+            var s = load();
+            if (!s || !s.refresh) { showOut(); return; }
+            fetch(API + '/auth/refresh', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ refresh_token: s.refresh, mode: 'json' }) })
+                .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+                .then(function (j) { var d = j.data; save({ token: d.access_token, refresh: d.refresh_token, email: s.email }); return syncUser(s.email); })
+                .catch(function () { wipe(); showOut(); });
+        })();
+    })();
+    </script>
+
+    <!-- 已登录头像：D8 八面骰（同 D20 视觉：绿色线框 + 半透明面 + 旋转） -->
+    <script>
+    (function () {
+        var canvas = document.getElementById('d8canvas');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var SIZE = 96;
+        var dpr = window.devicePixelRatio || 1;
+        canvas.width = SIZE * dpr; canvas.height = SIZE * dpr;
+        canvas.style.width = SIZE + 'px'; canvas.style.height = SIZE + 'px';
+        ctx.scale(dpr, dpr);
+
+        // 八面体：6 顶点（±x, ±y, ±z），8 个三角面（外向 CCW 缠绕）
+        var VERTS = [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]];
+        var FACES = [[0,2,4],[0,5,2],[0,4,3],[0,3,5],[1,4,2],[1,2,5],[1,3,4],[1,5,3]];
+        var R = SIZE * 0.40, FOV = SIZE * 2.4, TILT = 0.42;
+        var cT = Math.cos(TILT), sT = Math.sin(TILT);
+        var LX = 0.3, LY = 0.8, LZ = 0.5, LL = Math.sqrt(LX*LX + LY*LY + LZ*LZ);
+        var ry = 0;
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function frame() {
+            ctx.clearRect(0, 0, SIZE, SIZE);
+            var cy = Math.cos(ry), sy = Math.sin(ry);
+            var pts = VERTS.map(function (v) {
+                var x1 = cy*v[0] + sy*v[2], z1 = -sy*v[0] + cy*v[2];
+                var y2 = cT*v[1] - sT*z1, z2 = sT*v[1] + cT*z1;
+                var wx = x1*R, wy = y2*R, wz = z2*R;
+                var d = FOV - wz;
+                return { px: wx*FOV/d + SIZE/2, py: -wy*FOV/d + SIZE/2, wz: wz, w: [wx,wy,wz] };
+            });
+            var faces = FACES.map(function (f) {
+                var a = pts[f[0]], b = pts[f[1]], c = pts[f[2]];
+                var ex=b.w[0]-a.w[0], ey=b.w[1]-a.w[1], ez=b.w[2]-a.w[2];
+                var fx=c.w[0]-a.w[0], fy=c.w[1]-a.w[1], fz=c.w[2]-a.w[2];
+                var nx=ey*fz-ez*fy, ny=ez*fx-ex*fz, nz=ex*fy-ey*fx;
+                var nl = Math.sqrt(nx*nx+ny*ny+nz*nz) || 1;
+                return { a:a, b:b, c:c, avgZ:(a.wz+b.wz+c.wz)/3, nx:nx, ny:ny, nz:nz, nl:nl };
+            });
+            faces.sort(function (p, q) { return p.avgZ - q.avgZ; });
+            faces.forEach(function (fc) {
+                if (fc.nz <= 0) return;
+                var dot = Math.max(0, (fc.nx*LX + fc.ny*LY + fc.nz*LZ) / (fc.nl*LL));
+                var alpha = (0.06 + dot*0.34).toFixed(3);
+                ctx.beginPath();
+                ctx.moveTo(fc.a.px, fc.a.py);
+                ctx.lineTo(fc.b.px, fc.b.py);
+                ctx.lineTo(fc.c.px, fc.c.py);
+                ctx.closePath();
+                ctx.fillStyle = 'rgba(0,255,65,' + alpha + ')';
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(0,255,65,0.85)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            });
+            ry += reduce ? 0 : 0.012;
+            requestAnimationFrame(frame);
+        }
+        frame();
+    })();
+    </script>
 
     <aside class="page-dots" aria-label="page navigation">
         <a href="#hero" class="page-dot active" data-label="首页" data-label-zh="首页" data-label-en="Home" aria-label="跳转到首页"></a>
@@ -134,6 +590,14 @@
                                 <span class="i18n-zh">查看部门方向</span>
                                 <span class="i18n-en">Explore Departments</span>
                             </a>
+                        </div>
+                        <div class="hero-cta">
+                            <button type="button" class="btn btn-primary" data-auth-open="join">
+                                <span class="i18n-zh">加入 AI-Link →</span><span class="i18n-en">Join AI-Link →</span>
+                            </button>
+                            <button type="button" class="btn btn-secondary" data-auth-open="register">
+                                <span class="i18n-zh">注册账号</span><span class="i18n-en">Create Account</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -528,7 +992,7 @@
                     </p>
                 </div>
 
-                <div class="award-grid">
+                <div class="award-grid" id="awardGrid">
                     <!-- 1 · MathorCup 赛区一等奖 -->
                     <article class="award-card" data-tier="provincial">
                         <h3 class="award-name"><span class="i18n-zh">2026 年第十六届 MathorCup 数学应用挑战赛</span><span class="i18n-en">The 16th MathorCup Mathematical Application Challenge 2026</span></h3>
@@ -619,6 +1083,21 @@
                             <ul class="award-team">
                                 <li>灰海GrayOcean@Tech Department</li>
                                 <li>wgyl@Tech Department</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <!-- 7 · 启智问真 AI 大赛 校级三等奖（校级）-->
+                    <article class="award-card" data-tier="school">
+                        <h3 class="award-name"><span class="i18n-zh">2025 年首届全国大学生“启智问真”人工智能模型&amp;智能体大赛</span><span class="i18n-en">The 1st National Collegiate “QiZhi WenZhen” AI Model &amp; Agent Competition 2025</span></h3>
+                        <div class="award-gradeline">
+                            <div class="award-grade"><span class="i18n-zh">校级三等奖</span><span class="i18n-en">School Third Prize</span></div>
+                            <span class="award-tier"><span class="i18n-zh">校级</span><span class="i18n-en">School</span></span>
+                        </div>
+                        <div class="award-meta">
+                            <span class="award-year">2025</span>
+                            <ul class="award-team">
+                                <li>灰海GrayOcean@Tech Department</li>
                             </ul>
                         </div>
                     </article>
@@ -838,7 +1317,7 @@
                             <div class="member-dept">Tech Dep.</div>
                             <div class="member-github">↗ GitHub</div>
                         </div>
-                        <div class="member-awards"><span class="member-award" data-tier="provincial" title="省市级获奖 2 项">2</span><span class="member-award" data-tier="school" title="校级获奖 1 项">1</span></div>
+                        <div class="member-awards"><span class="member-award" data-tier="provincial" title="省市级获奖 2 项">2</span><span class="member-award" data-tier="school" title="校级获奖 2 项">2</span></div>
                     </a>
                     <div class="member-card" data-dept="adm"><div class="member-main"><div class="member-name">Elwin <span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span></div><div class="member-role role-leader">Major</div><div class="member-dept">Adm Dep.</div></div><div class="member-awards"><span class="member-award" data-tier="provincial" title="省市级获奖 1 项">1</span></div></div>
                     <div class="member-card" data-dept="tech"><div class="member-main"><div class="member-name">Lixxan <span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span></div><div class="member-role">Vice</div><div class="member-dept">Tech Dep.</div></div><div class="member-awards"><span class="member-award" data-tier="provincial" title="省市级获奖 1 项">1</span></div></div>
@@ -886,13 +1365,156 @@
                         <span class="i18n-zh">特别感谢 · Special Thanks</span>
                         <span class="i18n-en">Special Thanks</span>
                     </div>
-                    <div class="member-grid member-grid-2">
+                    <div class="member-grid member-grid-2" id="thanksGrid">
                         <div class="member-card member-card-thanks"><div class="member-name">@一碗夹生</div><div class="member-role">Special Thanks</div></div>
                         <div class="member-card member-card-thanks"><div class="member-name">@牧夕、</div><div class="member-role">Special Thanks</div></div>
                     </div>
                 </div>
             </div>
         </section>
+
+        <script>
+        /* ===== 团队成员：从 Directus 后端动态渲染 + 部门筛选 ===== */
+        (function () {
+            var API = 'https://api.incropai.top';
+            var grid = document.getElementById('teamGrid');
+            var filter = document.getElementById('teamFilter');
+            if (!grid) return;
+
+            function esc(s) {
+                return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+                });
+            }
+            var GEAR = '<span class="dev-gear" title="参与「路愈者」研发中" aria-label="开发中"></span>';
+            function roleClass(role) {
+                if (role === 'OWNER') return 'member-role role-owner';
+                if (role === 'Major') return 'member-role role-leader';
+                return 'member-role';
+            }
+            // 徽章按级别从高到低排序
+            var TIER_ORDER = ['national-first','sci-q1','national-second','national','sci-q2','provincial','sci-q3','sci-q4','school','county','org'];
+            var TIER_TITLE = {
+                'national-first':'国家级一等','national-second':'国家级二等','national':'国家级',
+                'provincial':'省市级','school':'校级','county':'县区级','org':'组织级',
+                'sci-q1':'SCI一区','sci-q2':'SCI二区','sci-q3':'SCI三区','sci-q4':'SCI四区'
+            };
+            function awardsHtml(counts) {
+                var out = '';
+                TIER_ORDER.forEach(function (tier) {
+                    var n = counts[tier];
+                    if (n > 0) out += '<span class="member-award" data-tier="' + tier + '" title="' + (TIER_TITLE[tier] || '') + '获奖 ' + n + ' 项">' + n + '</span>';
+                });
+                return out ? '<div class="member-awards">' + out + '</div>' : '';
+            }
+            // 合并：成员自带计数(awards_provincial/school) + 该成员名下已通过的申报(按 tier 计数)
+            function countsFor(m, claimsBy) {
+                var c = {};
+                if (m.awards_provincial > 0) c.provincial = (c.provincial || 0) + m.awards_provincial;
+                if (m.awards_school > 0) c.school = (c.school || 0) + m.awards_school;
+                var cl = claimsBy[m.name];
+                if (cl) Object.keys(cl).forEach(function (tier) { c[tier] = (c[tier] || 0) + cl[tier]; });
+                return c;
+            }
+            function teamCardHtml(m, claimsBy) {
+                var name = esc(m.name) + (m.in_dev ? ' ' + GEAR : '');
+                var inner = '<div class="member-name">' + name + '</div>'
+                          + '<div class="' + roleClass(m.role) + '">' + esc(m.role) + '</div>'
+                          + (m.department ? '<div class="member-dept">' + esc(m.department) + '</div>' : '');
+                var dept = esc(m.dept_code || 'unsorted');
+                var awards = awardsHtml(countsFor(m, claimsBy));
+                if (m.github) {
+                    inner += '<div class="member-github">↗ GitHub</div>';
+                    return '<a href="' + esc(m.github) + '" target="_blank" rel="noopener" class="member-card member-card-link" data-dept="' + dept + '">'
+                         + '<div class="member-main">' + inner + '</div>' + awards + '</a>';
+                }
+                return '<div class="member-card" data-dept="' + dept + '">'
+                     + '<div class="member-main">' + inner + '</div>' + awards + '</div>';
+            }
+            function thanksCardHtml(m) {
+                return '<div class="member-card member-card-thanks"><div class="member-name">' + esc(m.name) + '</div>'
+                     + '<div class="member-role">' + esc(m.role || 'Special Thanks') + '</div></div>';
+            }
+            function applyFilter(dept) {
+                grid.querySelectorAll('.member-card').forEach(function (c) {
+                    c.style.display = (dept === 'all' || c.getAttribute('data-dept') === dept) ? '' : 'none';
+                });
+            }
+            if (filter) {
+                filter.addEventListener('click', function (e) {
+                    var btn = e.target.closest('.tf-chip');
+                    if (!btn) return;
+                    filter.querySelectorAll('.tf-chip').forEach(function (b) { b.classList.remove('active'); });
+                    btn.classList.add('active');
+                    applyFilter(btn.getAttribute('data-dept') || 'all');
+                });
+            }
+            // 并行拉成员 + 已通过的奖项申报；按 member_name 聚合后合并进徽章
+            Promise.all([
+                fetch(API + '/items/members?limit=-1&sort=sort&fields=name,role,department,dept_code,awards_provincial,awards_school,in_dev,github,category').then(function (r) { return r.ok ? r.json() : { data: [] }; }),
+                fetch(API + '/items/award_claims?limit=-1&fields=member_name,tier').then(function (r) { return r.ok ? r.json() : { data: [] }; })
+            ]).then(function (res) {
+                var list = (res[0] && res[0].data) || [];
+                if (!list.length) return; // 空数据保留静态兜底
+                var claimsBy = {};
+                ((res[1] && res[1].data) || []).forEach(function (cl) {
+                    if (!cl.member_name || !cl.tier) return;
+                    (claimsBy[cl.member_name] = claimsBy[cl.member_name] || {})[cl.tier] = (claimsBy[cl.member_name][cl.tier] || 0) + 1;
+                });
+                var team = list.filter(function (m) { return m.category !== 'thanks'; });
+                var thanks = list.filter(function (m) { return m.category === 'thanks'; });
+                grid.innerHTML = team.map(function (m) { return teamCardHtml(m, claimsBy); }).join('');
+                var thanksGrid = document.getElementById('thanksGrid');
+                if (thanksGrid && thanks.length) thanksGrid.innerHTML = thanks.map(thanksCardHtml).join('');
+                var active = filter && filter.querySelector('.tf-chip.active');
+                applyFilter(active ? (active.getAttribute('data-dept') || 'all') : 'all');
+            }).catch(function (err) {
+                console.warn('团队数据动态加载失败，保留静态内容兜底:', err);
+            });
+        })();
+        </script>
+
+        <script>
+        /* ===== 奖项栏：追加后端「已通过」的奖项申报（在硬编码奖项之后） ===== */
+        (function () {
+            var API = 'https://api.incropai.top';
+            var grid = document.getElementById('awardGrid');
+            if (!grid) return;
+            var TIER_LABEL = {
+                'national-first': ['国家级','National'], 'national-second': ['国家级','National'], 'national': ['国家级','National'],
+                'provincial': ['省市级','Provincial'], 'school': ['校级','School'], 'county': ['县区级','County'], 'org': ['组织级','Org'],
+                'sci-q1': ['SCI 一区','SCI Q1'], 'sci-q2': ['SCI 二区','SCI Q2'], 'sci-q3': ['SCI 三区','SCI Q3'], 'sci-q4': ['SCI 四区','SCI Q4']
+            };
+            function esc(s) {
+                return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+                });
+            }
+            function cardHtml(a) {
+                var tier = a.tier || 'provincial';
+                var lbl = TIER_LABEL[tier] || ['', ''];
+                var team = a.member_name ? '<li>' + esc(a.member_name) + (a.department ? '@' + esc(a.department) : '') + '</li>' : '';
+                return '<article class="award-card" data-tier="' + esc(tier) + '">'
+                    + '<h3 class="award-name">' + esc(a.competition) + '</h3>'
+                    + '<div class="award-gradeline">'
+                    +   '<div class="award-grade">' + esc(a.grade) + '</div>'
+                    +   '<span class="award-tier"><span class="i18n-zh">' + esc(lbl[0]) + '</span><span class="i18n-en">' + esc(lbl[1]) + '</span></span>'
+                    + '</div>'
+                    + '<div class="award-meta">'
+                    +   (a.year ? '<span class="award-year">' + esc(a.year) + '</span>' : '')
+                    +   '<ul class="award-team">' + team + '</ul>'
+                    + '</div>'
+                    + '</article>';
+            }
+            fetch(API + '/items/award_claims?limit=-1&sort=-date_created&fields=member_name,competition,grade,tier,year,department')
+                .then(function (r) { return r.ok ? r.json() : { data: [] }; })
+                .then(function (j) {
+                    var list = (j && j.data) || [];
+                    if (list.length) grid.insertAdjacentHTML('beforeend', list.map(cardHtml).join(''));
+                })
+                .catch(function (e) { console.warn('奖项申报加载失败:', e); });
+        })();
+        </script>
 
         <!-- 7 · Recruit Terminal + Path Finder -->
         <section id="recruit" class="snap-section">
@@ -952,6 +1574,7 @@
                         </div>
                     </div>
                 </section>
+
             </div>
         </section>
 

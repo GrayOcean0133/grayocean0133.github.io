@@ -113,13 +113,16 @@
     function renderMarkdown(src, baseDir) {
         src = src.replace(/^﻿?\s*#\s+.*(?:\r?\n|$)/, '');
         var codeStore = [], mathStore = [];
+        // 占位符必须用「正文里绝不会出现」的形式：早期用 ` C<n> `（空格+C+数字+空格），
+        // 会与正文里的 “C2”(Command & Control) 等写法相撞，导致还原步骤把正文里的
+        // “ C2 ” 误当占位符替换成代码块，整篇渲染错乱。改用与公式一致的 ZcodeZ<n>Zend。
         src = src.replace(/```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]+`/g, function (m) {
-            codeStore.push(m); return ' C' + (codeStore.length - 1) + ' ';
+            codeStore.push(m); return 'ZcodeZ' + (codeStore.length - 1) + 'Zend';
         });
         src = src.replace(/\$\$[\s\S]+?\$\$|\$(?:\\.|[^$\\\n])+?\$/g, function (m) {
             mathStore.push(m); return 'ZkatexZ' + (mathStore.length - 1) + 'Zend';
         });
-        src = src.replace(/ C(\d+) /g, function (_, i) { return codeStore[+i]; });
+        src = src.replace(/ZcodeZ(\d+)Zend/g, function (_, i) { return codeStore[+i]; });
 
         var headings = collectHeadings(src);
         var html = marked.parse(src);
